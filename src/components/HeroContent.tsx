@@ -16,14 +16,14 @@ export default function HeroContent() {
   const perfectlyMatchedRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    /*
+    
     if (!sectionRef.current) return;
 
     // Create GSAP ScrollTrigger to pin the entire page content container when "Creativity" centers
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: creativityRef.current,
-        start: "center center", // Pin exactly when "Creativity." text hits center viewport!
+        trigger: sectionRef.current,
+        start: "center center",// Starts earlier (when top of Creativity hits 75% viewport height)
         end: "+=200%",          // Pin duration (200% of viewport height scroll)
         pin: "#page-pin-container", // Pin the entire page content container!
         pinSpacing: true,
@@ -62,7 +62,13 @@ export default function HeroContent() {
     tl.to(
       creativityRef.current,
       {
-        scale: 120, // Increased scale to guarantee full screen coverage with no margins
+        scale: () => {
+          if (typeof window === "undefined" || !creativityRef.current) return 130;
+          const rect = creativityRef.current.getBoundingClientRect();
+          // Calculate scale required to make the text completely engulf the viewport
+          const scaleRequired = Math.max(window.innerWidth / rect.width, window.innerHeight / rect.height) * 20;
+          return Math.max(130, scaleRequired);
+        },
         duration: 1.5,
         ease: "power2.inOut",
         transformOrigin: "center center",
@@ -77,7 +83,7 @@ export default function HeroContent() {
       // Clean up timeline and ScrollTrigger on unmount
       tl.kill();
     };
-    */
+    
   }, []);
 
   return (
@@ -96,33 +102,25 @@ export default function HeroContent() {
       </div>
 
       {/* Typography — overlaps bottom of envelope via negative margin */}
-      <div className="relative -mt-10 sm:-mt-14 md:-mt-20 px-4 max-w-5xl w-full text-center z-40">
+      <div className="relative -mt-10 sm:-mt-14 md:-mt-50 px-4 max-w-5xl w-full text-center z-40">
         <h1 className="font-serif font-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
-          <span ref={strategyRef} className="relative inline-block py-1">
+          <span ref={strategyRef} className="relative inline-block">
             Strategy.
-            {/* COOL VIBE sticker */}
-            <div className="absolute top-[-14px] left-[-16px] sm:top-[-22px] sm:left-[-32px] md:top-[-30px] md:left-[-40px] w-8 h-8 sm:w-11 sm:h-11 md:w-16 md:h-16 rotate-[-12deg] z-40 select-none">
-              <img
-                src="/images/decorative-element-3.png"
-                alt="Cool Vibe"
-                className="w-full h-full object-contain pointer-events-none"
-              />
-            </div>
           </span>
 
           <span
             ref={creativityRef}
             id="creativity-text"
-            className="inline-block origin-center select-none py-1"
+            className="inline-block origin-center select-none"
           >
             Creativity.
           </span>
 
-          <span ref={executionRef} className="inline-block py-1">
+          <span ref={executionRef} className="inline-block">
             Execution.
           </span>
 
-          <span ref={perfectlyMatchedRef} className="inline-block py-1">
+          <span ref={perfectlyMatchedRef} className="inline-block">
             Perfectly Matched.
           </span>
         </h1>

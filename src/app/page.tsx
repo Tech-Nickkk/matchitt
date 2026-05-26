@@ -5,6 +5,7 @@ import PuzzleScene from "@/components/PuzzleScene";
 import ScatteredFolders from "@/components/ScatteredFolders";
 import Navbar from "@/components/Navbar";
 import HeroContent from "@/components/HeroContent";
+import AboutSection from "@/components/AboutSection";
 
 export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
@@ -12,7 +13,7 @@ export default function Home() {
   return (
     <main
       ref={mainRef}
-      className="relative w-full h-[400vh] bg-[#F4F2EC] overflow-x-hidden"
+      className="relative w-full h-auto min-h-screen bg-[#F4F2EC]"
     >
       {/* Fixed 3D WebGL Canvas */}
       <PuzzleScene scrollContainerRef={mainRef} />
@@ -33,6 +34,9 @@ export default function Home() {
 
         {/* Envelope + editorial typography */}
         <HeroContent />
+
+        {/* About Section */}
+        <AboutSection />
       </div>
     </main>
   );

@@ -106,4 +106,11 @@ export const DECORATIVE_STICKERS: StickerPosition[] = [
     src: "/images/decorative-element-2.png",
     alt: "Smile",
   },
+  {
+    top: "18%",
+    left: "82%",
+    rot: -12,
+    src: "/images/decorative-element-3.png",
+    alt: "Cool Vibe",
+  },
 ];
