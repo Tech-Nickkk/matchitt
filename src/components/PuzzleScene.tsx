@@ -101,8 +101,8 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
         });
 
         model.scale.set(0.75, 0.75, 0.75);
-        model.position.set(0, 0.3, 0);
-        model.rotation.set(Math.PI / 6, -Math.PI / 8, 0);
+        model.position.set(0, -.5, 0);
+        model.rotation.set( -Math.PI / 10, Math.PI / 4, Math.PI / 4);
 
         scene.add(model);
 
@@ -134,7 +134,7 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
           model.position,
           {
             x: getResponsiveX(),
-            y: 0.1,
+            y: -0.4,
             ease: "power2.inOut",
             duration: 1.0,
           },
@@ -155,7 +155,7 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
         tlStage1.to(
           model.position,
           {
-            y: -7.5, // Move fully down and out of viewport
+            y: -7, // Move fully down and out of viewport
             ease: "power2.inOut",
             duration: 1.0,
           },

@@ -1,7 +1,7 @@
-import { SCATTERED_FOLDERS, DECORATIVE_STICKERS } from "@/data/folders";
+import { SCATTERED_FOLDERS, DECORATIVE_STICKERS } from "@/data/icons";
 
-/** Absolutely-positioned layer of dense scattered folder icons and decorative stickers */
-export default function ScatteredFolders() {
+/** Absolutely-positioned layer of scattered folder icons and decorative stickers matching the Figma mockup */
+export default function ScatteredHeroItems() {
   return (
     <div id="scattered-folders" className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden">
       {/* Folder icons */}
@@ -41,7 +41,7 @@ export default function ScatteredFolders() {
           <img
             src={sticker.src}
             alt={sticker.alt}
-            className="w-8 sm:w-10 md:w-12 object-contain"
+            className="w-8 sm:w-10 md:w-16 object-contain"
           />
         </div>
       ))}

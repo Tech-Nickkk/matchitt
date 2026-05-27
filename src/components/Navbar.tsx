@@ -1,4 +1,4 @@
-import { NAV_LINKS } from "@/data/folders";
+import { NAV_LINKS } from "@/data/icons";
 
 /** Navigation bar with ripple texture background, nav links, and MATCHITT logo */
 export default function Navbar() {

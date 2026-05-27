@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import PuzzleScene from "@/components/PuzzleScene";
-import ScatteredFolders from "@/components/ScatteredFolders";
+import ScatteredHeroItems from "@/components/ScatteredHeroItems";
 import Navbar from "@/components/Navbar";
 import HeroContent from "@/components/HeroContent";
 import AboutSection from "@/components/AboutSection";
@@ -13,18 +13,14 @@ export default function Home() {
   return (
     <main
       ref={mainRef}
-      className="relative w-full h-auto min-h-screen bg-[#F4F2EC]"
+      className="relative w-full h-auto min-h-screen bg-[#F4F2EC] overflow-clip"
     >
       {/* Fixed 3D WebGL Canvas */}
       <PuzzleScene scrollContainerRef={mainRef} />
 
-      {/* The container that pins the entire page content */}
-      <div
-        id="page-pin-container"
-        className="relative w-full z-20 pointer-events-none"
-      >
+      <div id="page-pin-container" className="relative w-full z-20">
         {/* Scattered folders & stickers overlay */}
-        <ScatteredFolders />
+        <ScatteredHeroItems />
 
         {/* Navbar (Header) */}
         <Navbar />
@@ -34,10 +30,11 @@ export default function Home() {
 
         {/* Envelope + editorial typography */}
         <HeroContent />
+      </div>
 
         {/* About Section */}
         <AboutSection />
-      </div>
+      
     </main>
   );
 }

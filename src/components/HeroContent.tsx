@@ -23,8 +23,9 @@ export default function HeroContent() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "center center",// Starts earlier (when top of Creativity hits 75% viewport height)
-        end: "+=200%",          // Pin duration (200% of viewport height scroll)
+        start: "10% top",// Starts earlier (when top of Creativity hits 75% viewport height)
+        end: "+=100%",  
+        // markers: true,        // Pin duration (200% of viewport height scroll)
         pin: "#page-pin-container", // Pin the entire page content container!
         pinSpacing: true,
         scrub: 1,               // Smooth scrubbing driven by scroll speed
@@ -62,13 +63,7 @@ export default function HeroContent() {
     tl.to(
       creativityRef.current,
       {
-        scale: () => {
-          if (typeof window === "undefined" || !creativityRef.current) return 130;
-          const rect = creativityRef.current.getBoundingClientRect();
-          // Calculate scale required to make the text completely engulf the viewport
-          const scaleRequired = Math.max(window.innerWidth / rect.width, window.innerHeight / rect.height) * 20;
-          return Math.max(130, scaleRequired);
-        },
+        scale: 140,
         duration: 1.5,
         ease: "power2.inOut",
         transformOrigin: "center center",
@@ -90,7 +85,7 @@ export default function HeroContent() {
     <section
       ref={sectionRef}
       id="hero-pin-container"
-      className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-visible"
     >
       {/* Envelope image */}
       <div ref={envelopeRef} className="relative z-30">
@@ -102,7 +97,7 @@ export default function HeroContent() {
       </div>
 
       {/* Typography — overlaps bottom of envelope via negative margin */}
-      <div className="relative -mt-10 sm:-mt-14 md:-mt-50 px-4 max-w-5xl w-full text-center z-40">
+      <div className="relative -mt-10 sm:-mt-14 md:-mt-40 px-4 max-w-5xl w-full text-center z-40">
         <h1 className="font-serif font-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
           <span ref={strategyRef} className="relative inline-block">
             Strategy.
