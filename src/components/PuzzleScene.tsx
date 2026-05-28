@@ -122,8 +122,8 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
           scrollTrigger: {
             trigger: "#page-pin-container",
             start: "top top",         // Start immediately on load at the top of the page scroll
-            endTrigger: "#creativity-text",
-            end: "center center",     // End exactly when "Creativity" hits the center of the viewport
+            endTrigger: "#hero-pin-container",
+            end: "10% top",     // End exactly when the HeroContent pins
             scrub: 1,
             invalidateOnRefresh: true,
           },

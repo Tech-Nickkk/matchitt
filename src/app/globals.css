@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: var(--font-serif);
-  --font-sans: var(--font-sans);
+  --font-recoleta: var(--font-recoleta);
   --color-brand-burgundy: #6B1D2F;
   --color-brand-cream: #F4F2EC;
   --color-brand-blue: #CBE8FA;

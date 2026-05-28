@@ -1,84 +1,126 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Central envelope image with overlapping editorial typography, pined scroll, and zoom-reveal animation */
+/** Central envelope image with overlapping editorial typography, pined scroll, and infinite zoom-reveal animation */
 export default function HeroContent() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const envelopeRef = useRef<HTMLDivElement>(null);
+  
   const strategyRef = useRef<HTMLSpanElement>(null);
-  const creativityRef = useRef<HTMLSpanElement>(null);
-  const executionRef = useRef<HTMLSpanElement>(null);
-  const perfectlyMatchedRef = useRef<HTMLSpanElement>(null);
+  const zoomCreativityRef = useRef<HTMLSpanElement>(null);
+  const zoomExecutionRef = useRef<HTMLSpanElement>(null);
+  const zoomPerfectlyRef = useRef<HTMLSpanElement>(null);
+
+  // Refs for the 't' letters to calculate exact transform origins
+  const tStrategyRef = useRef<HTMLSpanElement>(null);
+  const tCreativityRef = useRef<HTMLSpanElement>(null);
+  const tExecutionRef = useRef<HTMLSpanElement>(null);
+  const tPerfectlyRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    
     if (!sectionRef.current) return;
 
-    // Create GSAP ScrollTrigger to pin the entire page content container when "Creativity" centers
+    // Helper to compute exact transform origin to center on the 't' letter
+    const getOrigin = (parent: HTMLElement | null, child: HTMLElement | null) => {
+      if (!parent || !child) return "50% 50%";
+      const pRect = parent.getBoundingClientRect();
+      const cRect = child.getBoundingClientRect();
+      // calculate the center of the child relative to the parent
+      const x = cRect.left - pRect.left + cRect.width / 2;
+      const y = cRect.top - pRect.top + cRect.height / 2;
+      return `${(x / pRect.width) * 100}% ${(y / pRect.height) * 100}%`;
+    };
+
+    // Calculate origins dynamically
+    const strategyOrigin = getOrigin(strategyRef.current, tStrategyRef.current);
+    const creativityOrigin = getOrigin(zoomCreativityRef.current, tCreativityRef.current);
+    const executionOrigin = getOrigin(zoomExecutionRef.current, tExecutionRef.current);
+    const perfectlyOrigin = getOrigin(zoomPerfectlyRef.current, tPerfectlyRef.current);
+
+    // Create GSAP ScrollTrigger to pin the entire page content container
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "10% top",// Starts earlier (when top of Creativity hits 75% viewport height)
-        end: "+=100%",  
-        // markers: true,        // Pin duration (200% of viewport height scroll)
-        pin: "#page-pin-container", // Pin the entire page content container!
+        start: "10% top",
+        end: "+=500%", 
+        pin: "#page-pin-container",
         pinSpacing: true,
-        scrub: 1,               // Smooth scrubbing driven by scroll speed
+        scrub: 1,
         invalidateOnRefresh: true,
       },
     });
 
-    // 1. Fade out other elements and secondary texts concurrently (starts at 0, completes early!)
+    // 1. Initial fade out of non-target elements
     tl.to(
-      [
-        envelopeRef.current,
-        strategyRef.current,
-        executionRef.current,
-        perfectlyMatchedRef.current,
-        "#navbar-container",
-        "#scattered-folders",
-      ],
+      [envelopeRef.current, "#navbar-container", "#scattered-folders"],
+      { opacity: 0, y: -30, duration: 0.5, ease: "power2.out" },
+      0
+    );
+
+    // 2. Zoom original Strategy text into its 't'
+    tl.to(
+      strategyRef.current,
       {
-        opacity: 0,
-        y: (i, target) => {
-          if (target === envelopeRef.current) return -60;
-          return -30;
-        },
-        scale: (i, target) => {
-          if (target === envelopeRef.current) return 0.85;
-          return 0.98;
-        },
-        duration: 0.6, // Completes early!
-        ease: "power2.out",
+        scale: 250,
+        duration: 2,
+        ease: "power2.inOut",
+        transformOrigin: strategyOrigin,
       },
       0
     );
 
-    // 2. Scale up "Creativity." massively concurrently (starts at 0, takes longer to fill the screen)
-    tl.to(
-      creativityRef.current,
-      {
-        scale: 140,
-        duration: 1.5,
-        ease: "power2.inOut",
-        transformOrigin: "center center",
-      },
-      0 // Runs in parallel with the fade-out!
+    // 3. Zoom Creativity into its 't'
+    tl.fromTo(
+      zoomCreativityRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.5 },
+      ">-=1"
+    );
+    tl.fromTo(
+      zoomCreativityRef.current,
+      { scale: 0.1 },
+      { scale: 250, duration: 2, ease: "power2.inOut", transformOrigin: creativityOrigin },
+      "<"
     );
 
-    // Force immediately refresh of all ScrollTrigger geometries
+    // 4. Zoom Execution into its 't'
+    tl.fromTo(
+      zoomExecutionRef.current,
+      { opacity: 0},
+      { opacity: 1, duration: 0.5 },
+      ">-=1"
+    );
+    tl.fromTo(
+      zoomExecutionRef.current,
+      { scale: 0.1 },
+      { scale: 250, duration: 2, ease: "power2.inOut", transformOrigin: executionOrigin },
+      "<"
+    );
+
+    // 5. Zoom Perfectly Matched into its 't'
+    tl.fromTo(
+      zoomPerfectlyRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.5 },
+      ">-=1"
+    );
+    tl.fromTo(
+      zoomPerfectlyRef.current,
+      { scale: 0.1 },
+      { scale: 125, duration: 2, ease: "power2.inOut", transformOrigin: perfectlyOrigin },
+      "<"
+    );
+
     ScrollTrigger.refresh();
 
     return () => {
-      // Clean up timeline and ScrollTrigger on unmount
       tl.kill();
     };
-    
   }, []);
 
   return (
@@ -87,6 +129,21 @@ export default function HeroContent() {
       id="hero-pin-container"
       className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-visible"
     >
+      {/* Zoom Sequence Container */}
+      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-50">
+        
+        {/* Absolute centered texts */}
+        <span ref={zoomCreativityRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight opacity-0 origin-center text-center whitespace-nowrap">
+          Creat<span ref={tCreativityRef}>i</span>vity.
+        </span>
+        <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight opacity-0 origin-center text-center whitespace-nowrap">
+          Execu<span ref={tExecutionRef}>t</span>ion.
+        </span>
+        <span ref={zoomPerfectlyRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight opacity-0 origin-center text-center whitespace-nowrap">
+          Perfect<span ref={tPerfectlyRef}>l</span>y Matched.
+        </span>
+      </div>
+
       {/* Envelope image */}
       <div ref={envelopeRef} className="relative z-30">
         <img
@@ -97,29 +154,14 @@ export default function HeroContent() {
       </div>
 
       {/* Typography — overlaps bottom of envelope via negative margin */}
-      <div className="relative -mt-10 sm:-mt-14 md:-mt-40 px-4 max-w-5xl w-full text-center z-40">
-        <h1 className="font-serif font-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
-          <span ref={strategyRef} className="relative inline-block">
-            Strategy.
-          </span>
-
-          <span
-            ref={creativityRef}
-            id="creativity-text"
-            className="inline-block origin-center select-none"
-          >
-            Creativity.
-          </span>
-
-          <span ref={executionRef} className="inline-block">
-            Execution.
-          </span>
-
-          <span ref={perfectlyMatchedRef} className="inline-block">
-            Perfectly Matched.
+      <div className="relative -mt-10 sm:-mt-14 px-4 max-w-5xl w-full text-center z-40">
+        <h1 className="font-recoleta text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
+          <span ref={strategyRef} className="relative inline-block origin-center">
+            Stra<span ref={tStrategyRef}>t</span>egy.
           </span>
         </h1>
       </div>
     </section>
   );
 }
+

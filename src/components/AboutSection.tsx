@@ -2,7 +2,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative w-full min-h-screen flex items-center justify-center bg-[#6B1D2F] text-[#F4F2EC] py-16 md:py-24 overflow-hidden pointer-events-auto z-30"
+      className="relative w-full min-h-screen flex items-center justify-center bg-[#F4F2EC] text-[#6B1D2F] py-16 md:py-24 overflow-hidden pointer-events-auto z-30"
     >
       <div className="max-w-7xl w-full mx-auto px-6 sm:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
         
@@ -47,14 +47,14 @@ export default function AboutSection() {
 
         {/* Right Column: Copywriting content */}
         <div className="max-w-3xl w-full text-left flex flex-col justify-center">
-          <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#F4F2EC] mb-6 sm:mb-8 opacity-95">
+          <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] mb-6 sm:mb-8 opacity-95">
             We started Matchitt with one simple belief: most businesses don’t need
             more content, they need the right direction.
           </p>
-          <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#F4F2EC] mb-6 sm:mb-8 opacity-95">
+          <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] mb-6 sm:mb-8 opacity-95">
             There’s too much noise online. Too many trends.
           </p>
-          <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#F4F2EC] opacity-95">
+          <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] opacity-95">
             MATCHITT comes in to match you with your audience, through the right
             strategy, content, and execution plan.
           </p>
