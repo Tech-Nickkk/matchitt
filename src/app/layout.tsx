@@ -8,6 +8,8 @@ const recoleta = localFont({
   display: "swap",
 });
 
+import SmoothScroll from "@/components/SmoothScroll";
+
 export const metadata: Metadata = {
   title: "MATCHITT | Perfectly Matched",
   description: "Strategy. Creativity. Execution. Perfectly Matched.",
@@ -23,7 +25,9 @@ export default function RootLayout({
       lang="en"
       className={`${recoleta.variable} antialiased`}
     >
-      <body className="bg-[#F4F2EC]">{children}</body>
+      <body className="bg-[#F4F2EC]">
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }

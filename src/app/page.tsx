@@ -16,7 +16,7 @@ export default function Home() {
       className="relative w-full h-auto min-h-screen bg-[#F4F2EC] overflow-clip"
     >
       {/* Fixed 3D WebGL Canvas */}
-      <PuzzleScene scrollContainerRef={mainRef} />
+      {/* <PuzzleScene scrollContainerRef={mainRef} /> */}
 
       <div id="page-pin-container" className="relative w-full z-20">
         {/* Scattered folders & stickers overlay */}

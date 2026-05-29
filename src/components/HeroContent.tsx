@@ -47,10 +47,10 @@ export default function HeroContent() {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "10% top",
-        end: "+=500%", 
+        end: "+=2000%", 
         pin: "#page-pin-container",
         pinSpacing: true,
-        scrub: 1,
+        scrub: 0.1,
         invalidateOnRefresh: true,
       },
     });
@@ -77,43 +77,25 @@ export default function HeroContent() {
     // 3. Zoom Creativity into its 't'
     tl.fromTo(
       zoomCreativityRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.5 },
-      ">-=1"
-    );
-    tl.fromTo(
-      zoomCreativityRef.current,
-      { scale: 0.1 },
+      { scale: 0 },
       { scale: 250, duration: 2, ease: "power2.inOut", transformOrigin: creativityOrigin },
-      "<"
+      "-=1.1"
     );
 
     // 4. Zoom Execution into its 't'
     tl.fromTo(
       zoomExecutionRef.current,
-      { opacity: 0},
-      { opacity: 1, duration: 0.5 },
-      ">-=1"
-    );
-    tl.fromTo(
-      zoomExecutionRef.current,
-      { scale: 0.1 },
-      { scale: 250, duration: 2, ease: "power2.inOut", transformOrigin: executionOrigin },
-      "<"
+      { scale: 0 },
+      { scale: 210, duration: 2, ease: "power2.inOut", transformOrigin: executionOrigin },
+      "-=1.1"
     );
 
     // 5. Zoom Perfectly Matched into its 't'
     tl.fromTo(
       zoomPerfectlyRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.5 },
-      ">-=1"
-    );
-    tl.fromTo(
-      zoomPerfectlyRef.current,
-      { scale: 0.1 },
+      { scale: 0 },
       { scale: 125, duration: 2, ease: "power2.inOut", transformOrigin: perfectlyOrigin },
-      "<"
+      "-=1"
     );
 
     ScrollTrigger.refresh();
@@ -130,16 +112,16 @@ export default function HeroContent() {
       className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-visible"
     >
       {/* Zoom Sequence Container */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-50">
+      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-50 translate-y-[5vh] md:translate-y-[8vh]">
         
         {/* Absolute centered texts */}
-        <span ref={zoomCreativityRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight opacity-0 origin-center text-center whitespace-nowrap">
+        <span ref={zoomCreativityRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Creat<span ref={tCreativityRef}>i</span>vity.
         </span>
-        <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight opacity-0 origin-center text-center whitespace-nowrap">
+        <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Execu<span ref={tExecutionRef}>t</span>ion.
         </span>
-        <span ref={zoomPerfectlyRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight opacity-0 origin-center text-center whitespace-nowrap">
+        <span ref={zoomPerfectlyRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Perfect<span ref={tPerfectlyRef}>l</span>y Matched.
         </span>
       </div>
