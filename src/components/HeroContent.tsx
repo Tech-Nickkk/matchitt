@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+import Image from "next/image";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -22,7 +24,7 @@ export default function HeroContent() {
   const tExecutionRef = useRef<HTMLSpanElement>(null);
   const tPerfectlyRef = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!sectionRef.current) return;
 
     // Helper to compute exact transform origin to center on the 't' letter
@@ -98,12 +100,17 @@ export default function HeroContent() {
       "-=1"
     );
 
-    ScrollTrigger.refresh();
+    // 6. Instantly hide all scaled texts once the zoom animations are completely finished
+    tl.to(
+      [strategyRef.current, zoomCreativityRef.current, zoomExecutionRef.current, zoomPerfectlyRef.current],
+      {
+        autoAlpha: 0,
+        duration: 0
+      }
+    );
 
-    return () => {
-      tl.kill();
-    };
-  }, []);
+    ScrollTrigger.refresh();
+  }, { dependencies: [] });
 
   return (
     <section
@@ -115,29 +122,31 @@ export default function HeroContent() {
       <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-50 translate-y-[5vh] md:translate-y-[8vh]">
         
         {/* Absolute centered texts */}
-        <span ref={zoomCreativityRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
+        <span ref={zoomCreativityRef} className="absolute text-[#F4F2EC] font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Creat<span ref={tCreativityRef}>i</span>vity.
         </span>
-        <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
+        <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Execu<span ref={tExecutionRef}>t</span>ion.
         </span>
-        <span ref={zoomPerfectlyRef} className="absolute text-[#F4F2EC] font-recoleta text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
+        <span ref={zoomPerfectlyRef} className="absolute text-[#F4F2EC] font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Perfect<span ref={tPerfectlyRef}>l</span>y Matched.
         </span>
       </div>
 
       {/* Envelope image */}
       <div ref={envelopeRef} className="relative z-30">
-        <img
+        <Image
           src="/images/main-center-image.png"
           alt="Perfectly Matched Envelope"
-          className="w-[260px] sm:w-[340px] md:w-[420px] object-contain drop-shadow-[0_16px_35px_rgba(0,0,0,0.10)] select-none pointer-events-none"
+          width={800}
+          height={600}
+          className="w-[260px] sm:w-[340px] md:w-[420px] object-contain select-none pointer-events-none"
         />
       </div>
 
       {/* Typography — overlaps bottom of envelope via negative margin */}
       <div className="relative -mt-10 sm:-mt-14 px-4 max-w-5xl w-full text-center z-40">
-        <h1 className="font-recoleta text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
+        <h1 className="font-recoleta-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
           <span ref={strategyRef} className="relative inline-block origin-center">
             Stra<span ref={tStrategyRef}>t</span>egy.
           </span>

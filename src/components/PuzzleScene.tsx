@@ -1,49 +1,23 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface PuzzleSceneProps {
-  /** Ref to the scroll container that drives GSAP ScrollTrigger */
-  scrollContainerRef: RefObject<HTMLElement | null>;
-}
-
-/**
- * Three.js scene that renders the puzzle model with a simple scroll-driven
- * rotation animation. The pieces stay joined (no split).
- *
- * The split/merge animation is extracted into PuzzleSplitAnimation
- * for future use in a dedicated bottom section.
- */
-export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
+export default function PuzzleScene() {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!canvasContainerRef.current) return;
-
-    // ── Lenis Smooth Scroll ──
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-    lenis.on("scroll", ScrollTrigger.update);
-
-    const gsapTicker = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(gsapTicker);
-    gsap.ticker.lagSmoothing(0);
 
     // ── Scene ──
     const scene = new THREE.Scene();
-    scene.background = null; // Transparent — blends with CSS background
+    scene.background = null; // Transparent
 
     // ── Camera ──
     const camera = new THREE.PerspectiveCamera(
@@ -87,92 +61,302 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
       (gltf) => {
         const model = gltf.scene;
 
-        // Enable shadows on all meshes and fix color space
         model.traverse((node) => {
           if ((node as THREE.Mesh).isMesh) {
             node.castShadow = true;
             node.receiveShadow = true;
-            const mat = (node as THREE.Mesh)
-              .material as THREE.MeshStandardMaterial;
+            const mat = (node as THREE.Mesh).material as THREE.MeshStandardMaterial;
             if (mat?.map) {
               mat.map.colorSpace = THREE.SRGBColorSpace;
             }
           }
         });
 
-        model.scale.set(0.75, 0.75, 0.75);
-        model.position.set(0, -.5, 0);
-        model.rotation.set( -Math.PI / 10, Math.PI / 4, Math.PI / 4);
+        // ── Locate the two puzzle halves ──
+        const nullNode = model.children[0];
+        if (!nullNode?.children || nullNode.children.length < 2) {
+          console.warn("PuzzleScene: could not find pieces for split");
+          return;
+        }
 
-        scene.add(model);
+        const redPiece = nullNode.children[0];
+        const bluePiece = nullNode.children[1];
+
+        // Save original (merged) positions
+        const redOrig = { x: redPiece.position.x, y: redPiece.position.y, z: redPiece.position.z };
+        const blueOrig = { x: bluePiece.position.x, y: bluePiece.position.y, z: bluePiece.position.z };
+
+        // ── Group Wrapper for Spin ──
+        const group = new THREE.Group();
+        // Spin the inner model 180deg so the red piece is in front
+        model.rotation.y = Math.PI;
+        group.add(model);
+
+        // ── Initial State Matching Image ──
+        group.scale.set(0.9, 0.9, 0.9);
+        
+        // Position it centered, just below the MATCHITT text matching user image
+        group.position.set(0, -0.4, 0); 
+        
+        // Rotate so it lies somewhat flat but tilted to show stickers
+        group.rotation.set(-Math.PI / 10, Math.PI / 8, Math.PI / 4);
+
+        scene.add(group);
 
         // ── Responsive X position for sliding right ──
         const getResponsiveX = () => {
-          if (typeof window === "undefined") return 2.0;
-          if (window.innerWidth < 640) return 0.8; // Mobile
-          if (window.innerWidth < 1024) return 1.4; // Tablet
-          return 2.0; // Desktop
+          if (typeof window === "undefined") return 1.5;
+          if (window.innerWidth < 640) return 0.6; // Mobile
+          if (window.innerWidth < 1024) return 1.0; // Tablet
+          return 1.5; // Desktop
         };
 
-        // ── Scroll-driven translation and rotation ──
-        // Stage 1: Slide to the right, and then slide straight down off-screen BEFORE the page pins.
-        // Starts exactly when the page loads at the top (top top of #page-pin-container) to guarantee
-        // that the model is perfectly centered and visible under the header sticker on load!
+        // ── PHASE 1: Hero Section (Entrance to Exit) ──
         const tlStage1 = gsap.timeline({
           scrollTrigger: {
             trigger: "#page-pin-container",
-            start: "top top",         // Start immediately on load at the top of the page scroll
-            endTrigger: "#hero-pin-container",
-            end: "10% top",     // End exactly when the HeroContent pins
+            start: "top top",
+            end: "+=2500", // Smoothly scrolls slowly over 1200px of scrollbar movement!
             scrub: 1,
             invalidateOnRefresh: true,
           },
         });
 
-        // Step A (Time 0 to 1.0): Slide to the right and rotate
-        tlStage1.to(
-          model.position,
+        // Step A: Slide to the right and rotate
+        tlStage1.fromTo(
+          group.position,
           {
-            x: getResponsiveX(),
+            x: 0,
             y: -0.4,
-            ease: "power2.inOut",
+            z: 0
+          },
+          {
+            x: getResponsiveX() + 5,
+            y: -5,
+            z: 0,
+            ease: "linear",
             duration: 1.0,
+            immediateRender: false
           },
           0
-        ).to(
-          model.rotation,
+        ).fromTo(
+          group.rotation,
           {
-            x: Math.PI / 4,
-            y: Math.PI / 2,
+            x: -Math.PI / 10,
+            y: Math.PI / 8,
+            z: Math.PI / 4
+          },
+          {
+            x: -Math.PI / 10,
+            y: Math.PI,
+            z: Math.PI / 4,
+            ease: "linear",
+            duration: 1.0,
+            immediateRender: false
+          },
+          0
+        );
+
+        // ── PHASE 2: About & What We Do Sections (Unified Timeline) ──
+        const tlStage2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#about",
+            start: "top top", // Starts when #about enters the screen
+            end: "+=2500",
+            // markers: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Stage A: About Section (Time 0 to 1)
+        // Re-entry from the bottom of the right-side paragraph of the About section
+        tlStage2.fromTo(
+          group.position,
+          { x: 7, y: 0, z: 0 },
+          { x: 0, y: -0.7, z: 0, ease: "linear", duration: 1, immediateRender: false }
+        );
+        tlStage2.fromTo(
+          group.rotation,
+          { x: -Math.PI / 8, y: Math.PI * 2, z: Math.PI / 6 },
+          { x: 0, y: Math.PI, z: 0, ease: "linear", duration: 1, immediateRender: false },
+          0
+        );
+
+        // Stage B: What We Do Section (Time 1 to 2)
+        // 1. Move the whole group slightly down and center (splitting a bit lower)
+        tlStage2.to(
+          group.position,
+          {
+            x: 0,
+            y: -2,
+            z: 0.5,
+            ease: "linear",
+            duration: 1
+          },
+          1
+        );
+
+        // 2. Flatten the Z-rotation so both pieces fly symmetrically on screen
+        tlStage2.to(
+          group.rotation,
+          {
+            x: 0,
+            y: Math.PI,
+            z: 0,
+            ease: "linear",
+            duration: 1
+          },
+          1
+        );
+
+        // 3. Separate the pieces!
+        // Red piece position: moves up and to the right, resting on the top-right side of the screen (next to the text)
+        tlStage2.fromTo(
+          redPiece.position,
+          { x: redOrig.x, y: redOrig.y, z: redOrig.z },
+          {
+            x: redOrig.x + 8.0,
+            y: redOrig.y + 6.0,
+            z: redOrig.z,
+            ease: "linear",
+            duration: 1.0,
+            immediateRender: false
+          },
+          1.0
+        );
+        // Red piece rotation: spins outward as it separates (matching the pre-detached group tilt)
+        tlStage2.fromTo(
+          redPiece.rotation,
+          { x: 0, y: 0, z: 0 },
+          {
+            x: -Math.PI / 8,
+            y: Math.PI / 4,
             z: Math.PI / 6,
-            ease: "power2.inOut",
+            ease: "linear",
             duration: 1.0,
+            immediateRender: false
+          },
+          1.0
+        );
+
+        // Blue piece position: moves up and to the left, resting on the top-left side of the screen (next to the text)
+        tlStage2.fromTo(
+          bluePiece.position,
+          { x: blueOrig.x, y: blueOrig.y, z: blueOrig.z },
+          {
+            x: blueOrig.x - 8.0,
+            y: blueOrig.y + 6.0,
+            z: blueOrig.z,
+            ease: "linear",
+            duration: 1.0,
+            immediateRender: false
+          },
+          1.0
+        );
+        // Blue piece rotation: spins outward as it separates (matching the pre-detached group tilt)
+        tlStage2.fromTo(
+          bluePiece.rotation,
+          { x: 0, y: 0, z: 0 },
+          {
+            x: -Math.PI / 8,
+            y: -Math.PI / 4,
+            z: Math.PI / 6,
+            ease: "linear",
+            duration: 1.0,
+            immediateRender: false
+          },
+          1.0
+        );
+
+        // ── PHASE 3: How We Match Section ──
+        const tlStage3 = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#how-we-match",
+            start: "top bottom", // Starts when #how-we-match enters the screen
+            end: "bottom 120%", // Completes slightly before you reach the absolute bottom of the page
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Move group further down so it sits below the sticky "HOW WE MATCH" text
+        tlStage3.to(
+          group.position,
+          {
+            y: -2, // Fixed: -5.0 was completely off-screen at the bottom!
+            ease: "linear",
+            duration: 1
           },
           0
         );
 
-        // Step B (Time 1.0 to 2.0): Slide straight down off the bottom of the screen (completing before pinning starts)
-        tlStage1.to(
-          model.position,
+        // Bring red piece back to original position (connecting from top-right)
+        tlStage3.fromTo(
+          redPiece.position,
           {
-            y: -7, // Move fully down and out of viewport
-            ease: "power2.inOut",
-            duration: 1.0,
+            x: redOrig.x + 6.0,
+            y: redOrig.y - 4.0,
+            z: redOrig.z
           },
-          1.0
-        ).to(
-          model.rotation,
           {
-            x: Math.PI / 3,
-            y: Math.PI * 1.5,
-            z: Math.PI / 3,
-            ease: "power2.inOut",
-            duration: 1.0,
+            x: redOrig.x,
+            y: redOrig.y,
+            z: redOrig.z,
+            ease: "linear",
+            duration: 1,
+            immediateRender: false
           },
-          1.0
+          0
+        );
+        // Bring red piece back to original rotation (unspinning on all axes, matching the pre-detached tilt)
+        tlStage3.fromTo(
+          redPiece.rotation,
+          { x: -Math.PI / 8, y: Math.PI / 4, z: Math.PI / 6 },
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+            ease: "power2.inOut",
+            duration: 1,
+            immediateRender: false
+          },
+          0
         );
 
-        // Force ScrollTrigger to calculate all trigger points with the actual DOM dimensions
+        // Bring blue piece back to original position (connecting from top-left)
+        tlStage3.fromTo(
+          bluePiece.position,
+          {
+            x: blueOrig.x - 6.0,
+            y: blueOrig.y - 4.0,
+            z: blueOrig.z
+          },
+          {
+            x: blueOrig.x,
+            y: blueOrig.y,
+            z: blueOrig.z,
+            ease: "linear",
+            duration: 1,
+            immediateRender: false
+          },
+          0
+        );
+        // Bring blue piece back to original rotation (unspinning on all axes, matching the pre-detached tilt)
+        tlStage3.fromTo(
+          bluePiece.rotation,
+          { x: -Math.PI / 8, y: -Math.PI / 4, z: Math.PI / 6 },
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+            ease: "power2.inOut",
+            duration: 1,
+            immediateRender: false
+          },
+          0
+        );
+
         ScrollTrigger.refresh();
       },
       undefined,
@@ -180,8 +364,9 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
     );
 
     // ── Render Loop ──
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       renderer.render(scene, camera);
     };
     animate();
@@ -194,18 +379,15 @@ export default function PuzzleScene({ scrollContainerRef }: PuzzleSceneProps) {
     };
     window.addEventListener("resize", handleResize);
 
-    // ── Cleanup ──
     return () => {
       window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationFrameId);
       if (canvasContainerRef.current && renderer.domElement) {
         canvasContainerRef.current.removeChild(renderer.domElement);
       }
-      lenis.destroy();
-      gsap.ticker.remove(gsapTicker);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
       renderer.dispose();
     };
-  }, [scrollContainerRef]);
+  }, { dependencies: [] });
 
   return (
     <div

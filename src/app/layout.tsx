@@ -2,9 +2,15 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const recoleta = localFont({
-  src: "./fonts/Recoleta.otf",
-  variable: "--font-recoleta",
+const recoletaBold = localFont({
+  src: "./fonts/Recoleta-bold.otf",
+  variable: "--font-recoleta-bold",
+  display: "swap",
+});
+
+const recoletaLight = localFont({
+  src: "./fonts/Recoleta-light.otf",
+  variable: "--font-recoleta-light",
   display: "swap",
 });
 
@@ -23,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${recoleta.variable} antialiased`}
+      className={`${recoletaBold.variable} ${recoletaLight.variable} antialiased`}
     >
       <body className="bg-[#F4F2EC]">
         <SmoothScroll>{children}</SmoothScroll>

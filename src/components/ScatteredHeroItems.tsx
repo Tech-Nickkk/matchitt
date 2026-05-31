@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SCATTERED_FOLDERS, DECORATIVE_STICKERS } from "@/data/icons";
 
 /** Absolutely-positioned layer of scattered folder icons and decorative stickers matching the Figma mockup */
@@ -15,13 +16,15 @@ export default function ScatteredHeroItems() {
             transform: `rotate(${folder.rot}deg)`,
           }}
         >
-          <img
+          <Image
             src={
               folder.type === "blue"
                 ? "/images/blue-folder.png"
                 : "/images/red-folder.png"
             }
             alt=""
+            width={100}
+            height={100}
             className="w-6 sm:w-7 md:w-8 object-contain opacity-90"
           />
         </div>
@@ -38,9 +41,11 @@ export default function ScatteredHeroItems() {
             transform: `rotate(${sticker.rot}deg)`,
           }}
         >
-          <img
+          <Image
             src={sticker.src}
             alt={sticker.alt}
+            width={150}
+            height={150}
             className="w-8 sm:w-10 md:w-16 object-contain"
           />
         </div>

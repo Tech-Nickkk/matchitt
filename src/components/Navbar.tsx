@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { NAV_LINKS } from "@/data/icons";
 
 /** Navigation bar with ripple texture background, nav links, and MATCHITT logo */
@@ -25,9 +26,11 @@ export default function Navbar() {
               {label}
             </span>
             {i < NAV_LINKS.length - 1 && (
-              <img
+              <Image
                 src="/images/flower-icon.png"
                 alt=""
+                width={50}
+                height={50}
                 className="w-5 h-5 md:w-6 md:h-6 object-contain animate-spin select-none pointer-events-none"
                 style={{ animationDuration: "20s" }}
               />
@@ -38,10 +41,12 @@ export default function Navbar() {
 
       {/* MATCHITT logo — overflows below header edge */}
       <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 z-40 pointer-events-auto">
-        <img
+        <Image
           src="/images/matchitt-text.png"
           alt="MATCHITT"
-          className="w-32 sm:w-40 md:w-52 object-contain rotate-[-2deg] drop-shadow-[0_6px_14px_rgba(0,0,0,0.15)] hover:rotate-[1deg] hover:scale-105 transition-all duration-300"
+          width={500}
+          height={150}
+          className="w-32 sm:w-40 md:w-52 object-contain rotate-[-2deg] hover:rotate-[1deg] hover:scale-105 transition-all duration-300"
         />
       </div>
     </header>
