@@ -9,6 +9,8 @@ import AboutSection from "@/components/AboutSection";
 import WhatWeDoSection from "@/components/WhatWeDoSection";
 import ServicesFoldersSection from "@/components/ServicesFoldersSection";
 import HowWeMatchSection from "@/components/HowWeMatchSection";
+import ProcessSection from "@/components/ProcessSection";
+import WhoWeWorkWithSection from "@/components/WhoWeWorkWithSection";
 
 export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
@@ -52,6 +54,12 @@ export default function Home() {
 
         {/* How We Match Section */}
         <HowWeMatchSection />
+
+        {/* Process Section */}
+        <ProcessSection />
+
+        {/* Who We Work With Section */}
+        <WhoWeWorkWithSection />
       
     </main>
   );

@@ -94,10 +94,10 @@ export default function PuzzleScene() {
 
         // ── Initial State Matching Image ──
         group.scale.set(0.9, 0.9, 0.9);
-        
+
         // Position it centered, just below the MATCHITT text matching user image
-        group.position.set(0, -0.4, 0); 
-        
+        group.position.set(0, -0.4, 0);
+
         // Rotate so it lies somewhat flat but tilted to show stickers
         group.rotation.set(-Math.PI / 10, Math.PI / 8, Math.PI / 4);
 
@@ -274,7 +274,7 @@ export default function PuzzleScene() {
           scrollTrigger: {
             trigger: "#how-we-match",
             start: "top bottom", // Starts when #how-we-match enters the screen
-            end: "bottom 120%", // Completes slightly before you reach the absolute bottom of the page
+            end: "bottom top", // Completes when #how-we-match leaves the screen completely
             scrub: 1,
             invalidateOnRefresh: true,
           },
@@ -355,6 +355,29 @@ export default function PuzzleScene() {
             immediateRender: false
           },
           0
+        );
+
+        // ── PHASE 3 (Continued): Split as we scroll away to Contact Section ──
+        tlStage3.to(
+          redPiece.position,
+          { x: redOrig.x + 8.0, ease: "none", duration: 1 },
+          1.1 // Start immediately after the join (which takes 1s)
+        );
+        tlStage3.to(
+          redPiece.rotation,
+          { x: -Math.PI / 8, y: Math.PI / 4, z: Math.PI / 6, ease: "none", duration: 1 },
+          1.1
+        );
+
+        tlStage3.to(
+          bluePiece.position,
+          { x: blueOrig.x - 8.0, ease: "none", duration: 1 },
+          1.1
+        );
+        tlStage3.to(
+          bluePiece.rotation,
+          { x: -Math.PI / 8, y: -Math.PI / 4, z: Math.PI / 6, ease: "none", duration: 1 },
+          1.1
         );
 
         ScrollTrigger.refresh();
