@@ -35,23 +35,28 @@ export default function PuzzleScene() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.NoToneMapping;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.9; // Slightly lower exposure
     canvasContainerRef.current.appendChild(renderer.domElement);
 
     // ── Lights ──
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    // ── Lights ──
+    // Slightly increase ambient light so the front faces aren't totally black
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
 
+    // Light from the top-right and front, matching the shadow cast by the blue piece in the reference image
     const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
-    dirLight.position.set(5, 10, 7);
+    dirLight.position.set(8, 10, 8);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 2048;
     dirLight.shadow.mapSize.height = 2048;
     dirLight.shadow.bias = -0.0001;
     scene.add(dirLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    fillLight.position.set(-5, 0, -5);
+    // Fill light from the bottom-left to gently illuminate the dark side
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    fillLight.position.set(-5, -2, -5);
     scene.add(fillLight);
 
     // ── Load Model ──
@@ -66,8 +71,13 @@ export default function PuzzleScene() {
             node.castShadow = true;
             node.receiveShadow = true;
             const mat = (node as THREE.Mesh).material as THREE.MeshStandardMaterial;
-            if (mat?.map) {
-              mat.map.colorSpace = THREE.SRGBColorSpace;
+            if (mat) {
+              if (mat.map) {
+                mat.map.colorSpace = THREE.SRGBColorSpace;
+              }
+              // Soften the highlight slightly so it matches the broader specular reflection of the reference
+              mat.roughness = 0.6; 
+              mat.metalness = 0.1;
             }
           }
         });

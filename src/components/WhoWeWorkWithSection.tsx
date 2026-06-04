@@ -12,9 +12,9 @@ const clientTypes = [
   "Startups",
   "Personal Brands",
   "E-commerce",
-  "Startups",
-  "E-commerce",
-  "Personal Brands"
+  "Talents",
+  "Specialists",
+  "Entrepreneurs"
 ];
 
 export default function WhoWeWorkWithSection() {
