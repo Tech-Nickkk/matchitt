@@ -28,10 +28,11 @@ const getResponsiveConfig = () => {
       split2XOffset: 8.0,
       stageADuration: 1.0,
       stageBStart: 1.0,
-      stageBDuration: 1.0,
+      stageBDuration: 1.5,
       splitOffscreenXOffset: 8.0,
-      stageCStart: 2.0,
-      stageCDuration: 0.01,
+      stageCStart: 2.5,
+      stageCDuration: 0.5,
+      totalDurationAnchor: 4.0,
     };
   }
   const width = window.innerWidth;
@@ -54,10 +55,11 @@ const getResponsiveConfig = () => {
       split2XOffset: 8.0,
       stageADuration: 0.3,
       stageBStart: 0.3,
-      stageBDuration: 0.3,
+      stageBDuration: 0.6,
       splitOffscreenXOffset: 6.0,
-      stageCStart: 0.7,
-      stageCDuration: 0.4,
+      stageCStart: 0.9,
+      stageCDuration: 0.5,
+      totalDurationAnchor: 2.2,
     };
   } else if (width < 1024) {
     // Tablet
@@ -71,17 +73,18 @@ const getResponsiveConfig = () => {
       phase2X: 0,
       phase2Y: -0.55,
       phase2Y2: -1.6,
-      splitXOffset: 8,
+      splitXOffset: 5.5,
       splitYOffset: 4,
       joinXOffset: 4.0,
       joinYOffset: 2.5,
       split2XOffset: 5.5,
       stageADuration: 0.8,
       stageBStart: 0.8,
-      stageBDuration: 0.5,
-      splitOffscreenXOffset: 5.5,
-      stageCStart: 2.0,
-      stageCDuration: 0.01,
+      stageBDuration: 1.0,
+      splitOffscreenXOffset: 6.0,
+      stageCStart: 1.8,
+      stageCDuration: 0.5,
+      totalDurationAnchor: 3.2,
     };
   } else {
     // Desktop
@@ -94,7 +97,7 @@ const getResponsiveConfig = () => {
       phase2StartY: 0.0,
       phase2X: 0,
       phase2Y: 0,
-      phase2Y2: 2,
+      phase2Y2: -2.0,
       splitXOffset: 8.0,
       splitYOffset: 6.0,
       joinXOffset: 6.0,
@@ -102,10 +105,11 @@ const getResponsiveConfig = () => {
       split2XOffset: 8.0,
       stageADuration: 1.0,
       stageBStart: 1.0,
-      stageBDuration: 1.0,
+      stageBDuration: 1.5,
       splitOffscreenXOffset: 8.0,
-      stageCStart: 2.0,
-      stageCDuration: 0.01,
+      stageCStart: 2.5,
+      stageCDuration: 0.5,
+      totalDurationAnchor: 4.0,
     };
   }
 };
@@ -264,8 +268,8 @@ export default function PuzzleScene() {
           scrollTrigger: {
             trigger: "#about",
             start: "top top", // Starts when #about enters the screen
-            end: "+=2500",
-            scrub: 1,
+            end: "+=5000", // Re-increased to slow down the animation
+            scrub: 1, // Restored to 1 (direct mapping, no time delay)
             invalidateOnRefresh: true,
           },
         });
@@ -409,6 +413,11 @@ export default function PuzzleScene() {
           },
           stageCStart
         );
+
+        // Dummy tween to strictly lock the total timeline duration.
+        // This ensures the ratio of stage A vs the total timeline remains exactly as intended,
+        // so that the positional alignment of the puzzle splitting remains perfectly locked to the text.
+        tlStage2.to({}, { duration: 0.01 }, config.totalDurationAnchor || stageCStart);
 
         // ── PHASE 3: How We Match Section ──
         const tlStage3 = gsap.timeline({
