@@ -159,81 +159,85 @@ export default function ServicesFoldersSection() {
       ref={containerRef}
       className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden pointer-events-auto z-30"
     >
-      <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-8 md:gap-8">
+      <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-0 sm:gap-8">
 
         {/* Top Row */}
         <div className="flex w-full justify-center">
-          <div className="flex items-start">
-            {topRowFolders.map((item, index) => (
-              <div
-                key={`top-${index}`}
-                ref={el => { foldersRef.current[index] = el; }}
-                className={`relative w-[180px] sm:w-[220px] md:w-[260px] shrink-0 ${index === 0 ? '' : '-ml-6 sm:-ml-8 md:-ml-10'}`}
-                style={{
-                  zIndex: index,
-                  marginTop: `${index * 25}px`,
-                  // transform: `rotate(${item.folderRotate}deg)`
-                }}
-              >
-                <Image
-                  src={item.folder}
-                  alt={`${item.alt} folder`}
-                  width={400}
-                  height={300}
-                  className="w-full h-auto drop-shadow-md"
-                />
+          <div className="flex flex-col sm:flex-row items-center sm:items-start">
+            {topRowFolders.map((item, index) => {
+              const desktopMt = ['sm:mt-[0px]', 'sm:mt-[25px]', 'sm:mt-[50px]', 'sm:mt-[75px]', 'sm:mt-[100px]'][index] || 'sm:mt-[0px]';
+              return (
                 <div
-                  className={`absolute ${item.stickerClasses}`}
-                  // style={{ transform: `rotate(${item.stickerRotate}deg)` }}
+                  key={`top-${index}`}
+                  ref={el => { foldersRef.current[index] = el; }}
+                  className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 ${desktopMt} ${
+                    index === 0 ? 'mt-0' : '-mt-28 sm:-ml-6 md:-ml-8 lg:-ml-10'
+                  }`}
+                  style={{
+                    zIndex: index,
+                  }}
                 >
                   <Image
-                    src={item.sticker}
-                    alt={`${item.alt} sticker`}
-                    width={300}
-                    height={150}
-                    className="w-full h-auto"
+                    src={item.folder}
+                    alt={`${item.alt} folder`}
+                    width={400}
+                    height={300}
+                    className="w-full h-auto drop-shadow-md"
                   />
+                  <div
+                    className={`absolute ${item.stickerClasses}`}
+                  >
+                    <Image
+                      src={item.sticker}
+                      alt={`${item.alt} sticker`}
+                      width={300}
+                      height={150}
+                      className="w-full h-auto"
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
         {/* Bottom Row */}
         <div className="flex w-full justify-center">
-          <div className="flex items-start ml-0 md:ml-[6%]">
-            {bottomRowFolders.map((item, index) => (
-              <div
-                key={`bottom-${index}`}
-                ref={el => { foldersRef.current[topRowFolders.length + index] = el; }}
-                className={`relative w-[180px] sm:w-[220px] md:w-[260px] shrink-0 ${index === 0 ? '' : '-ml-6 sm:-ml-8 md:-ml-10'}`}
-                style={{
-                  zIndex: index,
-                  marginTop: `${index * 25}px`,
-                  // transform: `rotate(${item.folderRotate}deg)`
-                }}
-              >
-                <Image
-                  src={item.folder}
-                  alt={`${item.alt} folder`}
-                  width={400}
-                  height={300}
-                  className="w-full h-auto drop-shadow-md"
-                />
+          <div className="flex flex-col sm:flex-row items-center sm:items-start ml-0 md:ml-[6%] -mt-28 sm:mt-0">
+            {bottomRowFolders.map((item, index) => {
+              const desktopMt = ['sm:mt-[0px]', 'sm:mt-[25px]', 'sm:mt-[50px]', 'sm:mt-[75px]', 'sm:mt-[100px]'][index] || 'sm:mt-[0px]';
+              return (
                 <div
-                  className={`absolute ${item.stickerClasses}`}
-                  // style={{ transform: `rotate(${item.stickerRotate}deg)` }}
+                  key={`bottom-${index}`}
+                  ref={el => { foldersRef.current[topRowFolders.length + index] = el; }}
+                  className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 ${desktopMt} ${
+                    index === 0 ? 'mt-0' : '-mt-28 sm:-ml-6 md:-ml-8 lg:-ml-10'
+                  }`}
+                  style={{
+                    zIndex: topRowFolders.length + index,
+                  }}
                 >
                   <Image
-                    src={item.sticker}
-                    alt={`${item.alt} sticker`}
-                    width={300}
-                    height={150}
-                    className="w-full h-auto"
+                    src={item.folder}
+                    alt={`${item.alt} folder`}
+                    width={400}
+                    height={300}
+                    className="w-full h-auto drop-shadow-md"
                   />
+                  <div
+                    className={`absolute ${item.stickerClasses}`}
+                  >
+                    <Image
+                      src={item.sticker}
+                      alt={`${item.alt} sticker`}
+                      width={300}
+                      height={150}
+                      className="w-full h-auto"
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

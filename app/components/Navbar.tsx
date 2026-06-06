@@ -4,7 +4,7 @@ import { NAV_LINKS } from "@/data/icons";
 /** Navigation bar with ripple texture background, nav links, and MATCHITT logo */
 export default function Navbar() {
   return (
-    <header id="navbar-container" className="relative w-full min-h-[160px] sm:min-h-[180px] md:min-h-[275px] overflow-visible flex flex-col items-center pointer-events-auto select-none z-30">
+    <header id="navbar-container" className="relative w-full min-h-[210px] sm:min-h-[230px] md:min-h-[275px] overflow-visible flex flex-col items-center pointer-events-auto select-none z-30">
       {/* Ripple texture background — clipped to header bounds */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
@@ -19,7 +19,7 @@ export default function Navbar() {
       </div>
 
       {/* Nav links with flower separators */}
-      <nav className="relative z-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-6 pt-12 sm:pt-14 md:pt-26 text-brand-burgundy font-serif text-base sm:text-lg md:text-xl tracking-wide select-none">
+      <nav className="relative z-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-6 pt-12 pb-10 sm:pt-14 sm:pb-12 md:pt-26 md:pb-0 text-brand-burgundy font-serif text-base sm:text-lg md:text-xl tracking-wide select-none">
         {NAV_LINKS.map((label, i) => (
           <span key={label} className="contents">
             <span className="cursor-pointer hover:scale-105 hover:opacity-80 transition-all duration-300">

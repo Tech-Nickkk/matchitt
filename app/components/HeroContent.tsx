@@ -92,11 +92,18 @@ export default function HeroContent() {
       "-=1.1"
     );
 
+    const getPerfectlyScale = () => {
+      if (typeof window === "undefined") return 125;
+      if (window.innerWidth < 640) return 85; // Mobile
+      if (window.innerWidth < 1024) return 95; // Tablet
+      return 125; // Desktop
+    };
+
     // 5. Zoom Perfectly Matched into its 't'
     tl.fromTo(
       zoomPerfectlyRef.current,
       { scale: 0 },
-      { scale: 125, duration: 2, ease: "power2.inOut", transformOrigin: perfectlyOrigin },
+      { scale: () => getPerfectlyScale(), duration: 2, ease: "power2.inOut", transformOrigin: perfectlyOrigin },
       "-=1"
     );
 

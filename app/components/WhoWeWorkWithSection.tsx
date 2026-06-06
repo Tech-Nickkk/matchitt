@@ -20,9 +20,10 @@ const clientTypes = [
 export default function WhoWeWorkWithSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!sectionRef.current || !textContainerRef.current) return;
+    if (!sectionRef.current || !textContainerRef.current || !logoRef.current) return;
 
     const texts = textContainerRef.current.querySelectorAll(".client-text");
 
@@ -31,10 +32,10 @@ export default function WhoWeWorkWithSection() {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: textContainerRef.current,
-        start: "center center", // Pin when the text container reaches the middle of the screen
+        trigger: logoRef.current,
+        start: "top 5%", // Pin when the logo reaches the top 5% of the screen
         end: "+=300%", 
-        pin: sectionRef.current, // Pin the entire section in its current scrolled position
+        pin: sectionRef.current, // Pin the entire section
         scrub: 1, 
       }
     });
@@ -70,6 +71,7 @@ export default function WhoWeWorkWithSection() {
 
   return (
     <section ref={sectionRef} className="relative w-full flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] pb-[35vh] md:pb-[45vh] bg-[#F4F2EC] z-20 overflow-hidden">
+      
       <div className="relative w-full flex flex-col items-center flex-shrink-0">
         
         {/* Main Image */}
@@ -79,12 +81,12 @@ export default function WhoWeWorkWithSection() {
             alt="Who We Work With"
             width={1600}
             height={900}
-            className="w-full h-auto max-h-[50vh] md:max-h-[55vh] object-cover"
+            className="w-full h-auto object-cover"
           />
         </div>
 
         {/* Overlapping Text */}
-        <div className="relative w-[180px] sm:w-[240px] md:w-[320px] -mt-[8%] sm:-mt-[6%] md:-mt-[5%] z-10">
+        <div ref={logoRef} className="relative w-[180px] sm:w-[240px] md:w-[320px] -mt-[8%] sm:-mt-[6%] md:-mt-[5%] z-10">
           <Image
             src="/images/whoweworkwith-text.png"
             alt="Who We Work With Text"

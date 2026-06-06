@@ -11,6 +11,7 @@ import ServicesFoldersSection from "@/components/ServicesFoldersSection";
 import HowWeMatchSection from "@/components/HowWeMatchSection";
 import ProcessSection from "@/components/ProcessSection";
 import WhoWeWorkWithSection from "@/components/WhoWeWorkWithSection";
+import CtaSection from "@/components/CtaSection";
 
 export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
@@ -60,6 +61,9 @@ export default function Home() {
 
         {/* Who We Work With Section */}
         <WhoWeWorkWithSection />
+
+        {/* CTA Section */}
+        <CtaSection />
       
     </main>
   );
