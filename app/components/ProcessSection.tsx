@@ -80,9 +80,9 @@ export default function ProcessSection() {
             className="relative flex flex-col items-center justify-center w-[80vw] sm:w-[60vw] md:w-[40vw] flex-shrink-0"
           >
             {/* The layered puzzle graphic */}
-            <div className="relative w-72 h-72 md:w-96 md:h-96 flex flex-col items-center">
+            <div className="relative w-56 h-56 md:w-72 md:h-72 flex flex-col items-center">
               {/* Puzzle Piece */}
-              <div className="relative w-56 h-56 md:w-72 md:h-72 z-10">
+              <div className="relative w-40 h-40 md:w-52 md:h-52 z-10">
                 <Image
                   src={step.puzzleSrc}
                   alt={`${step.alt} Puzzle`}
@@ -92,7 +92,7 @@ export default function ProcessSection() {
               </div>
 
               {/* Text and Tape Overlay */}
-              <div className="relative w-64 h-24 md:w-80 md:h-32 -mt-8 md:-mt-12 z-20 flex items-center justify-center">
+              <div className="relative w-48 h-18 md:w-64 md:h-24 -mt-6 md:-mt-9 z-20 flex items-center justify-center">
                 {/* Tape Background (made significantly larger for red tape only) */}
                 <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
                   step.tapeSrc.includes('red-tap.png') 

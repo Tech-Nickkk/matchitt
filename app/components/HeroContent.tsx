@@ -54,68 +54,77 @@ export default function HeroContent() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "10% top",
-        end: "+=5000%", 
+        start: "top top",
+        end: "+=2800%",
         pin: "#page-pin-container",
         pinSpacing: true,
-        scrub: 0.1,
+        scrub: true,
         invalidateOnRefresh: true,
       },
     });
 
-    // 1. Initial fade out of non-target elements
+    // 1a. Envelope: drifts upward with a gentle rotation — cinematic exit
     tl.to(
-      [envelopeRef.current, "#navbar-container", "#scattered-folders"],
+      envelopeRef.current,
+      { y: "-120vh", rotation: -15, scale: 0.85, duration: 0.8, ease: "power3.inOut" },
+      0
+    );
+
+    // 1b. Navbar + folders: quick fade-and-slide out
+    tl.to(
+      ["#navbar-container", "#scattered-folders"],
       { opacity: 0, y: -30, duration: 0.5, ease: "power2.out" },
       0
     );
 
-    const getStrategyScale = () => {
-      if (typeof window === "undefined") return 85;
-      if (window.innerWidth < 640) return 100; // Mobile
-      if (window.innerWidth < 1024) return 95; // Tablet
-      return 50; // Desktop
-    };
+    // 2a. Strategy: fade + scale IN from center as envelope exits
+    tl.fromTo(
+      strategyRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: "back.out(1.4)" },
+      0
+    );
 
-    // 2. Zoom original Strategy text into its 't'
-    tl.to(strategyRef.current, { scale: () => getStrategyScale(), duration: 2, ease: "power2.inOut", transformOrigin: strategyOrigin }, 0);
+    // const scaleTarget = typeof window !== "undefined" && window.innerWidth < 768 ? 75 : 75;
+
+    // 2b. Then zoom into its 't'
+    tl.fromTo(strategyRef.current,{ scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: strategyOrigin }, 0);
 
     // Wipe 1 (Burgundy)
-    tl.to(wipe1Ref.current, { width: "100%", duration: 1.2, ease: "none" }, 1);
+    tl.to(wipe1Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
 
     // 3. Zoom Creativity into its 't'
-    tl.fromTo(zoomCreativityRef.current, { scale: 0 }, { scale: 75, duration: 2.2, ease: "power2.inOut", transformOrigin: creativityOrigin }, 2);
+    tl.fromTo(zoomCreativityRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: creativityOrigin }, "<75%");
 
     // Wipe 2 (Light)
-    tl.to(wipe2Ref.current, { width: "100%", duration: 1.2, ease: "none" }, 3);
+    tl.to(wipe2Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
 
     // 4. Zoom Execution into its 't'
-    tl.fromTo(zoomExecutionRef.current, { scale: 0 }, { scale: 75, duration: 2.2, ease: "power2.inOut", transformOrigin: executionOrigin }, 4);
+    tl.fromTo(zoomExecutionRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: executionOrigin }, "<75%");
 
     // Wipe 3 (Burgundy)
-    tl.to(wipe3Ref.current, { width: "100%", duration: 1.2, ease: "none" }, 5);
+    tl.to(wipe3Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
 
     // 5. Zoom Perfectly Matched into its 't'
-    tl.fromTo(zoomPerfectlyRef.current, { scale: 0 }, { scale: 75, duration: 2.2, ease: "power2.inOut", transformOrigin: perfectlyOrigin }, 6);
+    tl.fromTo(zoomPerfectlyRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: perfectlyOrigin }, "<75%");
 
     // Wipe 4 (Light)
-    tl.to(wipe4Ref.current, { width: "100%", duration: 1.2, ease: "none" }, 6.8);
+    tl.to(wipe4Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
 
-    // 6. Instantly hide all scaled texts and wipes once the zoom animations are completely finished
+    // 6. Hide all other scaled texts and background wipes once the Cream wipe is fully active
     tl.to(
       [
-        strategyRef.current, 
-        zoomCreativityRef.current, 
-        zoomExecutionRef.current, 
-        zoomPerfectlyRef.current,
         wipe1Ref.current,
         wipe2Ref.current,
         wipe3Ref.current,
-        wipe4Ref.current
+        strategyRef.current,
+        zoomCreativityRef.current,
+        zoomExecutionRef.current,
+        zoomPerfectlyRef.current,
       ],
       {
         autoAlpha: 0,
-        duration: 0
+        duration: 0,
       }
     );
 
@@ -126,40 +135,40 @@ export default function HeroContent() {
     <section
       ref={sectionRef}
       id="hero-pin-container"
-      className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-visible"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-hidden"
     >
       {/* Wipe 1 */}
-      <div ref={wipe1Ref} className="absolute -top-[25vh] left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-burgundy z-[41] pointer-events-none"></div>
+      <div ref={wipe1Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-burgundy z-41 pointer-events-none"></div>
       
       {/* Creativity Text */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-[42] translate-y-[5vh] md:translate-y-[8vh]">
-        <span ref={zoomCreativityRef} className="absolute text-[#F4F2EC] font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
+      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-42">
+        <span ref={zoomCreativityRef} className="absolute text-brand-cream font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Crea<span ref={tCreativityRef}>t</span>ivity.
         </span>
       </div>
 
       {/* Wipe 2 */}
-      <div ref={wipe2Ref} className="absolute -top-[25vh] left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-[#F4F2EC] z-[43] pointer-events-none"></div>
+      <div ref={wipe2Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-cream z-43 pointer-events-none"></div>
 
       {/* Execution Text */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-[44] translate-y-[5vh] md:translate-y-[8vh]">
+      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-44">
         <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Execu<span ref={tExecutionRef}>t</span>ion.
         </span>
       </div>
 
       {/* Wipe 3 */}
-      <div ref={wipe3Ref} className="absolute -top-[25vh] left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-burgundy z-[45] pointer-events-none"></div>
+      <div ref={wipe3Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-burgundy z-45 pointer-events-none"></div>
 
       {/* Perfectly Matched Text */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-[46] translate-y-[5vh] md:translate-y-[8vh]">
-        <span ref={zoomPerfectlyRef} className="absolute text-[#F4F2EC] font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
+      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-46">
+        <span ref={zoomPerfectlyRef} className="absolute text-brand-cream font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
           Perfect<span ref={tPerfectlyRef}>l</span>y Matched.
         </span>
       </div>
 
       {/* Wipe 4 */}
-      <div ref={wipe4Ref} className="absolute -top-[25vh] left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-[#F4F2EC] z-[47] pointer-events-none"></div>
+      <div ref={wipe4Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-cream z-47 pointer-events-none"></div>
 
       {/* Envelope image */}
       <div ref={envelopeRef} className="relative z-30">
@@ -172,10 +181,10 @@ export default function HeroContent() {
         />
       </div>
 
-      {/* Typography — overlaps bottom of envelope via negative margin */}
-      <div className="relative -mt-10 sm:-mt-14 px-4 max-w-5xl w-full text-center z-40">
-        <h1 className="font-recoleta-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none flex flex-col items-center justify-center">
-          <span ref={strategyRef} className="relative inline-block origin-center">
+      {/* Strategy Text — absolutely centered, starts invisible, animates in */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+        <h1 className="font-recoleta-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none">
+          <span ref={strategyRef} className="relative inline-block origin-center opacity-0">
             Stra<span ref={tStrategyRef}>t</span>egy.
           </span>
         </h1>

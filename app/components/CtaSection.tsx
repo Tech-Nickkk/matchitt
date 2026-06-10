@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function CtaSection() {
   return (
-    <section className="relative w-full flex flex-col bg-[#F4F2EC] z-20">
+    <section id="cta-section" className="relative w-full flex flex-col bg-[#F4F2EC] z-20">
       
       {/* Top Burgundy Section */}
       <div className="relative w-full bg-[#6a2634] pt-24 pb-28 md:pb-32 flex flex-col items-center justify-center z-10">
@@ -20,7 +20,7 @@ export default function CtaSection() {
           href="https://calendly.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 sm:mt-8 px-6 sm:px-8 py-2 sm:py-3 bg-[#A8D5E5] text-[#6a2634] font-serif text-lg sm:text-2xl font-bold tracking-wide hover:bg-[#8ec2d5] hover:scale-105 transition-all duration-300"
+          className="mt-6 sm:mt-8 px-6 py-2 bg-[#A8D5E5] text-[#6a2634] font-serif text-xl font-bold tracking-wide hover:bg-[#8ec2d5] hover:scale-105 transition-all duration-300"
         >
           Book a Calendly Meeting
         </a>

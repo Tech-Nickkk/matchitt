@@ -93,7 +93,7 @@ export default function ServicesFoldersSection() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // Initial state: folders hidden (moved down and right from bottom right corner)
+    // 1. Set initial state of all folders
     gsap.set(foldersRef.current, {
       x: 200,
       y: 200,
@@ -101,57 +101,55 @@ export default function ServicesFoldersSection() {
       scale: 0.8
     });
 
-    let currentIndex = -1;
+    const total = foldersRef.current.length;
+    // Space thresholds so last folder triggers at ~95% progress, minimal dead scroll after
+    const enterThresholds = Array.from({ length: total }, (_, i) => 0.05 + i * (0.90 / (total - 1)));
 
-    // Pin the section and animate folders in one by one based on scroll progress (without scrub)
+    // Track state: 'hidden' | 'visible'
+    const states: string[] = foldersRef.current.map(() => 'hidden');
+
+    // 2. Create ScrollTrigger
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "+=3000",
+      end: "+=1200%", // ~135vh per folder, pin releases right after last folder enters
       pin: true,
       onUpdate: (self) => {
         const progress = self.progress;
-        const total = foldersRef.current.length;
-        // Map progress to an index. If progress is <= 0, targetIndex is -1 (all hidden)
-        let targetIndex = Math.min(Math.floor(progress * total), total - 1);
-        if (progress <= 0) targetIndex = -1;
 
-        if (targetIndex > currentIndex) {
-          // Animate newly reached folders in
-          for (let i = currentIndex + 1; i <= targetIndex; i++) {
-            if (foldersRef.current[i]) {
-              gsap.to(foldersRef.current[i], {
+        foldersRef.current.forEach((folder, i) => {
+          if (!folder) return;
+
+          const targetState = progress >= enterThresholds[i] ? 'visible' : 'hidden';
+
+          if (targetState !== states[i]) {
+            states[i] = targetState;
+
+            if (targetState === 'visible') {
+              gsap.to(folder, {
                 x: 0,
                 y: 0,
                 opacity: 1,
                 scale: 1,
-                duration: 1,
-                ease: "power2.inOut",
+                duration: 1.2,
+                ease: "expo.out",
                 overwrite: "auto"
               });
-            }
-          }
-          currentIndex = targetIndex;
-        } else if (targetIndex < currentIndex && targetIndex >= -1) {
-          // Animate folders out if scrolling back up
-          for (let i = currentIndex; i > targetIndex; i--) {
-            if (foldersRef.current[i]) {
-              gsap.to(foldersRef.current[i], {
+            } else {
+              gsap.to(folder, {
                 x: 200,
                 y: 200,
                 opacity: 0,
                 scale: 0.8,
-                duration: 1,
-                ease: "power2.inOut",
+                duration: 1.2,
+                ease: "expo.out",
                 overwrite: "auto"
               });
             }
           }
-          currentIndex = targetIndex;
-        }
+        });
       }
     });
-
   }, { scope: containerRef });
 
   return (

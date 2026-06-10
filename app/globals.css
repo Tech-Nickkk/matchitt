@@ -10,6 +10,12 @@
 
 html {
   overflow-x: hidden;
+  scroll-behavior: auto !important; /* Prevents native fighting */
+}
+
+/* Force GPU acceleration for elements being animated */
+.js-scroll-element {
+  will-change: transform;
 }
 
 body {

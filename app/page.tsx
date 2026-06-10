@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <main
       ref={mainRef}
-      className="relative w-full h-auto min-h-screen bg-[#F4F2EC] overflow-clip"
+      className="relative w-full h-auto min-h-screen bg-brand-cream overflow-clip"
     >
       {/* Fixed 3D WebGL Canvas */}
       <PuzzleScene />
@@ -55,6 +55,9 @@ export default function Home() {
 
         {/* How We Match Section */}
         <HowWeMatchSection />
+
+        {/* Spacer for 3D model animation to complete */}
+        <div className="w-full h-[50vh] sm:h-[70vh] md:h-[200vh] pointer-events-none" />
 
         {/* Process Section */}
         <ProcessSection />

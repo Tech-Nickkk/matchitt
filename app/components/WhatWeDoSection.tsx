@@ -34,7 +34,7 @@ export default function WhatWeDoSection() {
           </div>
 
           {/* Sticker 2: ENJOY Poster (Top Right) */}
-          <div className="absolute top-[-26%] right-[8%] w-[65px] sm:w-[85px] md:w-[110px] z-0 rotate-[-6deg] transition-transform duration-500 hover:scale-105 hover:rotate-[-5deg]">
+          <div className="absolute top-[-20%] right-[8%] w-[65px] sm:w-[85px] md:w-[80px] z-0 rotate-25 transition-transform duration-500 hover:scale-105 hover:rotate-[-5deg]">
             <Image
               src="/images/whatwedoicon-1.png"
               alt="Enjoy sticker"

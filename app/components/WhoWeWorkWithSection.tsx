@@ -32,10 +32,10 @@ export default function WhoWeWorkWithSection() {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: logoRef.current,
-        start: "top 5%", // Pin when the logo reaches the top 5% of the screen
+        trigger: sectionRef.current,
+        start: "top top", // Pin exactly when the animating section hits the top of the viewport
         end: "+=300%", 
-        pin: sectionRef.current, // Pin the entire section
+        pin: true, 
         scrub: 1, 
       }
     });
@@ -70,45 +70,49 @@ export default function WhoWeWorkWithSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative w-full flex flex-col items-center justify-start pt-[10vh] md:pt-[15vh] pb-[35vh] md:pb-[45vh] bg-[#F4F2EC] z-20 overflow-hidden">
-      
-      <div className="relative w-full flex flex-col items-center flex-shrink-0">
-        
-        {/* Main Image */}
-        <div className="relative w-full flex justify-center">
+    <>
+      {/* Part 1: Who We Work With Visual Image Section */}
+      <section className="relative w-full flex justify-center bg-[#F4F2EC]">
+        <div className="w-full h-auto max-w-[1600px] flex justify-center pt-8">
           <Image
-            src="/images/whoweworkwith-img.png"
-            alt="Who We Work With"
+            src="/images/WhoWeWorkWith-Img.png"
+            alt="Who We Work With Visual"
             width={1600}
             height={900}
             className="w-full h-auto object-cover"
           />
         </div>
+      </section>
 
-        {/* Overlapping Text */}
-        <div ref={logoRef} className="relative w-[180px] sm:w-[240px] md:w-[320px] -mt-[8%] sm:-mt-[6%] md:-mt-[5%] z-10">
+      {/* Part 2: Pinned Animating Text Section */}
+      <section ref={sectionRef} className="relative w-full h-screen flex flex-col items-center justify-start bg-[#F4F2EC] z-20 overflow-hidden">
+        {/* Logo Text Sticker */}
+        <div ref={logoRef} className="relative w-[180px] sm:w-[240px] md:w-[320px] mt-[5vh] md:mt-[7vh] z-10">
           <Image
-            src="/images/whoweworkwith-text.png"
+            src="/images/WhoWeWorkWith-Text.svg"
             alt="Who We Work With Text"
             width={600}
             height={300}
             className="w-full h-auto object-contain"
           />
         </div>
-      </div>
 
-      {/* Animated Text Container */}
-      <div ref={textContainerRef} className="relative mt-[10vh] md:mt-[15vh] w-full h-[120px] md:h-[180px] lg:h-[220px] flex items-center justify-center z-10">
-        {clientTypes.map((text, index) => (
-          <h2 
-            key={index}
-            className="client-text absolute text-center text-5xl sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[8rem] font-bold tracking-tight text-[#83333E] opacity-0"
-            style={{ fontFamily: "serif" }}
-          >
-            {text}
-          </h2>
-        ))}
-      </div>
-    </section>
+        {/* Animated Text Container */}
+        <div ref={textContainerRef} className="absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120px] md:h-[180px] lg:h-[220px] flex items-center justify-center z-10">
+          {clientTypes.map((text, index) => (
+            <h2 
+              key={index}
+              className="client-text absolute w-full left-0 right-0 text-center text-5xl sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[8rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
+            >
+              {text === "E-commerce" ? (
+                <>E<span className="font-sans">-</span>commerce</>
+              ) : (
+                text
+              )}
+            </h2>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

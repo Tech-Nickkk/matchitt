@@ -1,41 +1,37 @@
 "use client";
-
-import { ReactLenis, type LenisRef } from "lenis/react";
-import gsap from "gsap";
+import { useEffect, useRef } from "react";
+import Lenis from "lenis";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<LenisRef>(null);
+  const lenisRef = useRef<Lenis | null>(null);
 
-  useGSAP(() => {
-    function update(time: number) {
-      lenisRef.current?.lenis?.raf(time * 1000);
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.1, // Increased for a tighter, more responsive feel (closer to native scroll)
+      smoothWheel: true,
+      syncTouch: true, // Crucial for mobile feel
+    });
+
+    lenisRef.current = lenis;
+
+    // The synchronization engine
+    function raf(time: number) {
+      lenis.raf(time * 1000);
+      ScrollTrigger.update();
     }
 
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0); // Forces frame-perfect sync
 
     return () => {
-      gsap.ticker.remove(update);
+      gsap.ticker.remove(raf);
+      lenis.destroy();
     };
-  }, { dependencies: [] });
+  }, []);
 
-  useGSAP(() => {
-    const lenis = lenisRef.current?.lenis;
-    if (lenis) {
-      lenis.on("scroll", ScrollTrigger.update);
-    }
-  }, { dependencies: [] });
-
-  return (
-    <ReactLenis ref={lenisRef} root autoRaf={false} options={{ syncTouch: true }}>
-      {children}
-    </ReactLenis>
-  );
+  return <>{children}</>;
 }

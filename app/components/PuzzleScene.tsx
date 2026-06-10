@@ -21,6 +21,7 @@ const getResponsiveConfig = () => {
       phase2X: 0,
       phase2Y: -0.7,
       phase2Y2: -2.0,
+      phase3Y: -1.15,
       splitXOffset: 8.0,
       splitYOffset: 6.0,
       joinXOffset: 6.0,
@@ -32,6 +33,7 @@ const getResponsiveConfig = () => {
       splitOffscreenXOffset: 8.0,
       stageCStart: 2.5,
       stageCDuration: 0.5,
+      phase3End: "+=400%",
       totalDurationAnchor: 4.0,
     };
   }
@@ -48,17 +50,19 @@ const getResponsiveConfig = () => {
       phase2X: 0,
       phase2Y: 0,
       phase2Y2: -1.2,
+      phase3Y: -0.65,
       splitXOffset: 2.2,
       splitYOffset: 1.5,
-      joinXOffset: 6.0,
-      joinYOffset: 4.0,
-      split2XOffset: 8.0,
+      joinXOffset: 2.5,
+      joinYOffset: 1.5,
+      split2XOffset: 3.5,
       stageADuration: 0.3,
       stageBStart: 0.3,
       stageBDuration: 0.6,
       splitOffscreenXOffset: 6.0,
       stageCStart: 0.9,
       stageCDuration: 0.5,
+      phase3End: "+=200%",
       totalDurationAnchor: 2.2,
     };
   } else if (width < 1024) {
@@ -73,17 +77,19 @@ const getResponsiveConfig = () => {
       phase2X: 0,
       phase2Y: -0.55,
       phase2Y2: -1.6,
+      phase3Y: -0.85,
       splitXOffset: 5.5,
       splitYOffset: 4,
       joinXOffset: 4.0,
       joinYOffset: 2.5,
-      split2XOffset: 5.5,
+      split2XOffset: 5.0,
       stageADuration: 0.8,
       stageBStart: 0.8,
       stageBDuration: 1.0,
       splitOffscreenXOffset: 6.0,
       stageCStart: 1.8,
       stageCDuration: 0.5,
+      phase3End: "+=280%",
       totalDurationAnchor: 3.2,
     };
   } else {
@@ -98,6 +104,7 @@ const getResponsiveConfig = () => {
       phase2X: 0,
       phase2Y: 0,
       phase2Y2: -2.0,
+      phase3Y: -1.15,
       splitXOffset: 8.0,
       splitYOffset: 6.0,
       joinXOffset: 6.0,
@@ -109,6 +116,7 @@ const getResponsiveConfig = () => {
       splitOffscreenXOffset: 8.0,
       stageCStart: 2.5,
       stageCDuration: 0.5,
+      phase3End: "+=400%",
       totalDurationAnchor: 4.0,
     };
   }
@@ -140,15 +148,15 @@ export default function PuzzleScene() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.9;
+    renderer.toneMapping = THREE.LinearToneMapping;
+    renderer.toneMappingExposure = 1.15;
     canvasContainerRef.current.appendChild(renderer.domElement);
 
     // ── Lights ──
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
     dirLight.position.set(8, 10, 8);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 2048;
@@ -156,7 +164,7 @@ export default function PuzzleScene() {
     dirLight.shadow.bias = -0.0001;
     scene.add(dirLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
     fillLight.position.set(-5, -2, -5);
     scene.add(fillLight);
 
@@ -179,8 +187,11 @@ export default function PuzzleScene() {
               if (mat.map) {
                 mat.map.colorSpace = THREE.SRGBColorSpace;
               }
-              mat.roughness = 0.6; 
-              mat.metalness = 0.1;
+              mat.roughness = 0.18; 
+              mat.metalness = 0.05;
+              if (mat.name === "Mat.002") {
+                mat.color.set("#C0D0DD");
+              }
             }
           }
         });
@@ -253,9 +264,9 @@ export default function PuzzleScene() {
             z: Math.PI / 4
           },
           {
-            x: -Math.PI / 10,
-            y: Math.PI,
-            z: Math.PI / 4,
+            x: Math.PI / 10,
+            y: Math.PI * 1.2,
+            z: -Math.PI / 4,
             ease: "linear",
             duration: 1.0,
             immediateRender: false
@@ -424,8 +435,8 @@ export default function PuzzleScene() {
           scrollTrigger: {
             trigger: "#how-we-match",
             start: "top bottom", // Starts when #how-we-match enters the screen
-            end: "bottom top", // Completes when #how-we-match leaves the screen completely
-            scrub: 1,
+            end: () => getResponsiveConfig().phase3End,
+            scrub: true,
             invalidateOnRefresh: true,
           },
         });
@@ -434,9 +445,9 @@ export default function PuzzleScene() {
         tlStage3.to(
           group.position,
           {
-            y: () => getResponsiveConfig().phase2Y2,
+            y: () => getResponsiveConfig().phase3Y,
             ease: "linear",
-            duration: 1
+            duration: 0.4
           },
           0
         );
@@ -454,7 +465,7 @@ export default function PuzzleScene() {
             y: redOrig.y,
             z: redOrig.z,
             ease: "linear",
-            duration: 1,
+            duration: 0.4,
             immediateRender: false
           },
           0
@@ -468,7 +479,7 @@ export default function PuzzleScene() {
             y: 0,
             z: 0,
             ease: "power2.inOut",
-            duration: 1,
+            duration: 0.4,
             immediateRender: false
           },
           0
@@ -487,7 +498,7 @@ export default function PuzzleScene() {
             y: blueOrig.y,
             z: blueOrig.z,
             ease: "linear",
-            duration: 1,
+            duration: 0.4,
             immediateRender: false
           },
           0
@@ -501,33 +512,33 @@ export default function PuzzleScene() {
             y: 0,
             z: 0,
             ease: "power2.inOut",
-            duration: 1,
+            duration: 0.4,
             immediateRender: false
           },
           0
         );
 
-        // ── PHASE 3 (Continued): Split as we scroll away to Contact Section ──
+        // ── PHASE 3 (Continued): Split and fly offscreen before next section ──
         tlStage3.to(
           redPiece.position,
-          { x: () => redOrig.x + getResponsiveConfig().split2XOffset, ease: "none", duration: 1 },
-          1.1
+          { x: () => redOrig.x + getResponsiveConfig().split2XOffset, y: redOrig.y + 8, ease: "power2.in", duration: 0.4 },
+          0.45
         );
         tlStage3.to(
           redPiece.rotation,
-          { x: -Math.PI / 8, y: Math.PI / 4, z: Math.PI / 6, ease: "none", duration: 1 },
-          1.1
+          { x: -Math.PI / 8, y: Math.PI / 4, z: Math.PI / 6, ease: "none", duration: 0.4 },
+          0.45
         );
 
         tlStage3.to(
           bluePiece.position,
-          { x: () => blueOrig.x - getResponsiveConfig().split2XOffset, ease: "none", duration: 1 },
-          1.1
+          { x: () => blueOrig.x - getResponsiveConfig().split2XOffset, y: blueOrig.y + 8, ease: "power2.in", duration: 0.4 },
+          0.45
         );
         tlStage3.to(
           bluePiece.rotation,
-          { x: -Math.PI / 8, y: -Math.PI / 4, z: Math.PI / 6, ease: "none", duration: 1 },
-          1.1
+          { x: -Math.PI / 8, y: -Math.PI / 4, z: Math.PI / 6, ease: "none", duration: 0.4 },
+          0.45
         );
 
         ScrollTrigger.refresh();
