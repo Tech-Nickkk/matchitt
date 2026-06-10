@@ -33,6 +33,9 @@ export default function HeroContent() {
   useGSAP(() => {
     if (!sectionRef.current) return;
 
+    const isMobile = window.innerWidth < 768;
+    const wipeOffset = isMobile ? "<80%" : "<65%";
+
     // Helper to compute exact transform origin to center on the 't' letter
     const getOrigin = (parent: HTMLElement | null, child: HTMLElement | null) => {
       if (!parent || !child) return "50% 50%";
@@ -85,31 +88,29 @@ export default function HeroContent() {
       0
     );
 
-    // const scaleTarget = typeof window !== "undefined" && window.innerWidth < 768 ? 75 : 75;
-
     // 2b. Then zoom into its 't'
     tl.fromTo(strategyRef.current,{ scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: strategyOrigin }, 0);
 
     // Wipe 1 (Burgundy)
-    tl.to(wipe1Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
+    tl.to(wipe1Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 3. Zoom Creativity into its 't'
     tl.fromTo(zoomCreativityRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: creativityOrigin }, "<75%");
 
     // Wipe 2 (Light)
-    tl.to(wipe2Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
+    tl.to(wipe2Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 4. Zoom Execution into its 't'
     tl.fromTo(zoomExecutionRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: executionOrigin }, "<75%");
 
     // Wipe 3 (Burgundy)
-    tl.to(wipe3Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
+    tl.to(wipe3Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 5. Zoom Perfectly Matched into its 't'
     tl.fromTo(zoomPerfectlyRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: perfectlyOrigin }, "<75%");
 
     // Wipe 4 (Light)
-    tl.to(wipe4Ref.current, { width: "100%", duration: 1, ease: "none" }, "<80%");
+    tl.to(wipe4Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 6. Hide all other scaled texts and background wipes once the Cream wipe is fully active
     tl.to(
