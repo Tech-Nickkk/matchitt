@@ -46,17 +46,17 @@ export default function ProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!sectionRef.current || !containerRef.current) return;
+    const section = sectionRef.current;
+    const container = containerRef.current;
+    if (!section || !container) return;
 
-    const totalScrollWidth = containerRef.current.scrollWidth - window.innerWidth;
-    
-    gsap.to(containerRef.current, {
-      x: -totalScrollWidth,
+    gsap.to(container, {
+      x: () => -(container.scrollWidth - window.innerWidth),
       ease: "none",
       scrollTrigger: {
-        trigger: sectionRef.current,
+        trigger: section,
         start: "top top",
-        end: `+=${totalScrollWidth}`, // Scroll amount equals the horizontal distance to translate
+        end: () => `+=${container.scrollWidth - window.innerWidth}`,
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
@@ -77,7 +77,7 @@ export default function ProcessSection() {
         {steps.map((step, index) => (
           <div 
             key={index} 
-            className="relative flex flex-col items-center justify-center w-[80vw] sm:w-[60vw] md:w-[40vw] flex-shrink-0"
+            className="relative flex flex-col items-center justify-center w-[290px] sm:w-[340px] md:w-[360px] lg:w-[390px] xl:w-[410px] flex-shrink-0"
           >
             {/* The layered puzzle graphic */}
             <div className="relative w-56 h-56 md:w-72 md:h-72 flex flex-col items-center">

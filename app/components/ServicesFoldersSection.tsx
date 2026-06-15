@@ -15,7 +15,7 @@ const topRowFolders = [
     alt: 'Branding',
     // folderRotate: -2,
     // stickerRotate: 2,
-    stickerClasses: 'bottom-[-10px] left-[10%] w-[65%]'
+    stickerClasses: 'bottom-[-10px] left-[15%] w-[60%]'
   },
   {
     folder: '/images/red-folder-wwd.png',
@@ -23,7 +23,7 @@ const topRowFolders = [
     alt: 'Content Creation',
     // folderRotate: 0,
     // stickerRotate: -2,
-    stickerClasses: 'bottom-[-20px] left-[20%] w-[45%]'
+    stickerClasses: 'bottom-[-20px] left-[23%] w-[45%]'
   },
   {
     folder: '/images/blue-folder-wwd.png',
@@ -31,7 +31,7 @@ const topRowFolders = [
     alt: 'Digital Strategy',
     // folderRotate: 2,
     // stickerRotate: 1,
-    stickerClasses: 'bottom-[-10px] left-[15%] w-[55%]'
+    stickerClasses: 'bottom-[-10px] left-[15%] w-[70%]'
   },
   {
     folder: '/images/red-folder-wwd.png',
@@ -39,7 +39,7 @@ const topRowFolders = [
     alt: 'Social Media Management',
     // folderRotate: 1,
     // stickerRotate: -1,
-    stickerClasses: 'bottom-[-25px] left-[10%] w-[65%]'
+    stickerClasses: 'bottom-[-25px] left-[18%] w-[60%]'
   },
   {
     folder: '/images/blue-folder-wwd.png',
@@ -47,7 +47,7 @@ const topRowFolders = [
     alt: 'Paid Amplification',
     // folderRotate: -1,
     // stickerRotate: 3,
-    stickerClasses: 'bottom-[-20px] left-[15%] w-[55%]'
+    stickerClasses: 'bottom-[-20px] left-[15%] w-[65%]'
   },
 ];
 
@@ -58,7 +58,7 @@ const bottomRowFolders = [
     alt: 'Creative & Design',
     // folderRotate: -1,
     // stickerRotate: 1,
-    stickerClasses: 'bottom-[-15px] left-[15%] w-[55%]'
+    stickerClasses: 'bottom-[-25px] left-[18%] w-[55%]'
   },
   {
     folder: '/images/blue-folder-wwd.png',
@@ -66,7 +66,7 @@ const bottomRowFolders = [
     alt: 'Influencer Engagement',
     // folderRotate: 1,
     // stickerRotate: -2,
-    stickerClasses: 'bottom-[-25px] left-[10%] w-[65%]'
+    stickerClasses: 'bottom-[-35px] left-[18%] w-[60%]'
   },
   {
     folder: '/images/red-folder-wwd.png',
@@ -74,7 +74,7 @@ const bottomRowFolders = [
     alt: 'SEO & Website',
     // folderRotate: -2,
     // stickerRotate: 2,
-    stickerClasses: 'bottom-[-10px] left-[10%] w-[65%]'
+    stickerClasses: 'bottom-[-10px] left-[15%] w-[65%]'
   },
   {
     folder: '/images/blue-folder-wwd.png',
@@ -82,7 +82,7 @@ const bottomRowFolders = [
     alt: 'SEM & Programmatic',
     // folderRotate: 2,
     // stickerRotate: -1,
-    stickerClasses: 'bottom-[-25px] left-[10%] w-[65%]'
+    stickerClasses: 'bottom-[-15px] left-[18%] w-[70%]'
   },
 ];
 
@@ -93,62 +93,52 @@ export default function ServicesFoldersSection() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // 1. Set initial state of all folders
-    gsap.set(foldersRef.current, {
-      x: 200,
-      y: 200,
-      opacity: 0,
-      scale: 0.8
-    });
-
-    const total = foldersRef.current.length;
-    // Space thresholds so last folder triggers at ~95% progress, minimal dead scroll after
-    const enterThresholds = Array.from({ length: total }, (_, i) => 0.05 + i * (0.90 / (total - 1)));
-
     // Track state: 'hidden' | 'visible'
     const states: string[] = foldersRef.current.map(() => 'hidden');
 
-    // 2. Create ScrollTrigger
-    ScrollTrigger.create({
+    // 1. Create the Pin ScrollTrigger
+    const pinTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "+=1200%", // ~135vh per folder, pin releases right after last folder enters
+      end: "+=830%", // Last folder enters at 810vh (8 gaps of 110vh starting at S_pin - 70vh), so 830vh total duration
       pin: true,
-      onUpdate: (self) => {
-        const progress = self.progress;
+      invalidateOnRefresh: true,
+    });
 
-        foldersRef.current.forEach((folder, i) => {
-          if (!folder) return;
+    const updateFolders = (scrollPos: number) => {
+      const S_pin = pinTrigger.start;
+      const viewportHeight = typeof window !== "undefined" ? window.innerHeight : 1000;
+      const D_gap = viewportHeight * 1.1; // 110vh gap for slow, smooth transitions
 
-          const targetState = progress >= enterThresholds[i] ? 'visible' : 'hidden';
+      foldersRef.current.forEach((folder, i) => {
+        if (!folder) return;
 
-          if (targetState !== states[i]) {
-            states[i] = targetState;
+        // Folder 1 (i=0) enters at S_pin - 70vh (when folders are fully visible)
+        // Folder 2 (i=1) enters at S_pin + 40vh (during pinning, 110vh gap)
+        // Folders 3-9 (i=2-8) enter at subsequent 110vh intervals
+        const S_enter = S_pin - viewportHeight * 0.7 + i * D_gap;
+        const targetState = scrollPos >= S_enter ? 'visible' : 'hidden';
 
-            if (targetState === 'visible') {
-              gsap.to(folder, {
-                x: 0,
-                y: 0,
-                opacity: 1,
-                scale: 1,
-                duration: 1.2,
-                ease: "expo.out",
-                overwrite: "auto"
-              });
-            } else {
-              gsap.to(folder, {
-                x: 200,
-                y: 200,
-                opacity: 0,
-                scale: 0.8,
-                duration: 1.2,
-                ease: "expo.out",
-                overwrite: "auto"
-              });
-            }
+        if (targetState !== states[i]) {
+          states[i] = targetState;
+
+          if (targetState === 'visible') {
+            folder.classList.add('is-visible');
+          } else {
+            folder.classList.remove('is-visible');
           }
-        });
-      }
+        }
+      });
+    };
+
+    // 2. Create the Animation ScrollTrigger (starts before pinning and updates folders)
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: "top bottom",
+      end: () => pinTrigger.end,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => updateFolders(self.scroll()),
+      onRefresh: (self) => updateFolders(self.scroll()),
     });
   }, { scope: containerRef });
 
@@ -157,6 +147,20 @@ export default function ServicesFoldersSection() {
       ref={containerRef}
       className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden pointer-events-auto z-30"
     >
+      <style>{`
+        .folder-transition-card {
+          will-change: transform, opacity;
+          transition-property: opacity, transform;
+          transition-duration: 1.2s;
+          transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+          opacity: 0;
+          transform: translate3d(200px, 200px, 0) scale(0.8);
+        }
+        .folder-transition-card.is-visible {
+          opacity: 1;
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+      `}</style>
       <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-0 sm:gap-8">
 
         {/* Top Row */}
@@ -168,7 +172,7 @@ export default function ServicesFoldersSection() {
                 <div
                   key={`top-${index}`}
                   ref={el => { foldersRef.current[index] = el; }}
-                  className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 ${desktopMt} ${
+                  className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 folder-transition-card ${desktopMt} ${
                     index === 0 ? 'mt-0' : '-mt-28 sm:-ml-6 md:-ml-8 lg:-ml-10'
                   }`}
                   style={{
@@ -208,7 +212,7 @@ export default function ServicesFoldersSection() {
                 <div
                   key={`bottom-${index}`}
                   ref={el => { foldersRef.current[topRowFolders.length + index] = el; }}
-                  className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 ${desktopMt} ${
+                  className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 folder-transition-card ${desktopMt} ${
                     index === 0 ? 'mt-0' : '-mt-28 sm:-ml-6 md:-ml-8 lg:-ml-10'
                   }`}
                   style={{

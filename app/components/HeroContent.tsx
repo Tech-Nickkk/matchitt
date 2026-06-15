@@ -95,19 +95,19 @@ export default function HeroContent() {
     tl.to(wipe1Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 3. Zoom Creativity into its 't'
-    tl.fromTo(zoomCreativityRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: creativityOrigin }, "<75%");
+    tl.fromTo(zoomCreativityRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: creativityOrigin }, "<40%");
 
     // Wipe 2 (Light)
     tl.to(wipe2Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 4. Zoom Execution into its 't'
-    tl.fromTo(zoomExecutionRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: executionOrigin }, "<75%");
+    tl.fromTo(zoomExecutionRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: executionOrigin }, "<40%");
 
     // Wipe 3 (Burgundy)
     tl.to(wipe3Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
 
     // 5. Zoom Perfectly Matched into its 't'
-    tl.fromTo(zoomPerfectlyRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: perfectlyOrigin }, "<75%");
+    tl.fromTo(zoomPerfectlyRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: perfectlyOrigin }, "<40%");
 
     // Wipe 4 (Light)
     tl.to(wipe4Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);

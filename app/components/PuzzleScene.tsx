@@ -12,20 +12,21 @@ gsap.registerPlugin(ScrollTrigger);
 const getResponsiveConfig = () => {
   if (typeof window === "undefined") {
     return {
-      scale: 0.9,
-      initialY: -0.4,
+      scale: 1,
+      initialX: 0.3,
+      initialY: -0.65,
       phase1X: 6.5,
       phase1Y: -5.0,
       phase2StartX: 7.0,
-      phase2StartY: 0.0,
+      phase2StartY: -1.1,
       phase2X: 0,
-      phase2Y: -0.7,
-      phase2Y2: -2.0,
+      phase2Y: -1.1,
+      phase2Y2: -1.1,
       phase3Y: -1.15,
       splitXOffset: 8.0,
-      splitYOffset: 6.0,
+      splitYOffset: 0,
       joinXOffset: 6.0,
-      joinYOffset: 4.0,
+      joinYOffset: 0,
       split2XOffset: 8.0,
       stageADuration: 1.0,
       stageBStart: 1.0,
@@ -41,20 +42,21 @@ const getResponsiveConfig = () => {
   if (width < 640) {
     // Mobile
     return {
-      scale: 0.42,
-      initialY: 0.1,
+      scale: 0.52,
+      initialX: 0.0,
+      initialY: -0.15,
       phase1X: 3.0,
       phase1Y: -3.0,
-      phase2StartX: 2,
-      phase2StartY: 0.5,
+      phase2StartX: 2.2,
+      phase2StartY: -0.45,
       phase2X: 0,
-      phase2Y: 0,
-      phase2Y2: -1.2,
+      phase2Y: -0.45,
+      phase2Y2: -0.45,
       phase3Y: -0.65,
       splitXOffset: 2.2,
-      splitYOffset: 1.5,
+      splitYOffset: 0,
       joinXOffset: 2.5,
-      joinYOffset: 1.5,
+      joinYOffset: 0,
       split2XOffset: 3.5,
       stageADuration: 0.3,
       stageBStart: 0.3,
@@ -68,20 +70,21 @@ const getResponsiveConfig = () => {
   } else if (width < 1024) {
     // Tablet
     return {
-      scale: 0.65,
-      initialY: -0.28,
+      scale: 0.8,
+      initialX: 0.15,
+      initialY: -0.53,
       phase1X: 4.0,
       phase1Y: -3.8,
-      phase2StartX: 5.0,
-      phase2StartY: 0.0,
+      phase2StartX: 5.2,
+      phase2StartY: -0.85,
       phase2X: 0,
-      phase2Y: -0.55,
-      phase2Y2: -1.6,
+      phase2Y: -0.85,
+      phase2Y2: -0.85,
       phase3Y: -0.85,
       splitXOffset: 5.5,
-      splitYOffset: 4,
+      splitYOffset: 0,
       joinXOffset: 4.0,
-      joinYOffset: 2.5,
+      joinYOffset: 0,
       split2XOffset: 5.0,
       stageADuration: 0.8,
       stageBStart: 0.8,
@@ -95,20 +98,21 @@ const getResponsiveConfig = () => {
   } else {
     // Desktop
     return {
-      scale: 0.9,
-      initialY: -0.4,
+      scale: 1.1,
+      initialX: 0.3,
+      initialY: -0.65,
       phase1X: 6.5,
       phase1Y: -5.0,
-      phase2StartX: 7.0,
-      phase2StartY: 0.0,
+      phase2StartX: 7.2,
+      phase2StartY: -1.1,
       phase2X: 0,
-      phase2Y: 0,
-      phase2Y2: -2.0,
+      phase2Y: -1.1,
+      phase2Y2: -1.1,
       phase3Y: -1.15,
       splitXOffset: 8.0,
-      splitYOffset: 6.0,
+      splitYOffset: 0,
       joinXOffset: 6.0,
-      joinYOffset: 4.0,
+      joinYOffset: 0,
       split2XOffset: 8.0,
       stageADuration: 1.0,
       stageBStart: 1.0,
@@ -127,6 +131,9 @@ export default function PuzzleScene() {
 
   useGSAP(() => {
     if (!canvasContainerRef.current) return;
+
+    // Store timelines for unmount cleanup (prevent hot-reload leaks)
+    const timelines: gsap.core.Timeline[] = [];
 
     // ── Scene ──
     const scene = new THREE.Scene();
@@ -157,7 +164,7 @@ export default function PuzzleScene() {
     scene.add(ambientLight);
 
     const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    dirLight.position.set(8, 10, 8);
+    dirLight.position.set(3, 6, 4);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 2048;
     dirLight.shadow.mapSize.height = 2048;
@@ -165,7 +172,7 @@ export default function PuzzleScene() {
     scene.add(dirLight);
 
     const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    fillLight.position.set(-5, -2, -5);
+    fillLight.position.set(8, -2, -5);
     scene.add(fillLight);
 
     // Store reference to the group wrapper for resizing
@@ -187,10 +194,11 @@ export default function PuzzleScene() {
               if (mat.map) {
                 mat.map.colorSpace = THREE.SRGBColorSpace;
               }
-              mat.roughness = 0.18; 
-              mat.metalness = 0.05;
+              // 0.18,0.05,"#A6C9DF"
+              mat.roughness = 0.55;
+              mat.metalness = 0.02;
               if (mat.name === "Mat.002") {
-                mat.color.set("#C0D0DD");
+                mat.color.set("#BBD7EC");
               }
             }
           }
@@ -220,8 +228,8 @@ export default function PuzzleScene() {
         const initialConfig = getResponsiveConfig();
         group.scale.set(initialConfig.scale, initialConfig.scale, initialConfig.scale);
 
-        // Position it centered, just below the MATCHITT text matching user image
-        group.position.set(0, initialConfig.initialY, 0);
+        // Position it centered/offset, just below the MATCHITT text matching user image
+        group.position.set(initialConfig.initialX, initialConfig.initialY, 0);
 
         // Rotate so it lies somewhat flat but tilted to show stickers
         group.rotation.set(-Math.PI / 10, Math.PI / 8, Math.PI / 4);
@@ -238,12 +246,13 @@ export default function PuzzleScene() {
             invalidateOnRefresh: true,
           },
         });
+        timelines.push(tlStage1);
 
         // Step A: Slide to the right and rotate (using function-based dynamic offsets)
         tlStage1.fromTo(
           group.position,
           {
-            x: 0,
+            x: () => getResponsiveConfig().initialX,
             y: () => getResponsiveConfig().initialY,
             z: 0
           },
@@ -284,6 +293,7 @@ export default function PuzzleScene() {
             invalidateOnRefresh: true,
           },
         });
+        timelines.push(tlStage2);
 
         const config = getResponsiveConfig();
         const stageADuration = config.stageADuration;
@@ -440,6 +450,7 @@ export default function PuzzleScene() {
             invalidateOnRefresh: true,
           },
         });
+        timelines.push(tlStage3);
 
         // Move group further down so it sits below the sticky "HOW WE MATCH" text
         tlStage3.to(
@@ -575,13 +586,28 @@ export default function PuzzleScene() {
         canvasContainerRef.current.removeChild(renderer.domElement);
       }
       renderer.dispose();
+
+      // Clean up timelines and their scroll triggers to prevent leaks on unmount/hot-reload
+      timelines.forEach(tl => {
+        if (tl.scrollTrigger) {
+          tl.scrollTrigger.kill();
+        }
+        tl.kill();
+      });
     };
   }, { dependencies: [] });
 
   return (
     <div
       ref={canvasContainerRef}
-      className="fixed inset-0 w-screen h-screen pointer-events-none z-10"
+      className="pointer-events-none z-10"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+      }}
     />
   );
 }

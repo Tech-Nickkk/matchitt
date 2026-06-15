@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function CtaSection() {
   return (
-    <section id="cta-section" className="relative w-full flex flex-col bg-[#F4F2EC] z-20">
+    <section id="cta-section" className="relative w-full flex flex-col bg-[#F4F2EC] z-30">
       
       {/* Top Burgundy Section */}
       <div className="relative w-full bg-[#6a2634] pt-24 pb-28 md:pb-32 flex flex-col items-center justify-center z-10">
