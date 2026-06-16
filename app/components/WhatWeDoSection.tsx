@@ -21,53 +21,87 @@ export default function WhatWeDoSection() {
 
     const paragraphs = textContainerRef.current.querySelectorAll("p");
 
-    const tl = gsap.timeline({
+    // 1. Text paragraphs fade-in and slide-up synced to scroll
+    gsap.fromTo(
+      paragraphs,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 0.95,
+        y: 0,
+        stagger: 0.3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: textContainerRef.current,
+          start: "top 90%",
+          end: "top 75%",
+          scrub: 1.8,
+        }
+      }
+    );
+
+    // 2. Sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
+    const stickerTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 50%", // Start when top of section is at the center of viewport
-        end: "top top",     // Complete when top of section is at the top of viewport
-        scrub: 0.5,         // Snappy scrubbing with 0.5s catch-up time
+        start: "top bottom", // Starts when top of section enters viewport bottom
+        end: "bottom top",   // Ends when bottom of section leaves viewport top
+        scrub: 1.8,          // Weighted lag for a premium catch-up feel
       }
     });
 
-    // 1. Main WHAT WE DO sticker comes from below with a rotation
-    if (mainStickerRef.current) {
-      tl.fromTo(
-        mainStickerRef.current,
-        { y: 150, rotation: -10 },
-        { y: 0, rotation: 0, duration: 1.0 },
-        0 // Start immediately at 0
-      );
-    }
-
-    // 2. Scale in the elements around it as the main image completes
+    // Scale up elements dynamically as they first enter the screen
     const elements = [
+      mainStickerRef.current,
       bandAidStickerRef.current,
       enjoyStickerRef.current,
       smileStickerRef.current
     ].filter(Boolean) as HTMLElement[];
 
     if (elements.length > 0) {
-      tl.fromTo(
+      stickerTl.fromTo(
         elements,
         { scale: 0 },
-        {
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-        },
-        "-=0.4" // Play 0.4s before the main sticker animation completes
+        { scale: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+        0
       );
     }
 
-    // 3. Staggered fade-in and slide-up for the copywriting text (plays late)
-    tl.fromTo(
-      paragraphs,
-      { opacity: 0, y: 30 },
-      { opacity: 0.95, y: 0, duration: 0.8, stagger: 0.2, ease: "power1.out" },
-      0.8 // Start even later at 0.8s to align with scroll visibility
-    );
+    // Continuous float and rotation animations synced to scroll
+    if (mainStickerRef.current) {
+      stickerTl.fromTo(
+        mainStickerRef.current,
+        { y: 80, rotation: -6 },
+        { y: -80, rotation: 6, ease: "none" },
+        0
+      );
+    }
+
+    if (bandAidStickerRef.current) {
+      stickerTl.fromTo(
+        bandAidStickerRef.current,
+        { y: 150, rotation: -20 },
+        { y: -90, rotation: 10, ease: "none" },
+        0
+      );
+    }
+
+    if (enjoyStickerRef.current) {
+      stickerTl.fromTo(
+        enjoyStickerRef.current,
+        { y: 50, rotation: 15 },
+        { y: -150, rotation: -10, ease: "none" },
+        0
+      );
+    }
+
+    if (smileStickerRef.current) {
+      stickerTl.fromTo(
+        smileStickerRef.current,
+        { y: 120, rotation: -15 },
+        { y: -60, rotation: 15, ease: "none" },
+        0
+      );
+    }
   }, { scope: sectionRef });
 
   return (
@@ -83,7 +117,7 @@ export default function WhatWeDoSection() {
           
           {/* Main WHAT WE DO image */}
           <div ref={mainStickerRef} className="w-full z-10 origin-center">
-            <div className="w-full h-auto transition-transform duration-500 hover:scale-[1.02]">
+            <div className="w-full h-auto">
               <Image
                 src="/images/whatwedo-text.png"
                 alt="What We Do"
@@ -97,7 +131,7 @@ export default function WhatWeDoSection() {
           {/* Sticker 1: Band-aid (Left) */}
           <div className="absolute top-[42%] left-[-24%] w-[35px] sm:w-[50px] md:w-[60px] z-20 rotate-[-35deg]">
             <div ref={bandAidStickerRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-110 hover:rotate-[-25deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/whatwedoicon-2.png"
                   alt="Band-aid sticker"
@@ -112,7 +146,7 @@ export default function WhatWeDoSection() {
           {/* Sticker 2: ENJOY Poster (Top Right) */}
           <div className="absolute top-[-20%] right-[8%] w-[50px] sm:w-[65px] md:w-[70px] z-0 rotate-25">
             <div ref={enjoyStickerRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-105 hover:rotate-[-5deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/whatwedoicon-1.png"
                   alt="Enjoy sticker"
@@ -127,7 +161,7 @@ export default function WhatWeDoSection() {
           {/* Sticker 3: Blue Smile (Bottom Right) */}
           <div className="absolute top-[60%] right-[-20%] w-[40px] sm:w-[50px] md:w-[75px] z-20 rotate-[-20deg]">
             <div ref={smileStickerRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-110 hover:rotate-[-10deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/whatwedoicon-3.png"
                   alt="Smile sticker"

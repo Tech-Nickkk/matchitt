@@ -11,7 +11,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.1, // Increased for a tighter, more responsive feel (closer to native scroll)
+      lerp: 0.08, // Tuned for a silkier, slightly more cushioned momentum
       smoothWheel: true,
       syncTouch: true, // Crucial for mobile feel
     });

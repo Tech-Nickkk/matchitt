@@ -27,21 +27,21 @@ export default function WhoWeWorkWithSection() {
   const visualImageRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // 1. Visual Image animate-in (Scale 0.7 -> 1, Slide up from y: 150 -> 0)
+    // 1. Visual Image parallax float (Scale 0.8 -> 1.05, Slide up from y: 100 -> -50 over the whole section scroll)
     const visualSection = visualSectionRef.current;
     const visualImage = visualImageRef.current;
     if (visualSection && visualImage) {
       gsap.fromTo(
         visualImage,
-        { scale: 0.7, y: 150 },
+        { scale: 0.8, y: 100 },
         {
-          scale: 1,
-          y: 0,
+          scale: 1.05,
+          y: -50,
           scrollTrigger: {
             trigger: visualSection,
             start: "top bottom",  // Animates as soon as top of section enters viewport bottom
-            end: "bottom bottom",   // Completes exactly when the entire image is fully on the screen
-            scrub: 1,              // Smooth scrubbing with a 1s delay for cushioned parallax
+            end: "bottom top",   // Continues until bottom of section leaves viewport top
+            scrub: 1.8,            // Silky smooth scrubbing with weighted lag
             invalidateOnRefresh: true,
           }
         }
@@ -54,21 +54,31 @@ export default function WhoWeWorkWithSection() {
     const logo = logoRef.current;
     if (!section || !textContainer || !logo) return;
 
-    // 3. Logo text sticker entry (Slide up with rotation) — must complete BEFORE pinning engages
-    gsap.fromTo(
-      logo,
-      { y: 100, rotation: -10 },
-      {
-        y: 0,
-        rotation: 0,
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",  // Starts when top of section enters viewport bottom
-          end: "top 5%",        // Completes 5vh BEFORE pinning at "top top" to avoid layout jump
-          scrub: 0.5,
-          invalidateOnRefresh: true,
-        }
+    // 3. Logo text sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
+    const logoTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top bottom",  // Starts when top of section enters viewport bottom
+        end: "top 5%",        // Completes 5vh BEFORE pinning at "top top" to avoid layout jump
+        scrub: 1.8,            // Smoother weighted lag
+        invalidateOnRefresh: true,
       }
+    });
+
+    // Scale up element dynamically as it first enters the screen
+    logoTl.fromTo(
+      logo,
+      { scale: 0 },
+      { scale: 1, duration: 0.3, ease: "back.out(1.5)" },
+      0
+    );
+
+    // Continuous float and rotation animation synced to scroll
+    logoTl.fromTo(
+      logo,
+      { y: 100, rotation: -8 },
+      { y: 0, rotation: 0, ease: "none" },
+      0
     );
 
     const texts = textContainer.querySelectorAll(".client-text");
@@ -80,7 +90,7 @@ export default function WhoWeWorkWithSection() {
         end: "+=500%", 
         pin: true, 
         pinSpacing: false,
-        scrub: 1, 
+        scrub: 1.8,             // Much smoother pinned slide transition weight (increased from 1)
         invalidateOnRefresh: true,
       }
     });

@@ -15,19 +15,30 @@ export default function HowWeMatchSection() {
   useGSAP(() => {
     if (!sectionRef.current || !textImageAnimRef.current) return;
 
-    gsap.fromTo(
-      textImageAnimRef.current,
-      { y: 150, rotation: -10 },
-      {
-        y: 0,
-        rotation: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%", // Starts animating when top of section is at 70% viewport height
-          end: "top 20%",     // Finishes when top of section reaches 20% viewport height
-          scrub: 0.5,         // Snappy scrubbing
-        }
+    // Sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
+    const stickerTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top bottom", // Starts when top of section enters viewport bottom
+        end: "bottom top",   // Ends when bottom of section leaves viewport top
+        scrub: 1.8,          // Weighted lag for a premium catch-up feel
       }
+    });
+
+    // Scale up element dynamically as it first enters the screen
+    stickerTl.fromTo(
+      textImageAnimRef.current,
+      { scale: 0 },
+      { scale: 1, duration: 0.3, ease: "back.out(1.5)" },
+      0
+    );
+
+    // Continuous float and rotation animation synced to scroll
+    stickerTl.fromTo(
+      textImageAnimRef.current,
+      { y: 100, rotation: -8 },
+      { y: -100, rotation: 8, ease: "none" },
+      0
     );
   }, { scope: sectionRef });
 
@@ -41,7 +52,7 @@ export default function HowWeMatchSection() {
         {/* HOW WE MATCH Image */}
         <div className="relative w-[280px] sm:w-[350px] md:w-[450px] z-10">
           <div ref={textImageAnimRef} className="w-full h-full origin-center">
-            <div className="w-full h-auto transition-transform duration-500 hover:scale-[1.02]">
+            <div className="w-full h-auto">
               <Image
                 src="/images/HowWeMatchIt-Text.svg"
                 alt="How We Match"

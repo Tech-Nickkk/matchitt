@@ -21,51 +21,85 @@ export default function AboutSection() {
 
     const paragraphs = textContainerRef.current.querySelectorAll("p");
 
-    const tl = gsap.timeline({
+    // 1. Text paragraphs fade-in and slide-up synced to scroll
+    gsap.fromTo(
+      paragraphs,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 0.95,
+        y: 0,
+        stagger: 0.3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: textContainerRef.current,
+          start: "top 90%",
+          end: "top 40%",
+          scrub: 1.8,
+        }
+      }
+    );
+
+    // 2. Sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
+    const stickerTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 50%", // Start when the top of the section is at the center of the viewport (elements enter bottom of screen)
-        end: "top top",     // Complete when the top of the section reaches the top of the viewport (elements are centered)
-        scrub: 0.5,         // Snappy scrubbing with 0.5s catch-up time to prevent lag
+        start: "top bottom", // Starts when top of section enters viewport bottom
+        end: "bottom top",   // Ends when bottom of section leaves viewport top
+        scrub: 1.8,          // Weighted lag for a premium catch-up feel
       }
     });
 
-    // 1. Staggered fade in and slide up for text paragraphs
-    tl.fromTo(
-      paragraphs,
-      { opacity: 0, y: 30 },
-      { opacity: 0.95, y: 0, duration: 0.8, stagger: 0.2, ease: "power1.out" },
-      0
-    );
-
-    // 2. Main about text image comes from below with a slight rotation to its current position
-    if (aboutTextImageAnimRef.current) {
-      tl.fromTo(
-        aboutTextImageAnimRef.current,
-        { y: 150, rotation: -10 },
-        { y: 0, rotation: 0, duration: 1.0 },
-        0.1 // Start slightly after the first paragraph starts
-      );
-    }
-
-    // 3. Scale in the elements around the main image as it is about to finish
+    // Scale up elements dynamically as they first enter the screen
     const elements = [
+      aboutTextImageAnimRef.current,
       starStickerRef.current,
       lightningStickerRef.current,
       arrowStickerRef.current
     ].filter(Boolean) as HTMLElement[];
 
     if (elements.length > 0) {
-      tl.fromTo(
+      stickerTl.fromTo(
         elements,
         { scale: 0 },
-        {
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-        },
-        "-=0.4" // Start 0.4s before the main image animation completes
+        { scale: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+        0
+      );
+    }
+
+    // Continuous float and rotation animations synced to scroll
+    if (aboutTextImageAnimRef.current) {
+      stickerTl.fromTo(
+        aboutTextImageAnimRef.current,
+        { y: 100, rotation: -8 },
+        { y: -100, rotation: 8, ease: "none" },
+        0
+      );
+    }
+
+    if (starStickerRef.current) {
+      stickerTl.fromTo(
+        starStickerRef.current,
+        { y: 140, rotation: 12 },
+        { y: -140, rotation: -12, ease: "none" },
+        0
+      );
+    }
+
+    if (lightningStickerRef.current) {
+      stickerTl.fromTo(
+        lightningStickerRef.current,
+        { y: 60, rotation: -15 },
+        { y: -120, rotation: 15, ease: "none" },
+        0
+      );
+    }
+
+    if (arrowStickerRef.current) {
+      stickerTl.fromTo(
+        arrowStickerRef.current,
+        { y: 120, rotation: -8 },
+        { y: -60, rotation: 12, ease: "none" },
+        0
       );
     }
   }, { scope: sectionRef });
@@ -84,7 +118,7 @@ export default function AboutSection() {
           {/* Stars Sticker */}
           <div className="absolute top-[-5%] right-[-2%] w-[60px] sm:w-[80px] md:w-[120px] z-0">
             <div ref={starStickerRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-105 hover:rotate-[18deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/about-star-icon.png"
                   alt="Stars Sticker"
@@ -99,7 +133,7 @@ export default function AboutSection() {
           {/* About Us Sticker */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] sm:w-[220px] md:w-[210px] z-10">
             <div ref={aboutTextImageAnimRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-[1.03] hover:rotate-[-2deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/about-us-text.png"
                   alt="About Us Sticker"
@@ -114,7 +148,7 @@ export default function AboutSection() {
           {/* Lightning Bolt Sticker */}
           <div className="absolute bottom-[10%] left-[10%] w-[45px] sm:w-[60px] md:w-[100px] z-20 rotate-[15deg]">
             <div ref={lightningStickerRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-110 hover:rotate-[-8deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/about-thunder-icon.png"
                   alt="Lightning Bolt Sticker"
@@ -129,7 +163,7 @@ export default function AboutSection() {
           {/* Cursor Arrow Sticker */}
           <div className="absolute bottom-[8%] right-[2%] w-[60px] sm:w-[75px] md:w-[85px] z-20 rotate-[-8deg]">
             <div ref={arrowStickerRef} className="w-full h-full origin-center">
-              <div className="w-full h-auto transition-transform duration-500 hover:scale-110 hover:rotate-[2deg]">
+              <div className="w-full h-auto">
                 <Image
                   src="/images/about-arrow-icon.png"
                   alt="Cursor Arrow Sticker"
