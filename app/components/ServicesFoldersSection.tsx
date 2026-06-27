@@ -93,52 +93,27 @@ export default function ServicesFoldersSection() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // Track state: 'hidden' | 'visible'
-    const states: string[] = foldersRef.current.map(() => 'hidden');
+    // Animate each folder one by one as it scrolls into view
+    foldersRef.current.forEach((folder) => {
+      if (!folder) return;
 
-    // 1. Create the Pin ScrollTrigger
-    const pinTrigger = ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: "+=830%", // Last folder enters at 810vh (8 gaps of 110vh starting at S_pin - 70vh), so 830vh total duration
-      pin: true,
-      invalidateOnRefresh: true,
-    });
-
-    const updateFolders = (scrollPos: number) => {
-      const S_pin = pinTrigger.start;
-      const viewportHeight = typeof window !== "undefined" ? window.innerHeight : 1000;
-      const D_gap = viewportHeight * 1.1; // 110vh gap for slow, smooth transitions
-
-      foldersRef.current.forEach((folder, i) => {
-        if (!folder) return;
-
-        // Folder 1 (i=0) enters at S_pin - 70vh (when folders are fully visible)
-        // Folder 2 (i=1) enters at S_pin + 40vh (during pinning, 110vh gap)
-        // Folders 3-9 (i=2-8) enter at subsequent 110vh intervals
-        const S_enter = S_pin - viewportHeight * 0.7 + i * D_gap;
-        const targetState = scrollPos >= S_enter ? 'visible' : 'hidden';
-
-        if (targetState !== states[i]) {
-          states[i] = targetState;
-
-          if (targetState === 'visible') {
-            folder.classList.add('is-visible');
-          } else {
-            folder.classList.remove('is-visible');
+      gsap.fromTo(
+        folder,
+        { opacity: 0, y: 60, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: folder,
+            start: "top 90%",
+            end: "top 65%",
+            scrub: 1.0,
+            invalidateOnRefresh: true,
           }
         }
-      });
-    };
-
-    // 2. Create the Animation ScrollTrigger (starts before pinning and updates folders)
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top bottom",
-      end: () => pinTrigger.end,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => updateFolders(self.scroll()),
-      onRefresh: (self) => updateFolders(self.scroll()),
+      );
     });
   }, { scope: containerRef });
 
@@ -149,16 +124,7 @@ export default function ServicesFoldersSection() {
     >
       <style>{`
         .folder-transition-card {
-          will-change: transform, opacity;
-          transition-property: opacity, transform;
-          transition-duration: 1.2s;
-          transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
           opacity: 0;
-          transform: translate3d(200px, 200px, 0) scale(0.8);
-        }
-        .folder-transition-card.is-visible {
-          opacity: 1;
-          transform: translate3d(0, 0, 0) scale(1);
         }
       `}</style>
       <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-0 sm:gap-8">
@@ -173,10 +139,11 @@ export default function ServicesFoldersSection() {
                   key={`top-${index}`}
                   ref={el => { foldersRef.current[index] = el; }}
                   className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 folder-transition-card ${desktopMt} ${
-                    index === 0 ? 'mt-0' : '-mt-28 sm:-ml-6 md:-ml-8 lg:-ml-10'
+                    index === 0 ? 'mt-0' : 'mt-12 sm:-ml-6 md:-ml-8 lg:-ml-10'
                   }`}
                   style={{
                     zIndex: index,
+                    willChange: "transform, opacity"
                   }}
                 >
                   <Image
@@ -205,7 +172,7 @@ export default function ServicesFoldersSection() {
 
         {/* Bottom Row */}
         <div className="flex w-full justify-center">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start ml-0 md:ml-[6%] -mt-28 sm:mt-0">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start ml-0 md:ml-[6%] mt-12 sm:mt-0">
             {bottomRowFolders.map((item, index) => {
               const desktopMt = ['sm:mt-[0px]', 'sm:mt-[25px]', 'sm:mt-[50px]', 'sm:mt-[75px]', 'sm:mt-[100px]'][index] || 'sm:mt-[0px]';
               return (
@@ -213,10 +180,11 @@ export default function ServicesFoldersSection() {
                   key={`bottom-${index}`}
                   ref={el => { foldersRef.current[topRowFolders.length + index] = el; }}
                   className={`relative w-[200px] sm:w-[180px] md:w-[220px] lg:w-[260px] shrink-0 folder-transition-card ${desktopMt} ${
-                    index === 0 ? 'mt-0' : '-mt-28 sm:-ml-6 md:-ml-8 lg:-ml-10'
+                    index === 0 ? 'mt-0' : 'mt-12 sm:-ml-6 md:-ml-8 lg:-ml-10'
                   }`}
                   style={{
                     zIndex: topRowFolders.length + index,
+                    willChange: "transform, opacity"
                   }}
                 >
                   <Image
@@ -242,6 +210,9 @@ export default function ServicesFoldersSection() {
             })}
           </div>
         </div>
+
+        {/* Space Spacer */}
+        <div className="w-full h-[5vh] sm:h-0 pointer-events-none" />
 
       </div>
     </section>

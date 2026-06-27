@@ -2,16 +2,17 @@
 
 import { useRef } from "react";
 import PuzzleScene from "@/components/PuzzleScene";
-import ScatteredHeroItems from "@/components/ScatteredHeroItems";
 import Navbar from "@/components/Navbar";
 import HeroContent from "@/components/HeroContent";
-import AboutSection from "@/components/AboutSection";
+import StatementSection from "@/components/StatementSection";
 import WhatWeDoSection from "@/components/WhatWeDoSection";
 import ServicesFoldersSection from "@/components/ServicesFoldersSection";
 import HowWeMatchSection from "@/components/HowWeMatchSection";
 import ProcessSection from "@/components/ProcessSection";
 import WhoWeWorkWithSection from "@/components/WhoWeWorkWithSection";
 import CtaSection from "@/components/CtaSection";
+import AboutSection from "@/components/AboutSection";
+import FullscreenImageSection from "@/components/FullscreenImageSection";
 
 export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
@@ -21,53 +22,56 @@ export default function Home() {
       ref={mainRef}
       className="relative w-full h-auto min-h-screen bg-brand-cream overflow-clip"
     >
-      {/* Fixed 3D WebGL Canvas */}
-      <PuzzleScene />
-
       <div id="page-pin-container" className="relative w-full z-20">
-        {/* Scattered folders & stickers overlay */}
-        <ScatteredHeroItems />
-
         {/* Navbar (Header) */}
         <Navbar />
 
-        {/* Spacer for 3D model scroll area */}
-        <div className="h-[30vh] sm:h-[35vh] md:h-[40vh]" />
+        {/* Spacer for 3D model initial position spacing */}
+        <div id="hero-spacer" className="h-[50vh] sm:h-[70vh]" />
 
-        {/* Envelope + editorial typography */}
+        {/* Envelope & About Content (Unified Pinned Transition) */}
         <HeroContent />
       </div>
 
-        {/* About Section */}
-        <AboutSection />
 
-        {/* Spacer for future 3D model animation gap between sections */}
-        <div className="w-full h-[55vh] sm:h-[70vh] md:h-[170vh] pointer-events-none" />
+      {/* Statement banner section */}
+      <StatementSection />
+
+      {/* Spacer for 3D Model Transition Trigger */}
+      <div id="puzzle-transition-section" className="w-full h-[90vh] pointer-events-none" />
+  
+      {/* Fullscreen Image Transition */}
+      <FullscreenImageSection />
+
+      {/* About Us Section */}
+      <AboutSection />
+    
+      {/* What We Do Section */}
+      <WhatWeDoSection />
       
-        {/* What We Do Section */}
-        <WhatWeDoSection />
-        
-        {/* Services Folders Section */}
-        <ServicesFoldersSection />
-        
-        {/* Spacer between sections */}
-        <div className="w-full h-[15vh] pointer-events-none" />
-
-        {/* How We Match Section */}
-        <HowWeMatchSection />
-
-        {/* Spacer for 3D model animation to complete */}
-        <div className="w-full h-[50vh] sm:h-[70vh] md:h-[200vh] pointer-events-none" />
-
-        {/* Process Section */}
-        <ProcessSection />
-
-        {/* Who We Work With Section */}
-        <WhoWeWorkWithSection />
-
-        {/* CTA Section */}
-        <CtaSection />
+      {/* Services Folders Section */}
+      <ServicesFoldersSection />
       
+      {/* Spacer before How We Match */}
+      <div className="w-full h-[20vh] md:h-[30vh] pointer-events-none" />
+
+      {/* How We Match Section */}
+      <HowWeMatchSection />
+
+      {/* Spacer between How We Match and Process Section to prevent 3D model overlap */}
+      <div className="w-full h-[180vh] md:h-[240vh] pointer-events-none" />
+
+      {/* Process Section */}
+      <ProcessSection />
+
+      {/* Who We Work With Section */}
+      <WhoWeWorkWithSection />
+
+      {/* CTA Section */}
+      <CtaSection />
+
+      {/* Fixed 3D WebGL Canvas */}
+      <PuzzleScene />
     </main>
   );
 }

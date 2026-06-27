@@ -8,189 +8,168 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Central envelope image with overlapping editorial typography, pined scroll, and infinite zoom-reveal animation */
+const HERO_BULLETS = [
+  <>You don<span className="font-sans">&apos;</span>t need to dance to be seen.</>,
+  "You just need the right people that actually get you.",
+  <>And that<span className="font-sans">&apos;</span>s what we do.</>
+];
+
+/** Unified Hero & About Section with scroll-pinned storytelling transition */
 export default function HeroContent() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const envelopeRef = useRef<HTMLDivElement>(null);
-  
-  const strategyRef = useRef<HTMLSpanElement>(null);
-  const zoomCreativityRef = useRef<HTMLSpanElement>(null);
-  const zoomExecutionRef = useRef<HTMLSpanElement>(null);
-  const zoomPerfectlyRef = useRef<HTMLSpanElement>(null);
-
-  // Refs for the 't' letters to calculate exact transform origins
-  const tStrategyRef = useRef<HTMLSpanElement>(null);
-  const tCreativityRef = useRef<HTMLSpanElement>(null);
-  const tExecutionRef = useRef<HTMLSpanElement>(null);
-  const tPerfectlyRef = useRef<HTMLSpanElement>(null);
-
-  // Wipes
-  const wipe1Ref = useRef<HTMLDivElement>(null);
-  const wipe2Ref = useRef<HTMLDivElement>(null);
-  const wipe3Ref = useRef<HTMLDivElement>(null);
-  const wipe4Ref = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
+  const stickerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!sectionRef.current) return;
+    if (!envelopeRef.current || !textContainerRef.current || !sectionRef.current || !stickerRef.current) return;
 
-    const isMobile = window.innerWidth < 768;
-    const wipeOffset = isMobile ? "<80%" : "<65%";
+    const mm = gsap.matchMedia();
 
-    // Helper to compute exact transform origin to center on the 't' letter
-    const getOrigin = (parent: HTMLElement | null, child: HTMLElement | null) => {
-      if (!parent || !child) return "50% 50%";
-      const pRect = parent.getBoundingClientRect();
-      const cRect = child.getBoundingClientRect();
-      // calculate the center of the child relative to the parent
-      const x = cRect.left - pRect.left + cRect.width / 2;
-      const y = cRect.top - pRect.top + cRect.height / 2;
-      return `${(x / pRect.width) * 100}% ${(y / pRect.height) * 100}%`;
-    };
+    mm.add({
+      isDesktop: "(min-width: 1024px)",
+      isMobile: "(max-width: 1023px)"
+    }, (context) => {
+      const { isDesktop } = context.conditions as { isDesktop: boolean };
 
-    // Calculate origins dynamically
-    const strategyOrigin = getOrigin(strategyRef.current, tStrategyRef.current);
-    const creativityOrigin = getOrigin(zoomCreativityRef.current, tCreativityRef.current);
-    const executionOrigin = getOrigin(zoomExecutionRef.current, tExecutionRef.current);
-    const perfectlyOrigin = getOrigin(zoomPerfectlyRef.current, tPerfectlyRef.current);
+      // Pin this section and run sequential frame transitions
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=350%",
+          pin: true,
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+        },
+      });
 
-    // Create GSAP ScrollTrigger to pin the entire page content container
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "+=2800%",
-        pin: "#page-pin-container",
-        pinSpacing: true,
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    });
+      // Step 1: Envelope slides up from bottom to absolute center and rotates slightly
+      tl.fromTo(
+        envelopeRef.current,
+        { opacity: 0, y: "85vh", scale: 0.95, rotate: -6 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotate: 2,
+          ease: "power2.out",
+          duration: 1.0,
+        }
+      );
 
-    // 1a. Envelope: drifts upward with a gentle rotation — cinematic exit
-    tl.to(
-      envelopeRef.current,
-      { y: "-120vh", rotation: -15, scale: 0.85, duration: 0.8, ease: "power3.inOut" },
-      0
-    );
+      // Sticker Step 1: Start with rotate 0, then tilt slightly right
+      tl.fromTo(
+        stickerRef.current,
+        { rotate: 0 },
+        { rotate: 8, ease: "power2.out", duration: 1.0 },
+        0
+      );
 
-    // 1b. Navbar + folders: quick fade-and-slide out
-    tl.to(
-      ["#navbar-container", "#scattered-folders"],
-      { opacity: 0, y: -30, duration: 0.5, ease: "power2.out" },
-      0
-    );
-
-    // 2a. Strategy: fade + scale IN from center as envelope exits
-    tl.fromTo(
-      strategyRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.6, ease: "back.out(1.4)" },
-      0
-    );
-
-    // 2b. Then zoom into its 't'
-    tl.fromTo(strategyRef.current,{ scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: strategyOrigin }, 0);
-
-    // Wipe 1 (Burgundy)
-    tl.to(wipe1Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
-
-    // 3. Zoom Creativity into its 't'
-    tl.fromTo(zoomCreativityRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: creativityOrigin }, "<40%");
-
-    // Wipe 2 (Light)
-    tl.to(wipe2Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
-
-    // 4. Zoom Execution into its 't'
-    tl.fromTo(zoomExecutionRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: executionOrigin }, "<40%");
-
-    // Wipe 3 (Burgundy)
-    tl.to(wipe3Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
-
-    // 5. Zoom Perfectly Matched into its 't'
-    tl.fromTo(zoomPerfectlyRef.current, { scale: 0 }, { scale: 75, duration: 2.5, ease: "power2.in", transformOrigin: perfectlyOrigin }, "<40%");
-
-    // Wipe 4 (Light)
-    tl.to(wipe4Ref.current, { width: "100%", duration: 1, ease: "none" }, wipeOffset);
-
-    // 6. Hide all other scaled texts and background wipes once the Cream wipe is fully active
-    tl.to(
-      [
-        wipe1Ref.current,
-        wipe2Ref.current,
-        wipe3Ref.current,
-        strategyRef.current,
-        zoomCreativityRef.current,
-        zoomExecutionRef.current,
-        zoomPerfectlyRef.current,
-      ],
-      {
-        autoAlpha: 0,
-        duration: 0,
+      // Step 2: Envelope moves to left (desktop) or up (mobile/tablet) and rotates slightly opposite
+      if (!isDesktop) {
+        tl.to(
+          envelopeRef.current,
+          {
+            x: 0,
+            y: "-28vh",
+            scale: 0.7,
+            rotate: -3,
+            ease: "power2.inOut",
+            duration: 1.0,
+          },
+          "+=0.2"
+        );
+      } else {
+        tl.to(
+          envelopeRef.current,
+          {
+            x: "-22vw",
+            y: 0,
+            scale: 0.9,
+            rotate: -4,
+            ease: "power2.inOut",
+            duration: 1.0,
+          },
+          "+=0.2"
+        );
       }
-    );
 
-    ScrollTrigger.refresh();
-  }, { dependencies: [] });
+      // Sticker Step 2: Tilt back to bottom left as the image moves
+      tl.to(
+        stickerRef.current,
+        { rotate: -8, ease: "power2.inOut", duration: 1.0 },
+        1.2
+      );
+
+      // Step 3: Text slides up on the right (desktop) or bottom (mobile) - plays faster
+      tl.fromTo(
+        textContainerRef.current,
+        { opacity: 0, y: "40vh" },
+        {
+          opacity: 1,
+          y: !isDesktop ? "32vh" : 0,
+          ease: "power2.out",
+          duration: 0.5, // Reduced duration to make it animate faster
+        },
+        "-=0.3" // Starts near the end of the image slide-left
+      );
+    });
+  }, { scope: sectionRef });
 
   return (
     <section
       ref={sectionRef}
       id="hero-pin-container"
-      className="relative w-full min-h-screen flex flex-col items-center justify-center z-30 pointer-events-auto overflow-hidden"
+      className="relative w-full min-h-screen flex items-center justify-center z-30 pointer-events-auto overflow-hidden"
     >
-      {/* Wipe 1 */}
-      <div ref={wipe1Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-burgundy z-41 pointer-events-none"></div>
-      
-      {/* Creativity Text */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-42">
-        <span ref={zoomCreativityRef} className="absolute text-brand-cream font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
-          Crea<span ref={tCreativityRef}>t</span>ivity.
-        </span>
-      </div>
+      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col lg:flex-row items-center justify-between min-h-screen py-16">
+        
+        {/* Left Column Spacer (Desktop only) */}
+        <div className="w-full lg:w-1/2 pointer-events-none hidden lg:block" />
+        
+        {/* Cutout Image of the Sisters (Starts centered, shifts to the left column) */}
+        <div 
+          ref={envelopeRef} 
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 opacity-0"
+        >
+          <Image
+            src="/images/Two_Girls_Hero_Img.png"
+            alt="Two Sisters Matchitt"
+            width={800}
+            height={600}
+            className="w-[320px] sm:w-[400px] md:w-[470px] lg:w-[520px] xl:w-[560px] object-contain select-none pointer-events-none drop-shadow-2xl"
+            priority
+          />
+          
+          {/* Matchitt Sticker Overlay */}
+          <div ref={stickerRef} className="absolute bottom-0 left-[15%] z-40 w-[180px] sm:w-[220px] md:w-[260px] lg:w-[290px] transform origin-center drop-shadow-lg">
+            <Image
+              src="/images/Matchitt_Text_Img.png"
+              alt="Matchitt Sticker"
+              width={400}
+              height={150}
+              className="w-full h-auto object-contain select-none pointer-events-none"
+            />
+          </div>
+        </div>
 
-      {/* Wipe 2 */}
-      <div ref={wipe2Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-cream z-43 pointer-events-none"></div>
+        {/* Copywriting Text Column (Fades & slides up on the right column) */}
+        <div 
+          ref={textContainerRef} 
+          className="w-full lg:w-1/2 opacity-0 flex flex-col justify-center text-center px-4 md:px-8 lg:px-0 z-20"
+        >
+          <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-tight text-brand-burgundy mb-8">
+            Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
+          </h2>
+          <ul className="space-y-6 text-brand-burgundy font-recoleta-light font-bold text-lg sm:text-xl md:text-[22px] leading-relaxed list-none mx-auto text-center">
+            {HERO_BULLETS.map((bullet, index) => (
+              <li key={index}>• {bullet}</li>
+            ))}
+          </ul>
+        </div>
 
-      {/* Execution Text */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-44">
-        <span ref={zoomExecutionRef} className="absolute text-brand-burgundy font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
-          Execu<span ref={tExecutionRef}>t</span>ion.
-        </span>
-      </div>
-
-      {/* Wipe 3 */}
-      <div ref={wipe3Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-burgundy z-45 pointer-events-none"></div>
-
-      {/* Perfectly Matched Text */}
-      <div className="absolute inset-0 flex items-center font-extrabold justify-center pointer-events-none z-46">
-        <span ref={zoomPerfectlyRef} className="absolute text-brand-cream font-recoleta-bold text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight origin-center text-center whitespace-nowrap">
-          Perfect<span ref={tPerfectlyRef}>l</span>y Matched.
-        </span>
-      </div>
-
-      {/* Wipe 4 */}
-      <div ref={wipe4Ref} className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-brand-cream z-47 pointer-events-none"></div>
-
-      {/* Envelope image */}
-      <div ref={envelopeRef} className="relative z-30">
-        <Image
-          src="/images/main-center-image.png"
-          alt="Perfectly Matched Envelope"
-          width={800}
-          height={600}
-          className="w-[260px] sm:w-[340px] md:w-[420px] object-contain select-none pointer-events-none"
-        />
-      </div>
-
-      {/* Strategy Text — absolutely centered, starts invisible, animates in */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-        <h1 className="font-recoleta-bold text-center text-brand-burgundy text-4xl sm:text-5xl md:text-7xl lg:text-[90px] leading-[1.1] tracking-tight select-none">
-          <span ref={strategyRef} className="relative inline-block origin-center opacity-0">
-            Stra<span ref={tStrategyRef}>t</span>egy.
-          </span>
-        </h1>
       </div>
     </section>
   );
 }
-

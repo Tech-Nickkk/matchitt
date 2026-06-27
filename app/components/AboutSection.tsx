@@ -108,19 +108,23 @@ export default function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative w-full min-h-screen flex items-center justify-center text-[#6B1D2F] overflow-hidden pointer-events-auto z-30"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center text-brand-burgundy py-24 overflow-hidden pointer-events-auto z-30"
     >
-      <div className="max-w-7xl w-full mx-auto px-6 sm:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
-
-        {/* Left Column: Scrapbook Sticker Composition */}
-        <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[380px] md:h-[380px] flex-shrink-0 select-none">
+      <div className="max-w-5xl w-full mx-auto px-6 flex flex-col items-center justify-center">
+        
+        {/* Sticker Composition (Centered) */}
+        <div className="relative w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] md:w-[350px] md:h-[350px] shrink-0 select-none mb-8 sm:mb-12">
           
           {/* Stars Sticker */}
-          <div className="absolute top-[-5%] right-[-2%] w-[60px] sm:w-[80px] md:w-[120px] z-0">
-            <div ref={starStickerRef} className="w-full h-full origin-center">
+          <div className="absolute top-[-5%] right-[-15%] w-[55px] sm:w-[75px] md:w-[110px] z-0">
+            <div
+              ref={starStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/about-star-icon.png"
+                  src="/images/Aboutus_Star_Img.png"
                   alt="Stars Sticker"
                   width={300}
                   height={300}
@@ -131,11 +135,15 @@ export default function AboutSection() {
           </div>
 
           {/* About Us Sticker */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] sm:w-[220px] md:w-[210px] z-10">
-            <div ref={aboutTextImageAnimRef} className="w-full h-full origin-center">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[170px] sm:w-[210px] md:w-[225px] z-10">
+            <div
+              ref={aboutTextImageAnimRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/about-us-text.png"
+                  src="/images/Aboutus_Text_Img.png"
                   alt="About Us Sticker"
                   width={600}
                   height={300}
@@ -146,11 +154,15 @@ export default function AboutSection() {
           </div>
 
           {/* Lightning Bolt Sticker */}
-          <div className="absolute bottom-[10%] left-[10%] w-[45px] sm:w-[60px] md:w-[100px] z-20 rotate-[15deg]">
-            <div ref={lightningStickerRef} className="w-full h-full origin-center">
+          <div className="absolute bottom-0 left-0 w-[40px] sm:w-[55px] md:w-[90px] z-20 rotate-15">
+            <div
+              ref={lightningStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/about-thunder-icon.png"
+                  src="/images/Aboutus_Thunder_Img.png"
                   alt="Lightning Bolt Sticker"
                   width={300}
                   height={300}
@@ -161,11 +173,15 @@ export default function AboutSection() {
           </div>
 
           {/* Cursor Arrow Sticker */}
-          <div className="absolute bottom-[8%] right-[2%] w-[60px] sm:w-[75px] md:w-[85px] z-20 rotate-[-8deg]">
-            <div ref={arrowStickerRef} className="w-full h-full origin-center">
+          <div className="absolute bottom-[15%] right-0 w-[55px] sm:w-[70px] md:w-[90px] z-20 rotate-[-8deg]">
+            <div
+              ref={arrowStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/about-arrow-icon.png"
+                  src="/images/Aboutus_Arrow_Img.png"
                   alt="Cursor Arrow Sticker"
                   width={300}
                   height={300}
@@ -176,18 +192,19 @@ export default function AboutSection() {
           </div>
         </div>
 
-        {/* Right Column: Copywriting content */}
-        <div ref={textContainerRef} className="max-w-3xl w-full text-left flex flex-col justify-center">
-          <p className="font-recoleta-light font-bold text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] mb-6 sm:mb-8 opacity-95">
-            We started Matchitt with one simple belief: most businesses don’t need
-            more content, they need the right direction.
+        {/* Centered Copywriting content */}
+        <div ref={textContainerRef} className="max-w-3xl w-full text-center space-y-6 sm:space-y-8 px-4">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+            We started Matchitt after seeing the same thing happen over and over: great brands creating endless content that barely reached the right people.
           </p>
-          <p className="font-recoleta-light font-bold text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] mb-6 sm:mb-8 opacity-95">
-            There’s too much noise online. Too many trends.
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+            Everyone was chasing the next trend, posting more, spending more, and somehow connecting less.
           </p>
-          <p className="font-recoleta-light font-bold text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] opacity-95">
-            MATCHITT comes in to match you with your audience, through the right
-            strategy, content, and execution plan.
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+            We believe growth isn&apos;t about being everywhere. It&apos;s about being in the right place, with the right message, in front of the right audience.
+          </p>
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+            That&apos;s what we do. We match strategy with creativity, content with purpose, and brands with the people who will actually care.
           </p>
         </div>
 
@@ -195,4 +212,3 @@ export default function AboutSection() {
     </section>
   );
 }
-

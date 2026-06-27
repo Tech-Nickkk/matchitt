@@ -108,32 +108,42 @@ export default function WhatWeDoSection() {
     <section
       id="what-we-do"
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center text-[#6B1D2F] py-24 overflow-hidden pointer-events-auto z-30"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center text-brand-burgundy py-24 overflow-hidden pointer-events-auto z-30"
     >
       <div className="relative max-w-5xl w-full mx-auto px-6 flex flex-col items-center justify-center">
         
         {/* Container for the Main Image and Stickers */}
-        <div className="relative w-[190px] sm:w-[260px] md:w-[330px] flex flex-col items-center justify-center mb-12">
+        <div className="relative w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] md:w-[350px] md:h-[350px] shrink-0 select-none mb-6 sm:mb-8">
           
           {/* Main WHAT WE DO image */}
-          <div ref={mainStickerRef} className="w-full z-10 origin-center">
-            <div className="w-full h-auto">
-              <Image
-                src="/images/whatwedo-text.png"
-                alt="What We Do"
-                width={800}
-                height={400}
-                className="w-full h-auto object-contain"
-              />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[170px] sm:w-[210px] md:w-[225px] z-10">
+            <div
+              ref={mainStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
+              <div className="w-full h-auto">
+                <Image
+                  src="/images/whatwedo_Text_Img.png"
+                  alt="What We Do"
+                  width={800}
+                  height={400}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
             </div>
           </div>
 
           {/* Sticker 1: Band-aid (Left) */}
-          <div className="absolute top-[42%] left-[-24%] w-[35px] sm:w-[50px] md:w-[60px] z-20 rotate-[-35deg]">
-            <div ref={bandAidStickerRef} className="w-full h-full origin-center">
+          <div className="absolute bottom-40 left-[-25%] w-[40px] sm:w-[55px] md:w-[100px] z-20 rotate-[-35deg]">
+            <div
+              ref={bandAidStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/whatwedoicon-2.png"
+                  src="/images/Whatwedo_Sticker01_Img.png"
                   alt="Band-aid sticker"
                   width={150}
                   height={150}
@@ -144,11 +154,15 @@ export default function WhatWeDoSection() {
           </div>
 
           {/* Sticker 2: ENJOY Poster (Top Right) */}
-          <div className="absolute top-[-20%] right-[8%] w-[50px] sm:w-[65px] md:w-[70px] z-0 rotate-25">
-            <div ref={enjoyStickerRef} className="w-full h-full origin-center">
+          <div className="absolute top-[-0%] right-[-5%] w-[55px] sm:w-[75px] md:w-[110px] z-0 rotate-25">
+            <div
+              ref={enjoyStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/whatwedoicon-1.png"
+                  src="/images/Whatwedo_Sticker02_Img.png"
                   alt="Enjoy sticker"
                   width={250}
                   height={300}
@@ -159,11 +173,15 @@ export default function WhatWeDoSection() {
           </div>
 
           {/* Sticker 3: Blue Smile (Bottom Right) */}
-          <div className="absolute top-[60%] right-[-20%] w-[40px] sm:w-[50px] md:w-[75px] z-20 rotate-[-20deg]">
-            <div ref={smileStickerRef} className="w-full h-full origin-center">
+          <div className="absolute bottom-[15%] right-[-15%] w-[55px] sm:w-[70px] md:w-[100px] z-20 rotate-[-20deg]">
+            <div
+              ref={smileStickerRef}
+              className="w-full h-full origin-center"
+              style={{ willChange: "transform" }}
+            >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/whatwedoicon-3.png"
+                  src="/images/Whatwedo_Sticker03_Img.png"
                   alt="Smile sticker"
                   width={200}
                   height={200}
@@ -176,7 +194,7 @@ export default function WhatWeDoSection() {
 
         {/* Copywriting content */}
         <div ref={textContainerRef} className="max-w-2xl text-center z-10 px-4">
-          <p className="font-recoleta-light font-bold text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-[#6B1D2F] opacity-95">
+          <p className="font-recoleta-light font-bold text-lg sm:text-xl md:text-2xl lg:text-[28px] leading-snug text-brand-burgundy opacity-95">
             Getting your brand in front of the<br className="hidden sm:block" /> right people in the right way.
           </p>
         </div>

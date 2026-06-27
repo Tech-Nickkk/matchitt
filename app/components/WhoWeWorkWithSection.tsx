@@ -10,11 +10,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const clientTypes = [
   "Startups",
-  "Personal Brands",
+  "Entrepreneurs",
   "E-commerce",
   "Talents",
   "Specialists",
-  "Entrepreneurs"
+  "Personal Brand"
 ];
 
 export default function WhoWeWorkWithSection() {
@@ -22,26 +22,43 @@ export default function WhoWeWorkWithSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  const bestStickerRef = useRef<HTMLDivElement>(null);
+  const eyesStickerRef = useRef<HTMLDivElement>(null);
   
   const visualSectionRef = useRef<HTMLElement>(null);
   const visualImageRef = useRef<HTMLDivElement>(null);
 
+  const personalBrandRef = useRef<HTMLSpanElement>(null);
+  const lRef = useRef<HTMLSpanElement>(null);
+  const wipeRef = useRef<HTMLDivElement>(null);
+
   useGSAP(() => {
-    // 1. Visual Image parallax float (Scale 0.8 -> 1.05, Slide up from y: 100 -> -50 over the whole section scroll)
+    // Helper to compute exact transform origin to center on the 'r' letter
+    const getOrigin = (parent: HTMLElement | null, child: HTMLElement | null) => {
+      if (!parent || !child) return "50% 50%";
+      const pRect = parent.getBoundingClientRect();
+      const cRect = child.getBoundingClientRect();
+      const x = cRect.left - pRect.left + cRect.width / 2;
+      const y = cRect.top - pRect.top + cRect.height / 2;
+      return `${(x / pRect.width) * 100}% ${(y / pRect.height) * 100}%`;
+    };
+
+    // 1. Visual Image Fade-in & Scale-up (Scale 0.95 -> 1.0, Opacity 0 -> 1 by top 50%)
     const visualSection = visualSectionRef.current;
     const visualImage = visualImageRef.current;
     if (visualSection && visualImage) {
       gsap.fromTo(
         visualImage,
-        { scale: 0.8, y: 100 },
+        { scale: 0.8, opacity: 0 },
         {
-          scale: 1.05,
-          y: -50,
+          scale: 1.0,
+          opacity: 1,
+          ease: "none",
           scrollTrigger: {
             trigger: visualSection,
-            start: "top bottom",  // Animates as soon as top of section enters viewport bottom
-            end: "bottom top",   // Continues until bottom of section leaves viewport top
-            scrub: 1.8,            // Silky smooth scrubbing with weighted lag
+            start: "top bottom",
+            end: "top 50%",
+            scrub: 1.0,
             invalidateOnRefresh: true,
           }
         }
@@ -52,6 +69,8 @@ export default function WhoWeWorkWithSection() {
     const section = sectionRef.current;
     const textContainer = textContainerRef.current;
     const logo = logoRef.current;
+    const bestSticker = bestStickerRef.current;
+    const eyesSticker = eyesStickerRef.current;
     if (!section || !textContainer || !logo) return;
 
     // 3. Logo text sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
@@ -65,21 +84,44 @@ export default function WhoWeWorkWithSection() {
       }
     });
 
-    // Scale up element dynamically as it first enters the screen
-    logoTl.fromTo(
-      logo,
-      { scale: 0 },
-      { scale: 1, duration: 0.3, ease: "back.out(1.5)" },
-      0
-    );
+    // Scale up elements dynamically as they first enter the screen
+    const entryElements = [logo, bestSticker, eyesSticker].filter(Boolean) as HTMLElement[];
+    if (entryElements.length > 0) {
+      logoTl.fromTo(
+        entryElements,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+        0
+      );
+    }
 
-    // Continuous float and rotation animation synced to scroll
-    logoTl.fromTo(
-      logo,
-      { y: 100, rotation: -8 },
-      { y: 0, rotation: 0, ease: "none" },
-      0
-    );
+    // Continuous float and rotation animation synced to scroll (parallax)
+    if (logo) {
+      logoTl.fromTo(
+        logo,
+        { y: 60, rotation: -6 },
+        { y: -60, rotation: 6, ease: "none" },
+        0
+      );
+    }
+
+    if (bestSticker) {
+      logoTl.fromTo(
+        bestSticker,
+        { y: 100, rotation: -12 },
+        { y: -100, rotation: 8, ease: "none" },
+        0
+      );
+    }
+
+    if (eyesSticker) {
+      logoTl.fromTo(
+        eyesSticker,
+        { y: 80, rotation: 15 },
+        { y: -80, rotation: -15, ease: "none" },
+        0
+      );
+    }
 
     const texts = textContainer.querySelectorAll(".client-text");
 
@@ -89,8 +131,8 @@ export default function WhoWeWorkWithSection() {
         start: "top top",       // Pin exactly when section hits the top of the viewport
         end: "+=500%", 
         pin: true, 
-        pinSpacing: false,
-        scrub: 1.8,             // Much smoother pinned slide transition weight (increased from 1)
+        pinSpacing: true,
+        scrub: 0.3,             // Much smoother pinned slide transition weight (increased from 1)
         invalidateOnRefresh: true,
       }
     });
@@ -100,46 +142,80 @@ export default function WhoWeWorkWithSection() {
       tl.fromTo(
         text,
         { opacity: 0, y: 100, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power2.out" }
+        { opacity: 1, y: 0, scale: 1, duration: 2.5, ease: "power2.out" }
       );
       
       // Then hold it for a moment, and animate it fading and sliding up out of view
       if (i !== texts.length - 1) {
         tl.to(
           text,
-          { opacity: 0, y: -100, scale: 0.9, duration: 1, ease: "power2.in" },
-          "+=0.3" // Small delay to let the user read it
+          { opacity: 0, y: -100, scale: 0.9, duration: 2.5, ease: "power2.in" },
+          "+=1.0" // Larger delay to let the user read it
         );
       }
     });
 
-    // Parallax overlap phase (starts immediately after text animations complete)
-    // Logo and text container slowly slide up as CtaSection overlaps
+    const isMobile = window.innerWidth < 768;
+    const wipeOffset = isMobile ? "<80%" : "<65%";
+
+    // Zoom-in letter transition on "Personal Brand" at the end of text animations (time 32.5)
+    // 1. Zoom in on the text centered on the letter "l"
     tl.to(
-      [logo, textContainer],
+      personalBrandRef.current,
       {
-        y: "-=250",
-        ease: "power1.inOut",
-        duration: 8.33, // Mathematically fits the 40% scroll window (12.5s / 0.6 - 12.5 = 8.33)
-      }
+        scale: 50,
+        duration: 18.0, // Increased to make the scale much slower
+        ease: "power2.in",
+        transformOrigin: () => {
+          if (personalBrandRef.current && lRef.current) {
+            return getOrigin(personalBrandRef.current, lRef.current);
+          }
+          return "50% 50%";
+        }
+      },
+      32.5
+    );
+
+    // 2. Expand the burgundy wipe horizontally to 100% width
+    tl.to(
+      wipeRef.current,
+      {
+        width: "100%",
+        duration: isMobile ? 3.5 : 5.0, // Scaled up proportionally
+        ease: "none"
+      },
+      wipeOffset
+    );
+
+    // 3. Fade out the logo and stickers
+    const fadeOutElements = [logo, bestSticker, eyesSticker].filter(Boolean);
+    tl.to(
+      fadeOutElements,
+      {
+        opacity: 0,
+        scale: 0.9,
+        duration: 6.0, // Increased to match the slower scale
+        ease: "power2.out"
+      },
+      32.5
     );
 
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="relative w-full bg-[#F4F2EC]">
+    <div ref={containerRef} className="relative w-full bg-brand-cream">
       {/* Part 1: Who We Work With Visual Image Section */}
       <section 
         ref={visualSectionRef} 
-        className="relative w-full flex justify-center bg-[#F4F2EC] overflow-hidden"
+        className="relative w-full flex justify-center bg-brand-cream overflow-hidden"
       >
         <div 
           ref={visualImageRef} 
-          className="w-full h-auto max-w-[1600px] flex justify-center pt-8 origin-center"
-          style={{ willChange: "transform" }}
+          className="w-full h-auto max-w-[1600px] flex justify-center pt-8 origin-center opacity-0"
+          style={{ willChange: "transform, opacity" }}
         >
           <Image
-            src="/images/Image-02.png"
+            src="/images/new-image.png"
             alt="Who We Work With Visual"
             width={1600}
             height={900}
@@ -149,20 +225,73 @@ export default function WhoWeWorkWithSection() {
       </section>
 
       {/* Part 2: Pinned Animating Text Section */}
-      <section ref={sectionRef} className="relative w-full h-screen flex flex-col items-center justify-start bg-[#F4F2EC] z-20 overflow-hidden">
-        {/* Logo Text Sticker */}
+      <section ref={sectionRef} className="relative w-full h-screen flex flex-col items-center justify-start bg-brand-cream z-20 overflow-hidden">
+        {/* Burgundy Wipe overlay */}
         <div 
-          ref={logoRef} 
-          className="relative w-[180px] sm:w-[240px] md:w-[320px] mt-[5vh] md:mt-[7vh] z-10"
-          style={{ willChange: "transform" }}
-        >
-          <Image
-            src="/images/WhoWeWorkWith-Text.svg"
-            alt="Who We Work With Text"
-            width={600}
-            height={300}
-            className="w-full h-auto object-contain"
-          />
+          ref={wipeRef} 
+          className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-[#83333E] z-0 pointer-events-none"
+        />
+
+        {/* Sticker Composition (Who We Work With) */}
+        <div className="relative w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] shrink-0 select-none mt-[6vh] md:mt-[8vh] mb-[2vh] z-10">
+          
+          {/* Main WHOWEWORKWITH image */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[-70%] w-[190px] sm:w-[250px] md:w-[280px] z-10">
+            <div
+              ref={logoRef}
+              className="w-full h-full origin-center opacity-0 scale-0"
+              style={{ willChange: "transform, opacity" }}
+            >
+              <div className="w-full h-auto">
+                <Image
+                  src="/images/Whoweworkwith_Text_Img.png"
+                  alt="Who We Work With"
+                  width={800}
+                  height={800}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Sticker 1: Best (Bottom Left) */}
+          <div className="absolute bottom-[30%] left-10 w-[55px] sm:w-[75px] md:w-[90px] z-20 -rotate-12">
+            <div
+              ref={bestStickerRef}
+              className="w-full h-full origin-center opacity-0 scale-0"
+              style={{ willChange: "transform, opacity" }}
+            >
+              <div className="w-full h-auto">
+                <Image
+                  src="/images/Whoweworkwith_Best_Img.png"
+                  alt="Best sticker"
+                  width={200}
+                  height={200}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Sticker 2: Eyes (Top Right) */}
+          <div className="absolute top-[17%] right-[20%] w-[55px] sm:w-[80px] md:w-[80px] z-0 rotate-15">
+            <div
+              ref={eyesStickerRef}
+              className="w-full h-full origin-center opacity-0 scale-0"
+              style={{ willChange: "transform, opacity" }}
+            >
+              <div className="w-full h-auto">
+                <Image
+                  src="/images/Whoweworkwith_Eyes_Img.png"
+                  alt="Eyes sticker"
+                  width={200}
+                  height={200}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+            </div>
+          </div>
+
         </div>
 
         {/* Animated Text Container */}
@@ -171,10 +300,13 @@ export default function WhoWeWorkWithSection() {
             <h2 
               key={index}
               className="client-text absolute w-full left-0 right-0 text-center text-5xl sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[8rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
-              style={{ willChange: "transform, opacity" }}
             >
               {text === "E-commerce" ? (
                 <>E<span className="font-sans">-</span>commerce</>
+              ) : text === "Personal Brand" ? (
+                <span ref={personalBrandRef} className="relative inline-block origin-center">
+                  Persona<span ref={lRef} className="relative inline-block">l</span> Brand
+                </span>
               ) : (
                 text
               )}
@@ -183,8 +315,6 @@ export default function WhoWeWorkWithSection() {
         </div>
       </section>
 
-      {/* Overlap spacer: this creates the scrollable distance for the overlap to happen */}
-      <div className="w-full h-[300vh] pointer-events-none" />
     </div>
   );
 }
