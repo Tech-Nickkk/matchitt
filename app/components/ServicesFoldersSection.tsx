@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const topRowFolders = [
   {
-    folder: '/images/blue-folder-wwd.png',
+    folder: '/images/Blue_Folder_Img.png',
     sticker: '/images/branding-text.png',
     alt: 'Branding',
     // folderRotate: -2,
@@ -18,7 +18,7 @@ const topRowFolders = [
     stickerClasses: 'bottom-[-10px] left-[15%] w-[60%]'
   },
   {
-    folder: '/images/red-folder-wwd.png',
+    folder: '/images/Red_Folder_Img.png',
     sticker: '/images/content-creation-text.png',
     alt: 'Content Creation',
     // folderRotate: 0,
@@ -26,7 +26,7 @@ const topRowFolders = [
     stickerClasses: 'bottom-[-20px] left-[23%] w-[45%]'
   },
   {
-    folder: '/images/blue-folder-wwd.png',
+    folder: '/images/Blue_Folder_Img.png',
     sticker: '/images/digital-strategy-text.png',
     alt: 'Digital Strategy',
     // folderRotate: 2,
@@ -34,7 +34,7 @@ const topRowFolders = [
     stickerClasses: 'bottom-[-10px] left-[15%] w-[70%]'
   },
   {
-    folder: '/images/red-folder-wwd.png',
+    folder: '/images/Red_Folder_Img.png',
     sticker: '/images/social-media-management-text.png',
     alt: 'Social Media Management',
     // folderRotate: 1,
@@ -42,7 +42,7 @@ const topRowFolders = [
     stickerClasses: 'bottom-[-25px] left-[18%] w-[60%]'
   },
   {
-    folder: '/images/blue-folder-wwd.png',
+    folder: '/images/Blue_Folder_Img.png',
     sticker: '/images/paid-amplification-text.png',
     alt: 'Paid Amplification',
     // folderRotate: -1,
@@ -53,7 +53,7 @@ const topRowFolders = [
 
 const bottomRowFolders = [
   {
-    folder: '/images/red-folder-wwd.png',
+    folder: '/images/Red_Folder_Img.png',
     sticker: '/images/creative-design-text.png',
     alt: 'Creative & Design',
     // folderRotate: -1,
@@ -61,7 +61,7 @@ const bottomRowFolders = [
     stickerClasses: 'bottom-[-25px] left-[18%] w-[55%]'
   },
   {
-    folder: '/images/blue-folder-wwd.png',
+    folder: '/images/Blue_Folder_Img.png',
     sticker: '/images/influencer-engagment-text.png',
     alt: 'Influencer Engagement',
     // folderRotate: 1,
@@ -69,7 +69,7 @@ const bottomRowFolders = [
     stickerClasses: 'bottom-[-35px] left-[18%] w-[60%]'
   },
   {
-    folder: '/images/red-folder-wwd.png',
+    folder: '/images/Red_Folder_Img.png',
     sticker: '/images/seo-website-text.png',
     alt: 'SEO & Website',
     // folderRotate: -2,
@@ -77,7 +77,7 @@ const bottomRowFolders = [
     stickerClasses: 'bottom-[-10px] left-[15%] w-[65%]'
   },
   {
-    folder: '/images/blue-folder-wwd.png',
+    folder: '/images/Blue_Folder_Img.png',
     sticker: '/images/sem-programmatic-text.png',
     alt: 'SEM & Programmatic',
     // folderRotate: 2,

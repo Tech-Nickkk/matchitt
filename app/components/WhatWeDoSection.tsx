@@ -124,7 +124,7 @@ export default function WhatWeDoSection() {
             >
               <div className="w-full h-auto">
                 <Image
-                  src="/images/whatwedo_Text_Img.png"
+                  src="/images/Whatwedo_Text_Img.png"
                   alt="What We Do"
                   width={800}
                   height={400}
