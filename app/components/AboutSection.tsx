@@ -35,6 +35,7 @@ export default function AboutSection() {
           start: "top 90%",
           end: "top 40%",
           scrub: 1.8,
+          invalidateOnRefresh: true,
         }
       }
     );
@@ -46,6 +47,7 @@ export default function AboutSection() {
         start: "top bottom", // Starts when top of section enters viewport bottom
         end: "bottom top",   // Ends when bottom of section leaves viewport top
         scrub: 1.8,          // Weighted lag for a premium catch-up feel
+        invalidateOnRefresh: true,
       }
     });
 
@@ -102,7 +104,7 @@ export default function AboutSection() {
         0
       );
     }
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [] });
 
   return (
     <section

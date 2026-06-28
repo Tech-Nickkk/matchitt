@@ -199,7 +199,7 @@ export default function WhoWeWorkWithSection() {
       32.5
     );
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [] });
 
   return (
     <div ref={containerRef} className="relative w-full bg-brand-cream">

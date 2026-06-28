@@ -37,7 +37,7 @@ export default function TransitionImageSection() {
         },
       }
     );
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [] });
 
   return (
     <section

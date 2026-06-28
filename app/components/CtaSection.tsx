@@ -178,7 +178,7 @@ export default function CtaSection() {
       },
       2.4 // Shifted accordingly
     );
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [] });
 
   return (
     <section

@@ -115,7 +115,7 @@ export default function HeroContent() {
         "-=0.3" // Starts near the end of the image slide-left
       );
     });
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [] });
 
   return (
     <section

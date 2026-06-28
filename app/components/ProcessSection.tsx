@@ -84,6 +84,7 @@ export default function ProcessSection() {
                 start: "top 80%", // Start animating when the top of the container reaches 80% down the screen
                 end: "top 20%",   // Finish before it pins at 'top top'
                 scrub: 1.0,
+                invalidateOnRefresh: true, // Recalculates on resize to prevent glitching
               }
             }
           );
@@ -104,7 +105,7 @@ export default function ProcessSection() {
         }
       }
     });
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [] });
 
   return (
     <section

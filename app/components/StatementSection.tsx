@@ -28,10 +28,11 @@ export default function StatementSection() {
           start: "top 75%", // Starts when top reaches 75% down the viewport
           end: "center center", // Completes when center reaches viewport center
           scrub: 1.2,
+          invalidateOnRefresh: true,
         },
       }
     );
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [] });
 
   return (
     <section

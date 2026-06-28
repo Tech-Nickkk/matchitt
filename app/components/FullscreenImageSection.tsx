@@ -39,7 +39,7 @@ export default function FullscreenImageSection() {
       },
       0.25 // Starts a bit late in the pinning scroll sequence
     );
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [] });
 
   return (
     <section

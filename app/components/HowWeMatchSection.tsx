@@ -97,7 +97,7 @@ export default function HowWeMatchSection() {
       { y: "-100vh", opacity: 0, ease: "power2.in", duration: 0.06 },
       0.44
     );
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [] });
 
   return (
     <section

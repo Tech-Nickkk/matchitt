@@ -81,9 +81,10 @@ export default function Navbar() {
         start: "top top",
         end: "600px top", // Extended to make the animation slower
         scrub: true,
+        invalidateOnRefresh: true,
       }
     });
-  });
+  }, { dependencies: [] });
 
   const NavLink = ({ label, className = "" }: { label: string, className?: string }) => (
     <span 
