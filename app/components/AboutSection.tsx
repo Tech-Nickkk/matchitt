@@ -108,7 +108,7 @@ export default function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center text-brand-burgundy py-24 overflow-hidden pointer-events-auto z-30"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center text-brand-burgundy py-20 overflow-hidden pointer-events-auto z-30"
     >
       <div className="max-w-5xl w-full mx-auto px-6 flex flex-col items-center justify-center">
         
@@ -116,7 +116,7 @@ export default function AboutSection() {
         <div className="relative w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] md:w-[350px] md:h-[350px] shrink-0 select-none mb-8 sm:mb-12">
           
           {/* Stars Sticker */}
-          <div className="absolute top-[-5%] right-[-15%] w-[55px] sm:w-[75px] md:w-[110px] z-0">
+          <div className="absolute top-0 right-[-5%] w-[55px] sm:w-[75px] md:w-[90px] z-0">
             <div
               ref={starStickerRef}
               className="w-full h-full origin-center"
@@ -135,7 +135,7 @@ export default function AboutSection() {
           </div>
 
           {/* About Us Sticker */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[170px] sm:w-[210px] md:w-[225px] z-10">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] z-10">
             <div
               ref={aboutTextImageAnimRef}
               className="w-full h-full origin-center"
@@ -154,7 +154,7 @@ export default function AboutSection() {
           </div>
 
           {/* Lightning Bolt Sticker */}
-          <div className="absolute bottom-0 left-0 w-[40px] sm:w-[55px] md:w-[90px] z-20 rotate-15">
+          <div className="absolute bottom-3 left-5 w-[40px] sm:w-[55px] md:w-[75px] z-20 rotate-15">
             <div
               ref={lightningStickerRef}
               className="w-full h-full origin-center"
@@ -173,7 +173,7 @@ export default function AboutSection() {
           </div>
 
           {/* Cursor Arrow Sticker */}
-          <div className="absolute bottom-[15%] right-0 w-[55px] sm:w-[70px] md:w-[90px] z-20 rotate-[-8deg]">
+          <div className="absolute bottom-[20%] right-6 w-[55px] sm:w-[70px] md:w-[75px] z-20 rotate-[-8deg]">
             <div
               ref={arrowStickerRef}
               className="w-full h-full origin-center"
@@ -193,17 +193,17 @@ export default function AboutSection() {
         </div>
 
         {/* Centered Copywriting content */}
-        <div ref={textContainerRef} className="max-w-3xl w-full text-center space-y-6 sm:space-y-8 px-4">
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+        <div ref={textContainerRef} className="max-w-5xl w-full text-center space-y-4 px-4">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
             We started Matchitt after seeing the same thing happen over and over: great brands creating endless content that barely reached the right people.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
             Everyone was chasing the next trend, posting more, spending more, and somehow connecting less.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
             We believe growth isn&apos;t about being everywhere. It&apos;s about being in the right place, with the right message, in front of the right audience.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-95">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
             That&apos;s what we do. We match strategy with creativity, content with purpose, and brands with the people who will actually care.
           </p>
         </div>

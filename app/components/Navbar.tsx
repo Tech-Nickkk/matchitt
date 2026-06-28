@@ -2,6 +2,11 @@
 
 import React, { Fragment } from "react";
 import Image from "next/image";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const LINK_TARGETS: Record<string, string> = {
   "About Us": "#about",
@@ -67,6 +72,19 @@ export default function Navbar() {
     }
   };
 
+  useGSAP(() => {
+    gsap.to(".nav-logo-animate", {
+      y: -150,
+      rotate: 40, // Slight rotation
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "600px top", // Extended to make the animation slower
+        scrub: true,
+      }
+    });
+  });
+
   const NavLink = ({ label, className = "" }: { label: string, className?: string }) => (
     <span 
       onClick={() => handleScroll(label)}
@@ -95,7 +113,7 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="relative z-10 hidden md:flex items-center justify-center gap-x-3 lg:gap-x-5 text-brand-burgundy font-serif font-bold text-sm lg:text-base xl:text-lg tracking-wide select-none w-full max-w-7xl mx-auto">
+      <nav className="relative z-10 hidden md:flex items-center justify-center gap-x-3 lg:gap-x-5 text-brand-burgundy font-recoleta-light font-bold text-sm lg:text-base xl:text-lg tracking-wide select-none w-full max-w-7xl mx-auto">
         {navLinksLeft.map(label => (
           <Fragment key={label}>
             <NavLink label={label} className="shrink-0" />
@@ -104,7 +122,7 @@ export default function Navbar() {
         ))}
 
         {/* Center Logo */}
-        <div className="mx-2 lg:mx-4 shrink-0">
+        <div className="mx-2 lg:mx-4 shrink-0 nav-logo-animate">
           <Image
             src="/images/Matchitt_Text_Img.png"
             alt="MATCHITT"
@@ -134,14 +152,16 @@ export default function Navbar() {
       {/* Mobile Navigation */}
       <nav className="relative z-10 flex md:hidden flex-col items-center gap-y-3 px-2 py-2 w-full text-brand-burgundy font-serif font-bold text-xs sm:text-sm tracking-wide select-none">
         {/* Top Logo */}
-        <Image
-          src="/images/Matchitt_Text_Img.png"
-          alt="MATCHITT"
-          width={180}
-          height={60}
-          className="w-20 sm:w-24 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        />
+        <div className="nav-logo-animate">
+          <Image
+            src="/images/Matchitt_Text_Img.png"
+            alt="MATCHITT"
+            width={180}
+            height={60}
+            className="w-20 sm:w-24 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          />
+        </div>
         
         {/* Links and Separators Wrapper */}
         <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">

@@ -42,10 +42,10 @@ export default function StatementSection() {
       {/* Ripple/Crinkled texture background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-60"
           style={{
-            backgroundImage: 'url("/images/nav-new-bg.png")',
-            backgroundSize: "cover",
+            backgroundImage: 'url("/images/Statement_Bg_Img.png")',
+            backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",
           }}

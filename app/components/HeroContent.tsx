@@ -58,12 +58,12 @@ export default function HeroContent() {
         }
       );
 
-      // Sticker Step 1: Start with rotate 0, then tilt slightly right
+      // Sticker Step 1: Start with opacity 0 and moved down, then slide up with a slight stagger and tilt
       tl.fromTo(
         stickerRef.current,
-        { rotate: 0 },
-        { rotate: 8, ease: "power2.out", duration: 1.0 },
-        0
+        { opacity: 0, y: 50, rotate: 0 },
+        { opacity: 1, y: 0, rotate: 8, ease: "power2.out", duration: 1.0 },
+        0.3 // Staggered by 0.3s after the girls image
       );
 
       // Step 2: Envelope moves to left (desktop) or up (mobile/tablet) and rotates slightly opposite
@@ -95,11 +95,11 @@ export default function HeroContent() {
         );
       }
 
-      // Sticker Step 2: Tilt back to bottom left as the image moves
+      // Sticker Step 2: Tilt back to bottom left and move slightly left as the image moves
       tl.to(
         stickerRef.current,
-        { rotate: -8, ease: "power2.inOut", duration: 1.0 },
-        1.2
+        { x: -70, rotate: -8, ease: "power2.inOut", duration: 1.0 },
+        "<+=0.2" // Slight delay relative to the image movement
       );
 
       // Step 3: Text slides up on the right (desktop) or bottom (mobile) - plays faster
@@ -143,7 +143,7 @@ export default function HeroContent() {
           />
           
           {/* Matchitt Sticker Overlay */}
-          <div ref={stickerRef} className="absolute bottom-0 left-[15%] z-40 w-[180px] sm:w-[220px] md:w-[260px] lg:w-[290px] transform origin-center drop-shadow-lg">
+          <div ref={stickerRef} className="absolute bottom-0 left-[25%] z-40 w-[180px] sm:w-[220px] md:w-[260px] lg:w-[290px] transform origin-center drop-shadow-lg">
             <Image
               src="/images/Matchitt_Text_Img.png"
               alt="Matchitt Sticker"
@@ -162,7 +162,7 @@ export default function HeroContent() {
           <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-tight text-brand-burgundy mb-8">
             Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
           </h2>
-          <ul className="space-y-6 text-brand-burgundy font-recoleta-light font-bold text-lg sm:text-xl md:text-[22px] leading-relaxed list-none mx-auto text-center">
+          <ul className="space-y-2 text-brand-burgundy font-recoleta-light font-semibold text-lg sm:text-xl md:text-[25px] leading-relaxed list-none mx-auto text-center">
             {HERO_BULLETS.map((bullet, index) => (
               <li key={index}>• {bullet}</li>
             ))}

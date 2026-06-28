@@ -134,7 +134,6 @@ export default function CtaSection() {
         opacity: 1,
         y: 0,
         duration: 0.4,
-        stagger: 0.15,
         ease: "power2.out",
       },
       0.45
@@ -335,20 +334,32 @@ export default function CtaSection() {
       {/* Social Links at the bottom (absolutely positioned, hidden initially) */}
       <div 
         ref={socialsRef} 
-        className="absolute bottom-[8%] sm:bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-xl flex flex-col items-center gap-4 z-30 opacity-0 pointer-events-none"
+        className="absolute bottom-[8%] sm:bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-xl flex flex-col items-center gap-2 z-30 opacity-0 pointer-events-none"
       >
-        <div className="flex flex-row justify-center items-center gap-4">
+        <div className="flex flex-row justify-center items-center gap-2 sm:gap-4">
           <a 
             href="mailto:Hala@matchitt.com" 
-            className="px-6 py-2 bg-brand-cream text-[#83333E] font-recoleta-bold text-sm sm:text-base md:text-lg rounded-full -rotate-1 shadow-sm hover:scale-105 hover:bg-white transition-all duration-300 select-none"
+            className="relative w-[140px] sm:w-[180px] md:w-[220px] transition-all duration-300 hover:scale-105 pointer-events-auto"
           >
-            Hala@matchitt.com
+            <Image
+              src="/images/Hala_Footer_Img.png"
+              alt="Email Hala"
+              width={300}
+              height={100}
+              className="w-full h-auto object-contain"
+            />
           </a>
           <a 
             href="mailto:Lynn@matchitt.com" 
-            className="px-6 py-2 bg-[#BBD7EC] text-[#83333E] font-recoleta-bold text-sm sm:text-base md:text-lg rounded-full rotate-[1.5deg] shadow-sm hover:scale-105 hover:bg-[#a5cce8] transition-all duration-300 select-none"
+            className="relative w-[140px] sm:w-[180px] md:w-[220px] transition-all duration-300 hover:scale-105 pointer-events-auto"
           >
-            Lynn@matchitt.com
+            <Image
+              src="/images/Lynn_Footer_Img.png"
+              alt="Email Lynn"
+              width={300}
+              height={100}
+              className="w-full h-auto object-contain"
+            />
           </a>
         </div>
         
@@ -356,12 +367,15 @@ export default function CtaSection() {
           href="https://instagram.com/matchittcom" 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="flex items-center gap-2 px-6 py-2 bg-[#BBD7EC] text-[#83333E] font-recoleta-bold text-sm sm:text-base md:text-lg rounded-full -rotate-1 shadow-sm hover:scale-105 hover:bg-[#a5cce8] transition-all duration-300 select-none"
+          className="relative w-[140px] sm:w-[180px] md:w-[220px] transition-all duration-300 hover:scale-105 pointer-events-auto mt-2"
         >
-          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-          </svg>
-          @matchittcom
+          <Image
+            src="/images/Matchitt_Footer_Img.png"
+            alt="Matchitt Instagram"
+            width={400}
+            height={100}
+            className="w-full h-auto object-contain"
+          />
         </a>
       </div>
     </section>

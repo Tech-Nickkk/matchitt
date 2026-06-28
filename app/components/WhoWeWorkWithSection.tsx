@@ -156,15 +156,14 @@ export default function WhoWeWorkWithSection() {
     });
 
     const isMobile = window.innerWidth < 768;
-    const wipeOffset = isMobile ? "<80%" : "<65%";
+    const wipeOffset = isMobile ? "<75%" : "<60%";
 
-    // Zoom-in letter transition on "Personal Brand" at the end of text animations (time 32.5)
     // 1. Zoom in on the text centered on the letter "l"
     tl.to(
       personalBrandRef.current,
       {
         scale: 50,
-        duration: 18.0, // Increased to make the scale much slower
+        duration: 18.0, 
         ease: "power2.in",
         transformOrigin: () => {
           if (personalBrandRef.current && lRef.current) {
@@ -299,7 +298,7 @@ export default function WhoWeWorkWithSection() {
           {clientTypes.map((text, index) => (
             <h2 
               key={index}
-              className="client-text absolute w-full left-0 right-0 text-center text-5xl sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[8rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
+              className="client-text absolute w-full left-0 right-0 text-center text-6xl sm:text-8xl md:text-10xl lg:text-[9rem] xl:text-[10rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
             >
               {text === "E-commerce" ? (
                 <>E<span className="font-sans">-</span>commerce</>

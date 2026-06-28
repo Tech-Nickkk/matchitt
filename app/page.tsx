@@ -6,7 +6,6 @@ import Navbar from "@/components/Navbar";
 import HeroContent from "@/components/HeroContent";
 import StatementSection from "@/components/StatementSection";
 import WhatWeDoSection from "@/components/WhatWeDoSection";
-import ServicesFoldersSection from "@/components/ServicesFoldersSection";
 import HowWeMatchSection from "@/components/HowWeMatchSection";
 import ProcessSection from "@/components/ProcessSection";
 import WhoWeWorkWithSection from "@/components/WhoWeWorkWithSection";
@@ -49,19 +48,16 @@ export default function Home() {
       {/* What We Do Section */}
       <WhatWeDoSection />
       
-      {/* Services Folders Section */}
-      <ServicesFoldersSection />
-      
       {/* Spacer before How We Match */}
       <div className="w-full h-[20vh] md:h-[30vh] pointer-events-none" />
 
       {/* How We Match Section */}
       <HowWeMatchSection />
 
-      {/* Spacer between How We Match and Process Section to prevent 3D model overlap */}
+      {/* Spacer after How We Match to allow 3D model to fall down off-screen */}
       <div className="w-full h-[180vh] md:h-[240vh] pointer-events-none" />
 
-      {/* Process Section */}
+      {/* Process Section (Pinned) */}
       <ProcessSection />
 
       {/* Who We Work With Section */}
