@@ -123,8 +123,8 @@ export default function WhatWeDoSection() {
     if (elements.length > 0) {
       stickerTl.fromTo(
         elements,
-        { scale: 0 },
-        { scale: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
         0
       );
     }
@@ -205,7 +205,7 @@ export default function WhatWeDoSection() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] z-10">
             <div
               ref={mainStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -224,7 +224,7 @@ export default function WhatWeDoSection() {
           <div className="absolute bottom-40 left-[-25%] w-[40px] sm:w-[55px] md:w-[100px] z-20 rotate-[-35deg]">
             <div
               ref={bandAidStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -243,7 +243,7 @@ export default function WhatWeDoSection() {
           <div className="absolute top-[-0%] right-[-5%] w-[55px] sm:w-[75px] md:w-[110px] z-0 rotate-25">
             <div
               ref={enjoyStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -262,7 +262,7 @@ export default function WhatWeDoSection() {
           <div className="absolute bottom-[15%] right-[-15%] w-[55px] sm:w-[70px] md:w-[100px] z-20 rotate-[-20deg]">
             <div
               ref={smileStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">

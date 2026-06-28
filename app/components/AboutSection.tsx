@@ -62,8 +62,8 @@ export default function AboutSection() {
     if (elements.length > 0) {
       stickerTl.fromTo(
         elements,
-        { scale: 0 },
-        { scale: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
         0
       );
     }
@@ -121,7 +121,7 @@ export default function AboutSection() {
           <div className="absolute top-0 right-[-5%] w-[55px] sm:w-[75px] md:w-[90px] z-0">
             <div
               ref={starStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -140,7 +140,7 @@ export default function AboutSection() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] z-10">
             <div
               ref={aboutTextImageAnimRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -159,7 +159,7 @@ export default function AboutSection() {
           <div className="absolute bottom-3 left-5 w-[40px] sm:w-[55px] md:w-[75px] z-20 rotate-15">
             <div
               ref={lightningStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -178,7 +178,7 @@ export default function AboutSection() {
           <div className="absolute bottom-[20%] right-6 w-[55px] sm:w-[70px] md:w-[75px] z-20 rotate-[-8deg]">
             <div
               ref={arrowStickerRef}
-              className="w-full h-full origin-center"
+              className="w-full h-full origin-center opacity-0 scale-0"
               style={{ willChange: "transform" }}
             >
               <div className="w-full h-auto">
@@ -196,16 +196,16 @@ export default function AboutSection() {
 
         {/* Centered Copywriting content */}
         <div ref={textContainerRef} className="max-w-5xl w-full text-center space-y-4 px-4">
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
             We started Matchitt after seeing the same thing happen over and over: great brands creating endless content that barely reached the right people.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
             Everyone was chasing the next trend, posting more, spending more, and somehow connecting less.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
             We believe growth isn&apos;t about being everywhere. It&apos;s about being in the right place, with the right message, in front of the right audience.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-85">
+          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
             That&apos;s what we do. We match strategy with creativity, content with purpose, and brands with the people who will actually care.
           </p>
         </div>
