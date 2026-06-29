@@ -33,172 +33,179 @@ export default function WhoWeWorkWithSection() {
   const wipeRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Helper to compute exact transform origin to center on the 'r' letter
-    const getOrigin = (parent: HTMLElement | null, child: HTMLElement | null) => {
-      if (!parent || !child) return "50% 50%";
-      const pRect = parent.getBoundingClientRect();
-      const cRect = child.getBoundingClientRect();
-      const x = cRect.left - pRect.left + cRect.width / 2;
-      const y = cRect.top - pRect.top + cRect.height / 2;
-      return `${(x / pRect.width) * 100}% ${(y / pRect.height) * 100}%`;
-    };
+    const mm = gsap.matchMedia();
 
-    // 1. Visual Image Fade-in & Scale-up (Scale 0.95 -> 1.0, Opacity 0 -> 1 by top 50%)
-    const visualSection = visualSectionRef.current;
-    const visualImage = visualImageRef.current;
-    if (visualSection && visualImage) {
-      gsap.fromTo(
-        visualImage,
-        { scale: 0.8, opacity: 0 },
-        {
-          scale: 1.0,
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: visualSection,
-            start: "top bottom",
-            end: "top 50%",
-            scrub: 1.0,
-            invalidateOnRefresh: true,
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      const { isMobile } = context.conditions as { isMobile: boolean };
+
+      // Helper to compute exact transform origin to center on the 'r' letter
+      const getOrigin = (parent: HTMLElement | null, child: HTMLElement | null) => {
+        if (!parent || !child) return "50% 50%";
+        const pRect = parent.getBoundingClientRect();
+        const cRect = child.getBoundingClientRect();
+        const x = cRect.left - pRect.left + cRect.width / 2;
+        const y = cRect.top - pRect.top + cRect.height / 2;
+        return `${(x / pRect.width) * 100}% ${(y / pRect.height) * 100}%`;
+      };
+
+      // 1. Visual Image Fade-in & Scale-up (Scale 0.8 -> 1.0, Opacity 0 -> 1 by top 50%)
+      const visualSection = visualSectionRef.current;
+      const visualImage = visualImageRef.current;
+      if (visualSection && visualImage) {
+        gsap.fromTo(
+          visualImage,
+          { scale: 0.8, opacity: 0 },
+          {
+            scale: 1.0,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: visualSection,
+              start: "top bottom",
+              end: "top 50%",
+              scrub: 1.0,
+              invalidateOnRefresh: true,
+            }
           }
-        }
-      );
-    }
-
-    // 2. Pinned Text Carousel
-    const section = sectionRef.current;
-    const textContainer = textContainerRef.current;
-    const logo = logoRef.current;
-    const bestSticker = bestStickerRef.current;
-    const eyesSticker = eyesStickerRef.current;
-    if (!section || !textContainer || !logo) return;
-
-    // 3. Logo text sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
-    const logoTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top bottom",  // Starts when top of section enters viewport bottom
-        end: "top 5%",        // Completes 5vh BEFORE pinning at "top top" to avoid layout jump
-        scrub: 1.8,            // Smoother weighted lag
-        invalidateOnRefresh: true,
-      }
-    });
-
-    // Scale up elements dynamically as they first enter the screen
-    const entryElements = [logo, bestSticker, eyesSticker].filter(Boolean) as HTMLElement[];
-    if (entryElements.length > 0) {
-      logoTl.fromTo(
-        entryElements,
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
-        0
-      );
-    }
-
-    // Continuous float and rotation animation synced to scroll (parallax)
-    if (logo) {
-      logoTl.fromTo(
-        logo,
-        { y: 60, rotation: -6 },
-        { y: -60, rotation: 6, ease: "none" },
-        0
-      );
-    }
-
-    if (bestSticker) {
-      logoTl.fromTo(
-        bestSticker,
-        { y: 100, rotation: -12 },
-        { y: -100, rotation: 8, ease: "none" },
-        0
-      );
-    }
-
-    if (eyesSticker) {
-      logoTl.fromTo(
-        eyesSticker,
-        { y: 80, rotation: 15 },
-        { y: -80, rotation: -15, ease: "none" },
-        0
-      );
-    }
-
-    const texts = textContainer.querySelectorAll(".client-text");
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",       // Pin exactly when section hits the top of the viewport
-        end: "+=500%", 
-        pin: true, 
-        pinSpacing: true,
-        scrub: 0.3,             // Much smoother pinned slide transition weight (increased from 1)
-        invalidateOnRefresh: true,
-      }
-    });
-
-    texts.forEach((text, i) => {
-      // For each text, animate it fading and sliding up into the center
-      tl.fromTo(
-        text,
-        { opacity: 0, y: 100, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 2.5, ease: "power2.out" }
-      );
-      
-      // Then hold it for a moment, and animate it fading and sliding up out of view
-      if (i !== texts.length - 1) {
-        tl.to(
-          text,
-          { opacity: 0, y: -100, scale: 0.9, duration: 2.5, ease: "power2.in" },
-          "+=1.0" // Larger delay to let the user read it
         );
       }
-    });
 
-    const isMobile = window.innerWidth < 768;
-    const wipeOffset = isMobile ? "<75%" : "<60%";
+      // 2. Pinned Text Carousel
+      const section = sectionRef.current;
+      const textContainer = textContainerRef.current;
+      const logo = logoRef.current;
+      const bestSticker = bestStickerRef.current;
+      const eyesSticker = eyesStickerRef.current;
+      if (!section || !textContainer || !logo) return;
 
-    // 1. Zoom in on the text centered on the letter "l"
-    tl.to(
-      personalBrandRef.current,
-      {
-        scale: 50,
-        duration: 18.0, 
-        ease: "power2.in",
-        transformOrigin: () => {
-          if (personalBrandRef.current && lRef.current) {
-            return getOrigin(personalBrandRef.current, lRef.current);
-          }
-          return "50% 50%";
+      // 3. Logo text sticker timeline for smooth, continuous parallax scrolling (scrub: 1.8)
+      const logoTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",  // Starts when top of section enters viewport bottom
+          end: "top 5%",        // Completes 5vh BEFORE pinning at "top top" to avoid layout jump
+          scrub: 1.8,            // Smoother weighted lag
+          invalidateOnRefresh: true,
         }
-      },
-      32.5
-    );
+      });
 
-    // 2. Expand the burgundy wipe horizontally to 100% width
-    tl.to(
-      wipeRef.current,
-      {
-        width: "100%",
-        duration: isMobile ? 3.5 : 5.0, // Scaled up proportionally
-        ease: "none"
-      },
-      wipeOffset
-    );
+      // Scale up elements dynamically as they first enter the screen
+      const entryElements = [logo, bestSticker, eyesSticker].filter(Boolean) as HTMLElement[];
+      if (entryElements.length > 0) {
+        logoTl.fromTo(
+          entryElements,
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+          0
+        );
+      }
 
-    // 3. Fade out the logo and stickers
-    const fadeOutElements = [logo, bestSticker, eyesSticker].filter(Boolean);
-    tl.to(
-      fadeOutElements,
-      {
-        opacity: 0,
-        scale: 0.9,
-        duration: 6.0, // Increased to match the slower scale
-        ease: "power2.out"
-      },
-      32.5
-    );
+      // Continuous float and rotation animation synced to scroll (parallax)
+      if (logo) {
+        logoTl.fromTo(
+          logo,
+          { y: 60, rotation: -6 },
+          { y: -60, rotation: 6, ease: "none" },
+          0
+        );
+      }
 
+      if (bestSticker) {
+        logoTl.fromTo(
+          bestSticker,
+          { y: 100, rotation: -12 },
+          { y: -100, rotation: 8, ease: "none" },
+          0
+        );
+      }
+
+      if (eyesSticker) {
+        logoTl.fromTo(
+          eyesSticker,
+          { y: 80, rotation: 15 },
+          { y: -80, rotation: -15, ease: "none" },
+          0
+        );
+      }
+
+      const texts = textContainer.querySelectorAll(".client-text");
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",       // Pin exactly when section hits the top of the viewport
+          end: "+=500%", 
+          pin: true, 
+          pinSpacing: true,
+          scrub: 0.3,             // Much smoother pinned slide transition weight (increased from 1)
+          invalidateOnRefresh: true,
+        }
+      });
+
+      texts.forEach((text, i) => {
+        // For each text, animate it fading and sliding up into the center
+        tl.fromTo(
+          text,
+          { opacity: 0, y: 100, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 2.5, ease: "power2.out" }
+        );
+        
+        // Then hold it for a moment, and animate it fading and sliding up out of view
+        if (i !== texts.length - 1) {
+          tl.to(
+            text,
+            { opacity: 0, y: -100, scale: 0.9, duration: 2.5, ease: "power2.in" },
+            "+=1.0" // Larger delay to let the user read it
+          );
+        }
+      });
+
+      const wipeOffset = isMobile ? "<75%" : "<60%";
+
+      // 1. Zoom in on the text centered on the letter "l"
+      tl.to(
+        personalBrandRef.current,
+        {
+          scale: 50,
+          duration: 18.0, 
+          ease: "power2.in",
+          transformOrigin: () => {
+            if (personalBrandRef.current && lRef.current) {
+              return getOrigin(personalBrandRef.current, lRef.current);
+            }
+            return "50% 50%";
+          }
+        },
+        32.5
+      );
+
+      // 2. Expand the burgundy wipe horizontally to 100% width
+      tl.to(
+        wipeRef.current,
+        {
+          width: "100%",
+          duration: isMobile ? 3.5 : 5.0, // Scaled up proportionally
+          ease: "none"
+        },
+        wipeOffset
+      );
+
+      // 3. Fade out the logo and stickers
+      const fadeOutElements = [logo, bestSticker, eyesSticker].filter(Boolean);
+      tl.to(
+        fadeOutElements,
+        {
+          opacity: 0,
+          scale: 0.9,
+          duration: 6.0, // Increased to match the slower scale
+          ease: "power2.out"
+        },
+        32.5
+      );
+    });
   }, { scope: containerRef, dependencies: [] });
 
   return (
@@ -214,7 +221,7 @@ export default function WhoWeWorkWithSection() {
           style={{ willChange: "transform, opacity" }}
         >
           <Image
-            src="/images/new-image.png"
+            src="/images/Second_Two_Girls_Img.png"
             alt="Who We Work With Visual"
             width={1600}
             height={900}
@@ -232,7 +239,7 @@ export default function WhoWeWorkWithSection() {
         />
 
         {/* Sticker Composition (Who We Work With) */}
-        <div className="relative w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] shrink-0 select-none mt-[6vh] md:mt-[8vh] mb-[2vh] z-10">
+        <div className="relative w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] shrink-0 select-none mt-[14vh] md:mt-[8vh] mb-[2vh] z-10">
           
           {/* Main WHOWEWORKWITH image */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[-70%] w-[190px] sm:w-[250px] md:w-[280px] z-10">
@@ -298,7 +305,7 @@ export default function WhoWeWorkWithSection() {
           {clientTypes.map((text, index) => (
             <h2 
               key={index}
-              className="client-text absolute w-full left-0 right-0 text-center text-6xl sm:text-8xl md:text-10xl lg:text-[9rem] xl:text-[10rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
+              className="client-text absolute w-full left-0 right-0 text-center text-[13vw] sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
             >
               {text === "E-commerce" ? (
                 <>E<span className="font-sans">-</span>commerce</>

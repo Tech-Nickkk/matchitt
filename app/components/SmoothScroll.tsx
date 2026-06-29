@@ -27,7 +27,17 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0); // Forces frame-perfect sync
 
+    // Sync scroll triggers and Lenis on resize
+    const handleResize = () => {
+      setTimeout(() => {
+        lenis.resize();
+        ScrollTrigger.refresh();
+      }, 150);
+    };
+    window.addEventListener("resize", handleResize);
+
     return () => {
+      window.removeEventListener("resize", handleResize);
       gsap.ticker.remove(raf);
       lenis.destroy();
     };

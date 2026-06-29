@@ -38,17 +38,14 @@ export default function StatementSection() {
     <section
       ref={containerRef}
       id="statement-section"
-      className="relative w-full min-h-screen flex items-center justify-center pointer-events-auto select-none overflow-hidden"
+      className="relative w-full min-h-[60vh] sm:min-h-screen flex items-center justify-center pointer-events-auto select-none overflow-hidden"
     >
       {/* Ripple/Crinkled texture background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
         <div
-          className="absolute inset-0 opacity-60"
+          className="w-full h-[42vh] sm:h-[55vh] md:h-[70vh] lg:h-full opacity-60 bg-no-repeat bg-center bg-[length:100%_100%] lg:bg-contain"
           style={{
             backgroundImage: 'url("/images/Statement_Bg_Img.png")',
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
           }}
         />
       </div>
@@ -57,10 +54,10 @@ export default function StatementSection() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h2
           ref={textRef}
-          className="font-recoleta-bold text-[5vw] sm:text-3xl md:text-4xl lg:text-[52px] xl:text-[56px] leading-tight text-brand-burgundy font-bold opacity-0 flex flex-col items-center w-full"
+          className="font-recoleta-bold text-[5.5vw] sm:text-3xl md:text-4xl lg:text-[52px] xl:text-[56px] leading-tight text-brand-burgundy font-bold opacity-0 flex flex-col items-center w-full"
         >
-          <span className="whitespace-nowrap">Most businesses don<span className="font-sans">&apos;</span>t need more content.</span>
-          <span className="whitespace-nowrap">They need the right direction.</span>
+          <span className="sm:whitespace-nowrap">Most businesses don<span className="font-sans">&apos;</span>t need more content.</span>
+          <span className="sm:whitespace-nowrap">They need the right direction.</span>
         </h2>
       </div>
     </section>

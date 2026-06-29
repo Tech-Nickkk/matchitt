@@ -26,7 +26,7 @@ const FlowerSeparator = () => (
     alt=""
     width={40}
     height={40}
-    className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain animate-spin select-none pointer-events-none shrink-0"
+    className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 object-contain animate-spin select-none pointer-events-none shrink-0"
     style={{ animationDuration: "20s" }}
   />
 );
@@ -98,7 +98,7 @@ export default function Navbar() {
   return (
     <header 
       id="navbar-container" 
-      className="relative w-full min-h-[90px] sm:min-h-[110px] md:min-h-[140px] overflow-visible flex items-center justify-center pointer-events-auto select-none z-30 px-4 md:px-6 py-4 md:py-6"
+      className="relative w-full min-h-[90px] sm:min-h-[110px] md:min-h-[120px] overflow-visible flex items-center justify-center pointer-events-auto select-none z-30 px-2 md:px-4 lg:px-6 py-4 md:py-6"
     >
       {/* Wavy liquid texture background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -114,7 +114,7 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="relative z-10 hidden md:flex items-center justify-center gap-x-3 lg:gap-x-5 text-brand-burgundy font-recoleta-light font-bold text-sm lg:text-base xl:text-lg tracking-wide select-none w-full max-w-7xl mx-auto">
+      <nav className="relative z-10 hidden md:flex items-center justify-center gap-x-1.5 lg:gap-x-3 xl:gap-x-5 text-brand-burgundy font-recoleta-light font-bold text-xs lg:text-sm xl:text-base tracking-wide select-none w-full max-w-7xl mx-auto">
         {navLinksLeft.map(label => (
           <Fragment key={label}>
             <NavLink label={label} className="shrink-0" />
@@ -129,7 +129,7 @@ export default function Navbar() {
             alt="MATCHITT"
             width={240}
             height={80}
-            className="w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
+            className="w-20 sm:w-24 md:w-26 lg:w-32 xl:w-40 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           />
         </div>

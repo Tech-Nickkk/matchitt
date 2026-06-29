@@ -191,7 +191,7 @@ export default function CtaSection() {
         {/* Left Girl */}
         <div 
           ref={girl1Ref} 
-          className="absolute bottom-0 sm:bottom-[18%] left-[-5%] sm:left-[-12%] w-[55%] sm:w-full h-[80%] sm:h-[120%] opacity-0 z-10"
+          className="absolute bottom-0 sm:bottom-[18%] left-[0%] sm:left-[-12%] w-[50%] sm:w-full h-[75%] sm:h-[120%] opacity-0 z-10"
         >
           <Image
             src="/images/girl-1.png"
@@ -205,7 +205,7 @@ export default function CtaSection() {
         {/* Right Girl */}
         <div 
           ref={girl2Ref} 
-          className="absolute bottom-0 sm:bottom-[18%] right-[-8%] sm:right-[-15%] w-[58%] sm:w-full h-[80%] sm:h-[120%] opacity-0 z-10"
+          className="absolute bottom-0 sm:bottom-[18%] right-[0%] sm:right-[-15%] w-[53%] sm:w-full h-[75%] sm:h-[120%] opacity-0 z-10"
         >
           <Image
             src="/images/girl-2.png"
@@ -219,7 +219,7 @@ export default function CtaSection() {
         {/* Desk */}
         <div 
           ref={deskRef} 
-          className="absolute bottom-[-5%] sm:-bottom-1/5 left-[-5%] sm:left-[-26%] w-[110%] sm:w-[155%] h-[55%] sm:h-full opacity-0 z-20"
+          className="absolute bottom-[-5%] sm:-bottom-1/5 left-[0%] sm:left-[-26%] w-[100%] sm:w-[155%] h-[55%] sm:h-full opacity-0 z-20"
         >
           <Image
             src="/images/desk.png"

@@ -22,7 +22,7 @@ const getResponsiveConfig = () => {
   if (width < 640) {
     // Mobile
     return {
-      scale: 0.72,
+      scale: 0.65,
       initialX: -0.1,
       initialY: -0.15,
       statementY: -0.85,
@@ -30,10 +30,10 @@ const getResponsiveConfig = () => {
   } else if (width < 1024) {
     // Tablet
     return {
-      scale: 1.15,
-      initialX: -0.2,
-      initialY: -0.53,
-      statementY: -1.15,
+      scale: 0.95,
+      initialX: -0.15,
+      initialY: -0.45,
+      statementY: -1.0,
     };
   } else {
     // Desktop
@@ -527,6 +527,11 @@ export default function PuzzleScene() {
         const config = getResponsiveConfig();
         group.scale.set(config.scale, config.scale, config.scale);
       }
+
+      // Automatically recalculate all ScrollTrigger timeline markers & progress on resize
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 150);
     };
     window.addEventListener("resize", handleResize);
 

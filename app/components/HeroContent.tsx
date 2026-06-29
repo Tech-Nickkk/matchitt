@@ -37,7 +37,7 @@ export default function HeroContent() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=350%",
+          end: isDesktop ? "+=350%" : "+=220%",
           pin: true,
           scrub: 0.8,
           invalidateOnRefresh: true,
@@ -66,14 +66,14 @@ export default function HeroContent() {
         0.3 // Staggered by 0.3s after the girls image
       );
 
-      // Step 2: Envelope moves to left (desktop) or up (mobile/tablet) and rotates slightly opposite
+      // Step 2: Envelope moves to left (desktop) or stays in place (mobile/tablet)
       if (!isDesktop) {
         tl.to(
           envelopeRef.current,
           {
             x: 0,
-            y: "-28vh",
-            scale: 0.7,
+            y: 0,
+            scale: 0.75,
             rotate: -3,
             ease: "power2.inOut",
             duration: 1.0,
@@ -105,10 +105,10 @@ export default function HeroContent() {
       // Step 3: Text slides up on the right (desktop) or bottom (mobile) - plays faster
       tl.fromTo(
         textContainerRef.current,
-        { opacity: 0, y: "40vh" },
+        { opacity: 0, y: isDesktop ? "40vh" : "15vh" },
         {
           opacity: 1,
-          y: !isDesktop ? "32vh" : 0,
+          y: 0,
           ease: "power2.out",
           duration: 0.5, // Reduced duration to make it animate faster
         },
@@ -131,26 +131,28 @@ export default function HeroContent() {
         {/* Cutout Image of the Sisters (Starts centered, shifts to the left column) */}
         <div 
           ref={envelopeRef} 
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 opacity-0"
+          className="relative lg:absolute left-0 lg:left-1/2 top-0 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-30 opacity-0 mb-6 lg:mb-0 flex justify-center w-full lg:w-auto"
         >
-          <Image
-            src="/images/Two_Girls_Hero_Img.png"
-            alt="Two Sisters Matchitt"
-            width={800}
-            height={600}
-            className="w-[320px] sm:w-[400px] md:w-[470px] lg:w-[520px] xl:w-[560px] object-contain select-none pointer-events-none drop-shadow-2xl"
-            priority
-          />
-          
-          {/* Matchitt Sticker Overlay */}
-          <div ref={stickerRef} className="absolute bottom-0 left-[25%] z-40 w-[180px] sm:w-[220px] md:w-[260px] lg:w-[290px] transform origin-center drop-shadow-lg">
+          <div className="relative">
             <Image
-              src="/images/Matchitt_Text_Img.png"
-              alt="Matchitt Sticker"
-              width={400}
-              height={150}
-              className="w-full h-auto object-contain select-none pointer-events-none"
+              src="/images/Two_Girls_Hero_Img.png"
+              alt="Two Sisters Matchitt"
+              width={800}
+              height={600}
+              className="w-[280px] sm:w-[360px] md:w-[420px] lg:w-[520px] xl:w-[560px] object-contain select-none pointer-events-none drop-shadow-2xl"
+              priority
             />
+            
+            {/* Matchitt Sticker Overlay */}
+            <div ref={stickerRef} className="absolute bottom-0 left-[25%] z-40 w-[110px] sm:w-[150px] md:w-[240px] lg:w-[290px] transform origin-center drop-shadow-lg">
+              <Image
+                src="/images/Matchitt_Text_Img.png"
+                alt="Matchitt Sticker"
+                width={400}
+                height={150}
+                className="w-full h-auto object-contain select-none pointer-events-none"
+              />
+            </div>
           </div>
         </div>
 
@@ -159,14 +161,16 @@ export default function HeroContent() {
           ref={textContainerRef} 
           className="w-full lg:w-1/2 opacity-0 flex flex-col justify-center text-center px-4 md:px-8 lg:px-0 z-20"
         >
-          <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-tight text-brand-burgundy mb-8">
+          <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-snug text-brand-burgundy mb-8">
             Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
           </h2>
-          <ul className="space-y-2 text-brand-burgundy font-recoleta-light font-semibold text-lg sm:text-xl md:text-[25px] leading-relaxed list-none mx-auto text-center">
-            {HERO_BULLETS.map((bullet, index) => (
-              <li key={index}>• {bullet}</li>
-            ))}
-          </ul>
+          <div className="flex justify-center">
+            <ul className="space-y-2 text-brand-burgundy font-recoleta-light font-semibold text-lg sm:text-xl md:text-[25px] leading-snug list-none inline-block">
+              {HERO_BULLETS.map((bullet, index) => (
+                <li key={index}>• {bullet}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
       </div>

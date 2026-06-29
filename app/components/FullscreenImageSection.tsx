@@ -45,21 +45,35 @@ export default function FullscreenImageSection() {
     <section
       ref={containerRef}
       id="fullscreen-image-section"
-      className="relative w-full h-screen overflow-hidden bg-brand-cream z-30 pointer-events-auto flex justify-center items-center"
+      className="relative w-full h-auto md:h-screen overflow-hidden bg-brand-cream z-30 pointer-events-auto flex justify-center items-center"
     >
       <div
         ref={imageWrapperRef}
-        className="relative w-full h-full origin-center"
+        className="w-full h-auto md:h-full md:relative origin-center"
         style={{ willChange: "transform, opacity" }}
       >
-        <Image
-          src="/images/new-image.png"
-          alt="Fullscreen transition image"
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
+        {/* Mobile & Tablet: full width, auto height */}
+        <div className="block md:hidden w-full h-auto">
+          <Image
+            src="/images/First_Two_Girls_Img.png"
+            alt="Fullscreen transition image"
+            width={1600}
+            height={900}
+            className="w-full h-auto object-cover"
+            priority
+          />
+        </div>
+        {/* Desktop: fill container */}
+        <div className="hidden md:block absolute inset-0 w-full h-full">
+          <Image
+            src="/images/First_Two_Girls_Img.png"
+            alt="Fullscreen transition image"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+        </div>
       </div>
     </section>
   );

@@ -221,7 +221,7 @@ export default function WhatWeDoSection() {
           </div>
 
           {/* Sticker 1: Band-aid (Left) */}
-          <div className="absolute bottom-40 left-[-25%] w-[40px] sm:w-[55px] md:w-[100px] z-20 rotate-[-35deg]">
+          <div className="absolute bottom-40 left-[-10%] sm:left-[-15%] md:left-[-25%] w-[40px] sm:w-[55px] md:w-[100px] z-20 rotate-[-35deg]">
             <div
               ref={bandAidStickerRef}
               className="w-full h-full origin-center opacity-0 scale-0"
@@ -259,7 +259,7 @@ export default function WhatWeDoSection() {
           </div>
 
           {/* Sticker 3: Blue Smile (Bottom Right) */}
-          <div className="absolute bottom-[15%] right-[-15%] w-[55px] sm:w-[70px] md:w-[100px] z-20 rotate-[-20deg]">
+          <div className="absolute bottom-[15%] right-[-5%] sm:right-[-10%] md:right-[-15%] w-[55px] sm:w-[70px] md:w-[100px] z-20 rotate-[-20deg]">
             <div
               ref={smileStickerRef}
               className="w-full h-full origin-center opacity-0 scale-0"
