@@ -121,11 +121,23 @@ export default function WhatWeDoSection() {
     ].filter(Boolean) as HTMLElement[];
 
     if (elements.length > 0) {
-      stickerTl.fromTo(
+      // 2a. Scale up elements dynamically as they first enter the screen (independent from section height scrub to animate early)
+      gsap.fromTo(
         elements,
         { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
-        0
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "back.out(1.5)",
+          scrollTrigger: {
+            trigger: textContainerRef.current,
+            start: "top 95%", // Triggers early when top of content enters near bottom of viewport
+            toggleActions: "play none none reverse",
+            invalidateOnRefresh: true,
+          }
+        }
       );
     }
 
@@ -194,7 +206,7 @@ export default function WhatWeDoSection() {
     <section
       id="what-we-do"
       ref={sectionRef}
-      className="relative w-full flex flex-col items-center justify-center text-brand-burgundy pt-32 pb-12 overflow-hidden pointer-events-auto z-30"
+      className="relative w-full flex flex-col items-center justify-center text-brand-burgundy pt-16 md:pt-32 pb-12 overflow-hidden pointer-events-auto z-30"
     >
       <div className="relative max-w-5xl w-full mx-auto px-6 flex flex-col items-center justify-center">
         
@@ -259,7 +271,7 @@ export default function WhatWeDoSection() {
           </div>
 
           {/* Sticker 3: Blue Smile (Bottom Right) */}
-          <div className="absolute bottom-[15%] right-[-5%] sm:right-[-10%] md:right-[-15%] w-[55px] sm:w-[70px] md:w-[100px] z-20 rotate-[-20deg]">
+          <div className="absolute bottom-[35%] right-[-5%] sm:right-[-10%] md:right-[-15%] w-[55px] sm:w-[70px] md:w-[100px] z-20 rotate-[-20deg]">
             <div
               ref={smileStickerRef}
               className="w-full h-full origin-center opacity-0 scale-0"
@@ -292,7 +304,7 @@ export default function WhatWeDoSection() {
           opacity: 0;
         }
       `}</style>
-      <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-0 sm:gap-14 mt-24">
+      <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-0 sm:gap-14 mt-12 md:mt-24">
         {/* Top Row */}
         <div className="flex w-full justify-center">
           <div className="flex flex-col sm:flex-row items-center sm:items-start">

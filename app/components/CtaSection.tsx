@@ -187,11 +187,11 @@ export default function CtaSection() {
       className="relative w-full min-h-screen bg-[#83333E] -mt-px flex flex-col items-center justify-center z-30 overflow-hidden"
     >
       {/* Visual Composition Container - Centered and Grouped */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[52%] sm:h-[60%] md:h-[65%] lg:h-[70%] pointer-events-none select-none overflow-visible z-10">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[62%] sm:h-[60%] md:h-[65%] lg:h-[70%] pointer-events-none select-none overflow-visible z-10">
         {/* Left Girl */}
         <div 
           ref={girl1Ref} 
-          className="absolute bottom-0 sm:bottom-[18%] left-[0%] sm:left-[-12%] w-[50%] sm:w-full h-[75%] sm:h-[120%] opacity-0 z-10"
+          className="absolute bottom-[8%] sm:bottom-[18%] left-[0%] sm:left-[-12%] w-[50%] sm:w-full h-[75%] sm:h-[120%] opacity-0 z-10"
         >
           <Image
             src="/images/girl-1.png"
@@ -205,7 +205,7 @@ export default function CtaSection() {
         {/* Right Girl */}
         <div 
           ref={girl2Ref} 
-          className="absolute bottom-0 sm:bottom-[18%] right-[0%] sm:right-[-15%] w-[53%] sm:w-full h-[75%] sm:h-[120%] opacity-0 z-10"
+          className="absolute bottom-[8%] sm:bottom-[18%] right-[0%] sm:right-[-15%] w-[53%] sm:w-full h-[75%] sm:h-[120%] opacity-0 z-10"
         >
           <Image
             src="/images/girl-2.png"
@@ -219,7 +219,7 @@ export default function CtaSection() {
         {/* Desk */}
         <div 
           ref={deskRef} 
-          className="absolute bottom-[-5%] sm:-bottom-1/5 left-[0%] sm:left-[-26%] w-[100%] sm:w-[155%] h-[55%] sm:h-full opacity-0 z-20"
+          className="absolute bottom-[3%] sm:-bottom-1/5 left-[0%] sm:left-[-26%] w-[100%] sm:w-[155%] h-[55%] sm:h-full opacity-0 z-20"
         >
           <Image
             src="/images/desk.png"

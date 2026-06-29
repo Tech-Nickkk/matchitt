@@ -27,45 +27,7 @@ body {
   overflow-x: clip;
 }
 
-/* Scrapbook Float Animations */
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px) rotate(var(--orig-rot, -2deg));
-  }
-  50% {
-    transform: translateY(-10px) rotate(calc(var(--orig-rot, -2deg) + 2deg));
-  }
-}
 
-@keyframes floatMedium {
-  0%, 100% {
-    transform: translateY(0px) rotate(var(--orig-rot, 3deg));
-  }
-  50% {
-    transform: translateY(-7px) rotate(calc(var(--orig-rot, 3deg) - 2deg));
-  }
-}
-
-@keyframes floatFast {
-  0%, 100% {
-    transform: translateY(0px) rotate(var(--orig-rot, 0deg));
-  }
-  50% {
-    transform: translateY(-5px) rotate(calc(var(--orig-rot, 0deg) + 1.5deg));
-  }
-}
-
-.animate-float-slow {
-  animation: floatSlow 7s ease-in-out infinite;
-}
-
-.animate-float-medium {
-  animation: floatMedium 5.5s ease-in-out infinite;
-}
-
-.animate-float-fast {
-  animation: floatFast 4s ease-in-out infinite;
-}
 
 /* Lenis Smooth Scroll Core Styles */
 html.lenis, html.lenis body {

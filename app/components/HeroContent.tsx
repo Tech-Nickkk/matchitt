@@ -95,10 +95,10 @@ export default function HeroContent() {
         );
       }
 
-      // Sticker Step 2: Tilt back to bottom left and move slightly left as the image moves
+      // Sticker Step 2: Tilt back and keep it centered as the image moves
       tl.to(
         stickerRef.current,
-        { x: -70, rotate: -8, ease: "power2.inOut", duration: 1.0 },
+        { x: 0, rotate: -8, ease: "power2.inOut", duration: 1.0 },
         "<+=0.2" // Slight delay relative to the image movement
       );
 
@@ -123,7 +123,7 @@ export default function HeroContent() {
       id="hero-pin-container"
       className="relative w-full min-h-screen flex items-center justify-center z-30 pointer-events-auto overflow-hidden"
     >
-      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col lg:flex-row items-center justify-between min-h-screen py-16">
+      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-y-4 lg:gap-y-0 min-h-screen pt-8 pb-24 lg:py-16">
         
         {/* Left Column Spacer (Desktop only) */}
         <div className="w-full lg:w-1/2 pointer-events-none hidden lg:block" />
@@ -131,7 +131,7 @@ export default function HeroContent() {
         {/* Cutout Image of the Sisters (Starts centered, shifts to the left column) */}
         <div 
           ref={envelopeRef} 
-          className="relative lg:absolute left-0 lg:left-1/2 top-0 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-30 opacity-0 mb-6 lg:mb-0 flex justify-center w-full lg:w-auto"
+          className="relative lg:absolute left-0 lg:left-1/2 top-0 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-30 opacity-0 mb-0 lg:mb-0 flex justify-center w-full lg:w-auto"
         >
           <div className="relative">
             <Image
@@ -144,7 +144,10 @@ export default function HeroContent() {
             />
             
             {/* Matchitt Sticker Overlay */}
-            <div ref={stickerRef} className="absolute bottom-0 left-[25%] z-40 w-[110px] sm:w-[150px] md:w-[240px] lg:w-[290px] transform origin-center drop-shadow-lg">
+            <div 
+              ref={stickerRef} 
+              className="absolute bottom-0 left-0 right-0 mx-auto h-fit z-40 w-[140px] sm:w-[190px] md:w-[280px] lg:w-[330px] xl:w-[360px] transform origin-center drop-shadow-lg"
+            >
               <Image
                 src="/images/Matchitt_Text_Img.png"
                 alt="Matchitt Sticker"
@@ -161,7 +164,7 @@ export default function HeroContent() {
           ref={textContainerRef} 
           className="w-full lg:w-1/2 opacity-0 flex flex-col justify-center text-center px-4 md:px-8 lg:px-0 z-20"
         >
-          <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-snug text-brand-burgundy mb-8">
+          <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-snug text-brand-burgundy mb-4 lg:mb-8">
             Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
           </h2>
           <div className="flex justify-center">
