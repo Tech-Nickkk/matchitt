@@ -213,20 +213,33 @@ export default function WhoWeWorkWithSection() {
       {/* Part 1: Who We Work With Visual Image Section */}
       <section 
         ref={visualSectionRef} 
-        className="relative w-full flex justify-center bg-brand-cream overflow-hidden"
+        className="relative w-full h-auto md:h-screen flex justify-center bg-brand-cream overflow-hidden pt-8"
       >
         <div 
           ref={visualImageRef} 
-          className="w-full h-auto max-w-[1600px] flex justify-center pt-8 origin-center opacity-0"
+          className="w-full h-auto md:h-full md:relative max-w-[1600px] origin-center opacity-0"
           style={{ willChange: "transform, opacity" }}
         >
-          <Image
-            src="/images/Second_Two_Girls_Img.png"
-            alt="Who We Work With Visual"
-            width={1600}
-            height={900}
-            className="w-full h-auto object-cover"
-          />
+          {/* Mobile & Tablet: auto height */}
+          <div className="block md:hidden w-full h-auto">
+            <Image
+              src="/images/Two_Girls_Img_2.png"
+              alt="Who We Work With Visual"
+              width={1600}
+              height={900}
+              className="w-full h-auto object-cover"
+            />
+          </div>
+          {/* Desktop: fill container */}
+          <div className="hidden md:block absolute inset-0 w-full h-full">
+            <Image
+              src="/images/Two_Girls_Img_2.png"
+              alt="Who We Work With Visual"
+              fill
+              className="object-cover object-top"
+              sizes="100vw"
+            />
+          </div>
         </div>
       </section>
 

@@ -45,7 +45,7 @@ export default function StatementSection() {
         <div
           className="w-full h-[42vh] sm:h-[55vh] md:h-[70vh] lg:h-full opacity-60 bg-no-repeat bg-center bg-[length:100%_100%] lg:bg-contain"
           style={{
-            backgroundImage: 'url("/images/Statement_Bg_Img.png")',
+            backgroundImage: 'url("/images/Bg_Statement_Img.png")',
           }}
         />
       </div>

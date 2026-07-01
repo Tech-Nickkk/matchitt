@@ -55,7 +55,7 @@ export default function FullscreenImageSection() {
         {/* Mobile & Tablet: full width, auto height */}
         <div className="block md:hidden w-full h-auto">
           <Image
-            src="/images/First_Two_Girls_Img.png"
+            src="/images/Two_Girls_Img_1.png"
             alt="Fullscreen transition image"
             width={1600}
             height={900}
@@ -66,10 +66,10 @@ export default function FullscreenImageSection() {
         {/* Desktop: fill container */}
         <div className="hidden md:block absolute inset-0 w-full h-full">
           <Image
-            src="/images/First_Two_Girls_Img.png"
+            src="/images/Two_Girls_Img_1.png"
             alt="Fullscreen transition image"
             fill
-            className="object-cover"
+            className="object-cover object-top"
             sizes="100vw"
             priority
           />
