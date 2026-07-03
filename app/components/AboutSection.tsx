@@ -195,18 +195,24 @@ export default function AboutSection() {
         </div>
 
         {/* Centered Copywriting content */}
-        <div ref={textContainerRef} className="max-w-5xl w-full text-center space-y-4 px-4">
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
-            We started Matchitt after seeing the same thing happen over and over: great brands creating endless content that barely reached the right people.
+        <div ref={textContainerRef} className="max-w-5xl w-full text-left space-y-4 px-4">
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
+              We started Matchitt because we kept seeing the same pattern.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
-            Everyone was chasing the next trend, posting more, spending more, and somehow connecting less.
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
+            Brands were creating more and more content, but not seeing better results.
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
-            We believe growth isn&apos;t about being everywhere. It&apos;s about being in the right place, with the right message, in front of the right audience.
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
+            It wasn&apos;t because the content wasn&apos;t good. It was because it wasn&apos;t reaching the right people, or saying the right thing. 
           </p>
-          <p className="font-recoleta-light font-bold text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-brand-burgundy opacity-0">
-            That&apos;s what we do. We match strategy with creativity, content with purpose, and brands with the people who will actually care.
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
+            Somewhere along the way, everyone started believing that more content was the answer. 
+          </p>
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
+            We don&apos;t think it is.
+          </p>
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
+            We believe good marketing starts with understanding who you&apos;re trying to reach, why they should care, and how to show up in a way that actually means something
           </p>
         </div>
 

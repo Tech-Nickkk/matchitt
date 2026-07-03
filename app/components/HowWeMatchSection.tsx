@@ -165,9 +165,9 @@ export default function HowWeMatchSection() {
           {/* Paragraph below the text */}
           <p
             ref={paraRef}
-            className="font-recoleta-light font-bold text-brand-burgundy text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-center max-w-5xl opacity-0 px-6"
+            className="font-recoleta-light font-bold text-brand-burgundy text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-center max-w-5xl opacity-0 px-6"
           >
-            Getting your brand in front of the<br className="hidden sm:block" /> right people in the right way.
+            Helping brands reach the people<br className="hidden sm:block" /> who matter most
           </p>
         </div>
 

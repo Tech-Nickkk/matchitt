@@ -9,14 +9,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const services = [
-  { title: "Branding", image: "/images/Branding_Text_Img.png", sizeClass: "w-[75%] h-[30%] bottom-[-7%]" },
-  { title: "Content Creation", image: "/images/Content_Creation_Text_Img.png", sizeClass: "w-[62%] h-[50%] bottom-[-15%]" },
-  { title: "Digital Strategy", image: "/images/Digital_Strategy_Text_Img.png", sizeClass: "w-[58%] h-[55%] bottom-[-18%]" },
-  { title: "Paid Amplification", image: "/images/Paid_Amplification_Text_Img.png", sizeClass: "w-[75%] h-[50%] bottom-[-12%]" },
-  { title: "Creative & Design", image: "/images/Creative_Design_Text_Img.png", sizeClass: "w-[68%] h-[50%] bottom-[-15%]" },
-  { title: "Influencer Engagement", image: "/images/Infuencer_Engagement_Text_Img.png", sizeClass: "w-[75%] h-[45%] bottom-[-12%]" },
-  { title: "SEO & Website", image: "/images/Seo_Website_Text_Img.png", sizeClass: "w-[92%] h-[27%] bottom-[-7%]" },
-  { title: "SEM & Programmatic", image: "/images/Sem_Programmatic_Text_Img.png", sizeClass: "w-[82%] h-[50%] bottom-[-10%]" },
+  { title: "Branding", image: "/images/Branding_Text_Img.png", sizeClass: "w-[75%] h-[40%] bottom-[-12%]" },
+  { title: "Content Creation", image: "/images/Content_Creation_Text_Img.png", sizeClass: "w-[62%] h-[60%] bottom-[-22%]" },
+  { title: "Digital Strategy", image: "/images/Digital_Strategy_Text_Img.png", sizeClass: "w-[69%] h-[65%] bottom-[-28%]" },
+  { title: "Paid Amplification", image: "/images/Paid_Amplification_Text_Img.png", sizeClass: "w-[90%] h-[70%] bottom-[-22%]", translateXClass: "-translate-x-[53%]" },
+  { title: "Creative & Design", image: "/images/Creative_Design_Text_Img.png", sizeClass: "w-[70%] h-[70%] bottom-[-25%]" },
+  { title: "Influencer Engagement", image: "/images/Infuencer_Engagement_Text_Img.png", sizeClass: "w-[80%] h-[60%] bottom-[-25%]", translateXClass: "-translate-x-[51.5%]" },
+  { title: "SEO & Website", image: "/images/Seo_Website_Text_Img.png", sizeClass: "w-[92%] h-[37%] bottom-[-15%]" },
+  { title: "SEM & Programmatic", image: "/images/Sem_Programmatic_Text_Img.png", sizeClass: "w-[100%] h-[55%] bottom-[-22%]" },
 ];
 
 export default function WhatWeDoSection() {
@@ -63,8 +63,8 @@ export default function WhatWeDoSection() {
     if (mainStickerRef.current) {
       stickerTl.fromTo(
         mainStickerRef.current,
-        { y: 20, rotation: -3 },
-        { y: -20, rotation: 3, ease: "none" },
+        { y: 15, rotation: -3 },
+        { y: -15, rotation: 3, ease: "none" },
         0
       );
     }
@@ -72,8 +72,8 @@ export default function WhatWeDoSection() {
     if (bandAidStickerRef.current) {
       stickerTl.fromTo(
         bandAidStickerRef.current,
-        { y: 30, rotation: -10 },
-        { y: -30, rotation: 5, ease: "none" },
+        { y: 20, rotation: -10 },
+        { y: -20, rotation: 5, ease: "none" },
         0
       );
     }
@@ -81,8 +81,8 @@ export default function WhatWeDoSection() {
     if (enjoyStickerRef.current) {
       stickerTl.fromTo(
         enjoyStickerRef.current,
-        { y: 20, rotation: 8 },
-        { y: -40, rotation: -5, ease: "none" },
+        { y: 15, rotation: 8 },
+        { y: -30, rotation: -5, ease: "none" },
         0
       );
     }
@@ -90,8 +90,8 @@ export default function WhatWeDoSection() {
     if (smileStickerRef.current) {
       stickerTl.fromTo(
         smileStickerRef.current,
-        { y: 30, rotation: -8 },
-        { y: -20, rotation: 8, ease: "none" },
+        { y: 20, rotation: -8 },
+        { y: -15, rotation: 8, ease: "none" },
         0
       );
     }
@@ -160,13 +160,13 @@ export default function WhatWeDoSection() {
     <section
       id="what-we-do"
       ref={sectionRef}
-      className="relative w-full h-screen flex flex-col items-center justify-center gap-6 md:justify-between md:gap-0 text-brand-burgundy pt-4 sm:pt-6 md:pt-10 pb-4 md:pb-6 overflow-hidden pointer-events-auto z-30 bg-brand-cream"
+      className="relative w-full h-screen flex flex-col items-center justify-center gap-6 md:gap-15 text-brand-burgundy pt-12 sm:pt-16 pb-[10vh] sm:pb-[12vh] md:pb-[14vh] overflow-hidden pointer-events-auto z-30 bg-brand-cream"
     >
       {/* 1. Header Sticker Composition */}
-      <div className="relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[260px] md:h-[260px] shrink-0 select-none mb-1 md:mb-2">
+      <div className="relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[220px] md:h-[220px] shrink-0 select-none mb-0">
         
         {/* Main WHAT WE DO image */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110px] sm:w-[140px] md:w-[160px] z-10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90px] sm:w-[115px] md:w-[150px] z-10">
           <div
             ref={mainStickerRef}
             className="w-full h-full origin-center opacity-0 scale-0"
@@ -185,7 +185,7 @@ export default function WhatWeDoSection() {
         </div>
 
         {/* Sticker 1: Band-aid (Left) */}
-        <div className="absolute bottom-28 left-[-10%] sm:left-[-15%] md:left-[-25%] w-[35px] sm:w-[45px] md:w-[80px] z-20 rotate-[-35deg]">
+        <div className="absolute top-[32%] left-[-10%] sm:left-[-12%] md:left-[-15%] w-[28px] sm:w-[36px] md:w-[50px] z-20 rotate-[-35deg]">
           <div
             ref={bandAidStickerRef}
             className="w-full h-full origin-center opacity-0 scale-0"
@@ -204,7 +204,7 @@ export default function WhatWeDoSection() {
         </div>
 
         {/* Sticker 2: ENJOY Poster (Top Right) */}
-        <div className="absolute top-[-0%] right-[-5%] w-[45px] sm:w-[60px] md:w-[90px] z-0 rotate-25">
+        <div className="absolute top-[2%] right-[-2%] sm:right-[-4%] md:right-[-6%] w-[35px] sm:w-[48px] md:w-[68px] z-0 rotate-25">
           <div
             ref={enjoyStickerRef}
             className="w-full h-full origin-center opacity-0 scale-0"
@@ -223,7 +223,7 @@ export default function WhatWeDoSection() {
         </div>
 
         {/* Sticker 3: Blue Smile (Bottom Right) */}
-        <div className="absolute bottom-[25%] right-[-5%] sm:right-[-10%] md:right-[-15%] w-[45px] sm:w-[55px] md:w-[80px] z-20 rotate-[-20deg]">
+        <div className="absolute bottom-[20%] right-[-2%] sm:right-[-4%] md:right-[-15%] w-[35px] sm:w-[44px] md:w-[58px] z-20 rotate-[-20deg]">
           <div
             ref={smileStickerRef}
             className="w-full h-full origin-center opacity-0 scale-0"
@@ -246,7 +246,7 @@ export default function WhatWeDoSection() {
 
       <div 
         ref={folderWrapperRef}
-        className="relative w-[65vw] max-w-[240px] sm:max-w-[280px] md:max-w-[340px] aspect-[1690/1478] origin-center opacity-0 mb-6 md:mb-16 shrink-0"
+        className="relative w-[28vw] sm:w-[20vw] md:w-[15vw] aspect-[1690/1478] origin-center opacity-0 mb-0 shrink-0"
         style={{ willChange: "transform, opacity" }}
       >
         {/* Folder Background Image */}
@@ -265,7 +265,7 @@ export default function WhatWeDoSection() {
           {services.map((service, index) => (
             <div
               key={index}
-              className={`service-text-image absolute left-1/2 -translate-x-1/2 flex items-center justify-center ${service.sizeClass} ${
+              className={`service-text-image absolute left-1/2 ${service.translateXClass || "-translate-x-1/2"} flex items-center justify-center ${service.sizeClass} ${
                 index === 0 ? "opacity-100" : "opacity-0"
               }`}
               style={{ willChange: "transform, opacity" }}

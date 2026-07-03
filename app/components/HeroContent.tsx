@@ -9,9 +9,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const HERO_BULLETS = [
-  <>You don<span className="font-sans">&apos;</span>t need to dance to be seen.</>,
-  "You just need the right people that actually get you.",
-  <>And that<span className="font-sans">&apos;</span>s what we do.</>
+  <>You don<span className="font-sans">&apos;</span>t need to dance to be seen</>,
+  "You just need the right people that actually get you",
+  <>And that<span className="font-sans">&apos;</span>s what we do</>
 ];
 
 /** Unified Hero & About Section with scroll-pinned storytelling transition */

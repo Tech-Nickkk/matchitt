@@ -19,7 +19,7 @@ export default function StatementSection() {
       textRef.current,
       { opacity: 0, y: 60 },
       {
-        opacity: 1,
+        opacity: 0.85,
         y: 0,
         ease: "power2.out",
         duration: 1.0,
@@ -45,7 +45,7 @@ export default function StatementSection() {
         <div
           className="w-full h-[42vh] sm:h-[55vh] md:h-[70vh] lg:h-full opacity-60 bg-no-repeat bg-center bg-[length:100%_100%] lg:bg-contain"
           style={{
-            backgroundImage: 'url("/images/Bg_Statement_Img.png")',
+            backgroundImage: 'url("/images/New_Bg_Statement_Img.png")',
           }}
         />
       </div>
@@ -54,10 +54,15 @@ export default function StatementSection() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h2
           ref={textRef}
-          className="font-recoleta-bold text-[5.5vw] sm:text-3xl md:text-4xl lg:text-[52px] xl:text-[56px] leading-tight text-brand-burgundy font-bold opacity-0 flex flex-col items-center w-full"
+          className="font-recoleta-bold text-[17px] sm:text-[22px] md:text-[28px] lg:text-[34px] xl:text-[38px] leading-tight text-brand-burgundy font-bold opacity-0 flex flex-col items-center w-full text-center"
         >
-          <span className="sm:whitespace-nowrap">Most businesses don<span className="font-sans">&apos;</span>t need more content.</span>
-          <span className="sm:whitespace-nowrap">They need the right direction.</span>
+          {/* Desktop/Tablet split */}
+          <span className="hidden sm:block sm:whitespace-nowrap">Most businesses don<span className="font-sans">&apos;</span>t need more content, they need the</span>
+          <span className="hidden sm:block sm:whitespace-nowrap">right direction</span>
+
+          {/* Mobile split */}
+          <span className="block sm:hidden">Most businesses don<span className="font-sans">&apos;</span>t need more content,</span>
+          <span className="block sm:hidden">they need the right direction</span>
         </h2>
       </div>
     </section>
