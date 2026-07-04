@@ -168,7 +168,7 @@ export default function HeroContent() {
             Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
           </h2>
           <div className="flex justify-start">
-            <ul className="space-y-2 text-brand-burgundy font-recoleta-light font-semibold text-[17px] sm:text-[19px] md:text-[23px] leading-snug list-none inline-block text-left">
+            <ul className="space-y-3 text-brand-burgundy font-recoleta-light font-semibold text-[17px] sm:text-[19px] md:text-[23px] leading-snug list-none inline-block text-left">
               {HERO_BULLETS.map((bullet, index) => (
                 <li key={index}>• {bullet}</li>
               ))}
