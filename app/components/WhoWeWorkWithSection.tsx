@@ -163,7 +163,7 @@ export default function WhoWeWorkWithSection() {
         }
       });
 
-      const wipeOffset = isMobile ? "<75%" : "<60%";
+      const wipeOffset = isMobile ? "<85%" : "<70%";
 
       // 1. Zoom in on the text centered on the letter "l"
       tl.to(
@@ -314,11 +314,11 @@ export default function WhoWeWorkWithSection() {
         </div>
 
         {/* Animated Text Container */}
-        <div ref={textContainerRef} className="absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120px] md:h-[180px] lg:h-[220px] flex items-center justify-center z-10">
+        <div ref={textContainerRef} className="absolute top-[62%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120px] md:h-[180px] lg:h-[220px] flex items-center justify-center z-10">
           {clientTypes.map((text, index) => (
             <h2 
               key={index}
-              className="client-text absolute w-full left-0 right-0 text-center text-[13vw] sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
+              className="client-text absolute w-full left-0 right-0 text-center text-[9.5vw] sm:text-5xl md:text-6xl lg:text-[6.2rem] xl:text-[7.2rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
             >
               {text === "E-commerce" ? (
                 <>E<span className="font-sans">-</span>commerce</>

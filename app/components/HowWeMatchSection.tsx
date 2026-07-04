@@ -167,7 +167,7 @@ export default function HowWeMatchSection() {
             ref={paraRef}
             className="font-recoleta-light font-bold text-brand-burgundy text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-center max-w-5xl opacity-0 px-6"
           >
-            Helping brands reach the people<br className="hidden sm:block" /> who matter most
+            Helping brands reach the people<br className="hidden sm:block" /> who matter the most
           </p>
         </div>
 

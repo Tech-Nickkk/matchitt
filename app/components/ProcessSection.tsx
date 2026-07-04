@@ -13,33 +13,35 @@ const steps = [
     textSrc: "/images/Understand_Text_Img.png",
     alt: "Understand",
     rotation: "-rotate-[0deg]",
-    alignment: "-translate-x-2 sm:-translate-x-6 md:-translate-x-10",
+    alignment: "-translate-x-2 sm:-translate-x-4 md:-translate-x-6",
   },
   {
     textSrc: "/images/Strategize_Text_Img.png",
     alt: "Strategize",
     rotation: "rotate-[0deg]",
-    alignment: "translate-x-2 sm:translate-x-6 md:translate-x-30",
+    alignment: "translate-x-2 sm:translate-x-4 md:translate-x-10",
+    extraClass: "scale-[0.9]",
   },
   {
     textSrc: "/images/Create&Build_Text_Img.png",
     alt: "Create & Build",
     rotation: "rotate-[0deg]",
-    alignment: "-translate-x-1 sm:-translate-x-4 md:-translate-x-6",
+    alignment: "-translate-x-1 sm:-translate-x-2 md:-translate-x-10",
+    extraClass: "scale-[0.9]",
   },
   {
     textSrc: "/images/Launch&Match_Text_Img.png",
     alt: "Launch & Match",
     rotation: "rotate-[0deg]",
-    alignment: "translate-x-3 sm:translate-x-8 md:translate-x-25",
-    extraClass: "scale-[1.25]",
+    alignment: "translate-x-2 sm:translate-x-4 md:translate-x-10",
+    extraClass: "scale-[1.1]",
   },
   {
     textSrc: "/images/Optimize&Grow_Text_Img.png",
     alt: "Optimize & Grow",
     rotation: "rotate-[0deg]",
-    alignment: "-translate-x-3 sm:-translate-x-8 md:-translate-x-14",
-    extraClass: "scale-[1.1]",
+    alignment: "-translate-x-2 sm:-translate-x-3 md:-translate-x-10",
+    extraClass: "scale-[1.05]",
   },
 ];
 
@@ -119,13 +121,13 @@ export default function ProcessSection() {
             key={index}
             ref={el => { stepsRef.current[index] = el; }}
             className={`relative flex items-center justify-center transition-all duration-500 ease-out hover:scale-[1.03] ${step.alignment} ${step.rotation} ${
-              index !== 0 ? "-mt-4 sm:-mt-6 md:-mt-8 lg:-mt-10" : ""
+              index !== 0 ? "-mt-2 sm:-mt-3 md:-mt-4 lg:-mt-3" : ""
             }`}
             style={{ transformOrigin: "center center", zIndex: index }}
           >
             {/* Label Container - scaled down to fit on one screen page */}
             <div
-              className="process-inner-card relative w-[170px] h-[64px] sm:w-[240px] sm:h-[90px] md:w-[300px] md:h-[112px] lg:w-[350px] lg:h-[131px] flex items-center justify-center"
+              className="process-inner-card relative w-[140px] h-[52px] sm:w-[200px] sm:h-[75px] md:w-[250px] md:h-[94px] lg:w-[300px] lg:h-[112px] flex items-center justify-center"
               style={{ willChange: "transform, opacity", opacity: 0 }}
             >
               

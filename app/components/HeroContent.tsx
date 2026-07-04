@@ -139,14 +139,14 @@ export default function HeroContent() {
               alt="Two Sisters Matchitt"
               width={800}
               height={600}
-              className="w-[280px] sm:w-[360px] md:w-[420px] lg:w-[520px] xl:w-[560px] object-contain select-none pointer-events-none drop-shadow-2xl"
+              className="w-[200px] sm:w-[260px] md:w-[310px] lg:w-[390px] xl:w-[430px] object-contain select-none pointer-events-none drop-shadow-2xl"
               priority
             />
             
             {/* Matchitt Sticker Overlay */}
             <div 
               ref={stickerRef} 
-              className="absolute bottom-0 left-0 right-0 mx-auto h-fit z-40 w-[140px] sm:w-[190px] md:w-[280px] lg:w-[330px] xl:w-[360px] transform origin-center drop-shadow-lg"
+              className="absolute bottom-0 left-0 right-0 mx-auto h-fit z-40 w-[100px] sm:w-[130px] md:w-[200px] lg:w-[240px] xl:w-[270px] transform origin-center drop-shadow-lg"
             >
               <Image
                 src="/images/Matchitt_Text_Img.png"
@@ -162,13 +162,13 @@ export default function HeroContent() {
         {/* Copywriting Text Column (Fades & slides up on the right column) */}
         <div 
           ref={textContainerRef} 
-          className="w-full lg:w-1/2 opacity-0 flex flex-col justify-center text-center px-4 md:px-8 lg:px-0 z-20"
+          className="w-full lg:w-1/2 opacity-0 flex flex-col justify-center text-left px-4 md:px-8 lg:px-0 z-20"
         >
-          <h2 className="font-recoleta-bold text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] leading-snug text-brand-burgundy mb-4 lg:mb-8">
+          <h2 className="font-recoleta-bold text-xl sm:text-2xl md:text-[28px] lg:text-[32px] leading-snug text-brand-burgundy mb-4 lg:mb-6">
             Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
           </h2>
-          <div className="flex justify-center">
-            <ul className="space-y-2 text-brand-burgundy font-recoleta-light font-semibold text-lg sm:text-xl md:text-[25px] leading-snug list-none inline-block">
+          <div className="flex justify-start">
+            <ul className="space-y-2 text-brand-burgundy font-recoleta-light font-semibold text-[17px] sm:text-[19px] md:text-[23px] leading-snug list-none inline-block text-left">
               {HERO_BULLETS.map((bullet, index) => (
                 <li key={index}>• {bullet}</li>
               ))}

@@ -212,7 +212,7 @@ export default function AboutSection() {
             We don&apos;t think it is.
           </p>
           <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-            We believe good marketing starts with understanding who you&apos;re trying to reach, why they should care, and how to show up in a way that actually means something
+            We believe good marketing starts with understanding who you&apos;re trying to reach, why they should care, and how to show up in a way that actually means something.
           </p>
         </div>
 
