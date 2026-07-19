@@ -112,7 +112,7 @@ export default function AboutSection() {
       ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col items-center justify-center text-brand-burgundy py-20 overflow-hidden pointer-events-auto z-30"
     >
-      <div className="max-w-5xl w-full mx-auto px-6 flex flex-col items-center justify-center">
+      <div className="max-w-6xl w-full mx-auto px-6 flex flex-col items-center justify-center">
         
         {/* Sticker Composition (Centered) */}
         <div className="relative w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] md:w-[350px] md:h-[350px] shrink-0 select-none mb-8 sm:mb-12">
@@ -195,24 +195,18 @@ export default function AboutSection() {
         </div>
 
         {/* Centered Copywriting content */}
-        <div ref={textContainerRef} className="max-w-5xl w-full text-left space-y-4 px-4">
+        <div ref={textContainerRef} className="max-w-6xl w-full text-left space-y-4 px-4">
           <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-              We started Matchitt because we kept seeing the same pattern.
+            More content isn&apos;t the answer. The right direction is.
+          </p>
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0 lg:whitespace-nowrap">
+            We kept seeing the same pattern. Brands pouring money into content, and still not seeing results.
+          </p>
+          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0 lg:whitespace-nowrap">
+            It was never the content. It was that it wasn&apos;t reaching the right people, or saying the right thing.
           </p>
           <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-            Brands were creating more and more content, but not seeing better results.
-          </p>
-          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-            It wasn&apos;t because the content wasn&apos;t good. It was because it wasn&apos;t reaching the right people, or saying the right thing. 
-          </p>
-          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-            Somewhere along the way, everyone started believing that more content was the answer. 
-          </p>
-          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-            We don&apos;t think it is.
-          </p>
-          <p className="font-recoleta-light font-bold text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-relaxed text-brand-burgundy opacity-0">
-            We believe good marketing starts with understanding who you&apos;re trying to reach, why they should care, and how to show up in a way that actually means something.
+            We would rather get you in front of the right 500 people than the wrong 50,000. That&apos;s the whole idea behind Matchitt.
           </p>
         </div>
 

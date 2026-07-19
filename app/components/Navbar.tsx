@@ -1,24 +1,25 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const LINK_TARGETS: Record<string, string> = {
+  "The Matchitt Way": "#process-section",
+  "Who we are": "#who-we-are",
+  "What we do": "#what-we-do",
+  "Who we work with": "#who-we-work-with",
   "About Us": "#about",
-  "What We Do": "#what-we-do",
-  "How We Match": "#how-we-match",
-  "Our Work": "#process-section",
-  "Let Us Match You": "#cta-section",
+  "Get in touch": "#cta-section",
 };
 
-const navLinksLeft = ["About Us", "What We Do", "How We Match"];
-const navLinksRight = ["Our Work", "Let Us Match You"];
-const allLinks = Object.keys(LINK_TARGETS);
+const navLinksLeft = ["The Matchitt Way", "Who we are", "What we do"];
+const navLinksRight = ["Who we work with", "About Us", "Get in touch"];
+const allLinks = [...navLinksLeft, ...navLinksRight];
 
 const FlowerSeparator = () => (
   <Image
@@ -26,7 +27,7 @@ const FlowerSeparator = () => (
     alt=""
     width={40}
     height={40}
-    className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 object-contain animate-spin select-none pointer-events-none shrink-0"
+    className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-6 lg:h-6 xl:w-8 xl:h-8 object-contain animate-spin select-none pointer-events-none shrink-0"
     style={{ animationDuration: "20s" }}
   />
 );
@@ -36,7 +37,7 @@ const InstagramIcon = () => (
     href="https://instagram.com" 
     target="_blank" 
     rel="noopener noreferrer"
-    className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 flex items-center justify-center rounded-lg bg-brand-burgundy text-brand-cream hover:scale-105 hover:opacity-90 transition-all duration-300 shrink-0"
+    className="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 flex items-center justify-center rounded-lg bg-brand-burgundy text-brand-cream hover:scale-105 hover:opacity-90 transition-all duration-300 shrink-0"
     aria-label="Instagram"
   >
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 md:w-5 md:h-5">
@@ -52,7 +53,7 @@ const TikTokIcon = () => (
     href="https://tiktok.com" 
     target="_blank" 
     rel="noopener noreferrer"
-    className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 flex items-center justify-center rounded-lg bg-brand-burgundy text-brand-cream hover:scale-105 hover:opacity-90 transition-all duration-300 shrink-0"
+    className="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 flex items-center justify-center rounded-lg bg-brand-burgundy text-brand-cream hover:scale-105 hover:opacity-90 transition-all duration-300 shrink-0"
     aria-label="TikTok"
   >
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 md:w-5 md:h-5">
@@ -63,6 +64,93 @@ const TikTokIcon = () => (
 
 /** Navigation bar with new wavy ripple texture background, centered logo, and social icons */
 export default function Navbar() {
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const headerRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    if (!headerRef.current) return;
+
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" }
+    });
+
+    // 1. Slide in navbar container
+    tl.fromTo(
+      headerRef.current,
+      { y: -150 },
+      { y: 0, duration: 1.0, clearProps: "transform" }
+    );
+
+    // 2. Parallax slide in the background image
+    const bgContainer = headerRef.current.querySelector(".nav-bg-container");
+    if (bgContainer) {
+      tl.fromTo(
+        bgContainer,
+        { y: -150 },
+        { y: 0, duration: 1.2, ease: "power2.out" },
+        0
+      );
+    }
+
+    // 3. Animate the logos with rotation and translation from top (no fade-in)
+    const logos = headerRef.current.querySelectorAll(".nav-logo");
+    if (logos.length > 0) {
+      tl.fromTo(
+        logos,
+        { y: -100, rotation: -20 },
+        { y: 0, rotation: 0, duration: 1.0, ease: "back.out(1.5)" },
+        0.3
+      );
+    }
+
+    // 4. Fade/slide in the rest of navigation links and social icons
+    const fadeElements = headerRef.current.querySelectorAll(
+      ".nav-links-left, .nav-links-right, .social-icons-container, .nav-links-mobile, .mobile-social-icons"
+    );
+    if (fadeElements.length > 0) {
+      tl.fromTo(
+        fadeElements,
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
+        0.5
+      );
+    }
+  }, { scope: headerRef });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollY;
+
+      // If scroll distance is tiny, ignore it to prevent rapid jittering
+      if (Math.abs(diff) < 15) {
+        return;
+      }
+
+      // Navbar show/hide on scroll
+      if (currentScrollY < 80) {
+        setShowNavbar(true);
+        setLastScrollY(currentScrollY);
+        return;
+      }
+
+      if (currentScrollY > lastScrollY) {
+        // Scrolling down -> hide navbar
+        setShowNavbar(false);
+      } else {
+        // Scrolling up -> show navbar
+        setShowNavbar(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   const handleScroll = (label: string) => {
     const targetId = LINK_TARGETS[label];
     if (!targetId) return;
@@ -71,20 +159,6 @@ export default function Navbar() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  useGSAP(() => {
-    gsap.to(".nav-logo-animate", {
-      y: -150,
-      rotate: 40, // Slight rotation
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "600px top", // Extended to make the animation slower
-        scrub: true,
-        invalidateOnRefresh: true,
-      }
-    });
-  }, { dependencies: [] });
 
   const NavLink = ({ label, className = "" }: { label: string, className?: string }) => (
     <span 
@@ -97,11 +171,14 @@ export default function Navbar() {
 
   return (
     <header 
+      ref={headerRef}
       id="navbar-container" 
-      className="relative w-full min-h-[90px] sm:min-h-[110px] md:min-h-[120px] overflow-visible flex items-center justify-center pointer-events-auto select-none z-30 px-2 md:px-4 lg:px-6 py-4 md:py-6"
+      className={`fixed top-0 left-0 right-0 w-full min-h-[90px] sm:min-h-[110px] md:min-h-[120px] overflow-visible flex items-center justify-center pointer-events-auto select-none z-50 px-2 md:px-4 lg:px-6 py-4 md:py-6 transition-transform duration-700 ease-in-out ${
+        showNavbar ? "translate-y-0" : "-translate-y-full"
+      }`}
     >
       {/* Wavy liquid texture background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden nav-bg-container">
         <div
           className="absolute inset-0"
           style={{
@@ -114,46 +191,57 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="relative z-10 hidden md:flex items-center justify-center gap-x-1.5 lg:gap-x-3 xl:gap-x-5 text-brand-burgundy font-recoleta-light font-bold text-xs lg:text-sm xl:text-base tracking-wide select-none w-full max-w-7xl mx-auto">
-        {navLinksLeft.map(label => (
-          <Fragment key={label}>
-            <NavLink label={label} className="shrink-0" />
+      <nav className="relative z-10 hidden md:flex items-center justify-center text-brand-burgundy font-recoleta-light font-bold text-[11.5px] lg:text-[14px] xl:text-[16px] tracking-wide select-none w-full max-w-[85%] lg:max-w-[78%] mx-auto">
+        {/* Center Side: Links + Logo */}
+        <div className="flex items-center justify-center gap-x-1.5 lg:gap-x-2.5 xl:gap-x-4 flex-grow">
+          
+          {/* Left links container */}
+          <div className="flex items-center gap-x-1.5 lg:gap-x-2.5 xl:gap-x-4 nav-links-left" style={{ opacity: 0 }}>
+            {navLinksLeft.map(label => (
+              <Fragment key={label}>
+                <NavLink label={label} className="shrink-0" />
+                <FlowerSeparator />
+              </Fragment>
+            ))}
+          </div>
+
+          {/* Center Logo */}
+          <div className="mx-1.5 lg:mx-3 xl:mx-4 shrink-0 nav-logo">
+            <Image
+              src="/images/Matchitt_Text_Img.png"
+              alt="MATCHITT"
+              width={240}
+              height={80}
+              className="w-16 sm:w-20 md:w-22 lg:w-28 xl:w-36 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            />
+          </div>
+
+          {/* Right links container */}
+          <div className="flex items-center gap-x-1.5 lg:gap-x-2.5 xl:gap-x-4 nav-links-right" style={{ opacity: 0 }}>
             <FlowerSeparator />
-          </Fragment>
-        ))}
 
-        {/* Center Logo */}
-        <div className="mx-2 lg:mx-4 shrink-0 nav-logo-animate">
-          <Image
-            src="/images/Matchitt_Text_Img.png"
-            alt="MATCHITT"
-            width={240}
-            height={80}
-            className="w-20 sm:w-24 md:w-26 lg:w-32 xl:w-40 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          />
-        </div>
+            {navLinksRight.map((label, index) => (
+              <Fragment key={label}>
+                <NavLink label={label} className="shrink-0" />
+                {index < navLinksRight.length - 1 && <FlowerSeparator />}
+              </Fragment>
+            ))}
+          </div>
 
-        <FlowerSeparator />
-
-        {navLinksRight.map(label => (
-          <Fragment key={label}>
-            <NavLink label={label} className="shrink-0" />
-            <FlowerSeparator />
-          </Fragment>
-        ))}
-
-        {/* Social Icons */}
-        <div className="flex items-center gap-x-2 shrink-0">
-          <InstagramIcon />
-          <TikTokIcon />
         </div>
       </nav>
+
+      {/* Social Icons (Absolute Right for Desktop Layout) */}
+      <div className="hidden md:flex absolute right-4 sm:right-6 md:right-8 lg:right-10 xl:right-12 top-1/2 -translate-y-1/2 items-center gap-x-2 z-20 social-icons-container" style={{ opacity: 0 }}>
+        <InstagramIcon />
+        <TikTokIcon />
+      </div>
 
       {/* Mobile Navigation */}
       <nav className="relative z-10 flex md:hidden flex-col items-center gap-y-3 px-2 py-2 w-full text-brand-burgundy font-serif font-bold text-xs sm:text-sm tracking-wide select-none">
         {/* Top Logo */}
-        <div className="nav-logo-animate">
+        <div className="nav-logo">
           <Image
             src="/images/Matchitt_Text_Img.png"
             alt="MATCHITT"
@@ -164,8 +252,8 @@ export default function Navbar() {
           />
         </div>
         
-        {/* Links and Separators Wrapper */}
-        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        {/* Links Wrapper */}
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 nav-links-mobile" style={{ opacity: 0 }}>
           {allLinks.map((label, index) => (
             <Fragment key={label}>
               <NavLink label={label} />
@@ -175,11 +263,12 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Social Icons */}
-        <div className="flex items-center gap-x-2 pt-1">
+        <div className="flex items-center gap-x-2 pt-1 mobile-social-icons" style={{ opacity: 0 }}>
           <InstagramIcon />
           <TikTokIcon />
         </div>
       </nav>
+
     </header>
   );
 }

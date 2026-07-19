@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -9,14 +9,44 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const services = [
-  { title: "Branding", image: "/images/Branding_Text_Img.png", sizeClass: "w-[75%] h-[40%] bottom-[-12%]" },
-  { title: "Content Creation", image: "/images/Content_Creation_Text_Img.png", sizeClass: "w-[62%] h-[60%] bottom-[-22%]" },
-  { title: "Digital Strategy", image: "/images/Digital_Strategy_Text_Img.png", sizeClass: "w-[69%] h-[65%] bottom-[-28%]" },
-  { title: "Paid Amplification", image: "/images/Paid_Amplification_Text_Img.png", sizeClass: "w-[90%] h-[70%] bottom-[-22%]", translateXClass: "-translate-x-[53%]" },
-  { title: "Creative & Design", image: "/images/Creative_Design_Text_Img.png", sizeClass: "w-[70%] h-[70%] bottom-[-25%]" },
-  { title: "Influencer Engagement", image: "/images/Infuencer_Engagement_Text_Img.png", sizeClass: "w-[80%] h-[60%] bottom-[-25%]", translateXClass: "-translate-x-[51.5%]" },
-  { title: "SEO & Website", image: "/images/Seo_Website_Text_Img.png", sizeClass: "w-[92%] h-[37%] bottom-[-15%]" },
-  { title: "SEM & Programmatic", image: "/images/Sem_Programmatic_Text_Img.png", sizeClass: "w-[100%] h-[55%] bottom-[-22%]" },
+  {
+    title: "Digital Strategy",
+    image: "/images/Digital_Strategy_Text_Img.png",
+    sizeClass: "w-[69%] h-[65%] bottom-[-28%]",
+    description: "The plan before the post"
+  },
+  {
+    title: "Content Creation",
+    image: "/images/Content_Creation_Text_Img.png",
+    sizeClass: "w-[62%] h-[60%] bottom-[-22%]",
+    description: "The content people actually stop for"
+  },
+  {
+    title: "Influencer Engagement",
+    image: "/images/Infuencer_Engagement_Text_Img.png",
+    sizeClass: "w-[80%] h-[60%] bottom-[-25%]",
+    translateXClass: "-translate-x-[51.5%]",
+    description: "The right voices for the right audiences"
+  },
+  {
+    title: "Paid Amplification",
+    image: "/images/Paid_Amplification_Text_Img.png",
+    sizeClass: "w-[90%] h-[70%] bottom-[-22%]",
+    translateXClass: "-translate-x-[53%]",
+    description: "Putting budget where it counts"
+  },
+  {
+    title: "Branding and Creative Design",
+    image: "/images/Creative_Design_Text_Img.png",
+    sizeClass: "w-[70%] h-[70%] bottom-[-25%]",
+    description: "Identity and visuals that make you recognizable"
+  },
+  {
+    title: "SEO and Website",
+    image: "/images/Seo_Website_Text_Img.png",
+    sizeClass: "w-[92%] h-[37%] bottom-[-15%]",
+    description: "Making sure those looking for you actually find you"
+  }
 ];
 
 export default function WhatWeDoSection() {
@@ -26,6 +56,8 @@ export default function WhatWeDoSection() {
   const enjoyStickerRef = useRef<HTMLDivElement>(null);
   const smileStickerRef = useRef<HTMLDivElement>(null);
   const folderWrapperRef = useRef<HTMLDivElement>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useGSAP(() => {
     if (!sectionRef.current || !folderWrapperRef.current) return;
@@ -116,6 +148,7 @@ export default function WhatWeDoSection() {
 
     // 4. Pinned service cards carousel animation
     const textImages = folderWrapperRef.current.querySelectorAll(".service-text-image");
+    const paragraphs = sectionRef.current.querySelectorAll(".service-desc-paragraph");
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -130,24 +163,32 @@ export default function WhatWeDoSection() {
     });
 
     textImages.forEach((img, i) => {
+      const para = paragraphs[i];
       if (i === 0) {
-        // The first image starts visible. Hold, then animate out.
+        // The first image/paragraph starts visible. Hold, then animate out.
         tl.to(
-          img,
+          [img, para],
           { opacity: 0, y: -60, scale: 0.95, duration: 2.5, ease: "power2.in" },
           "+=1.0"
         );
       } else {
-        // Animate in
+        // Animate in: folder image first, then paragraph with a slight delay
         tl.fromTo(
           img,
           { opacity: 0, y: 60, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 2.5, ease: "power2.out" }
+          { opacity: 1, y: 0, scale: 1, duration: 2.0, ease: "power2.out" }
         );
+        tl.fromTo(
+          para,
+          { opacity: 0, y: 30, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "power2.out" },
+          "-=1.2" // Overlaps entry to start while folder image is finishing
+        );
+
         // Animate out (if not last)
         if (i !== textImages.length - 1) {
           tl.to(
-            img,
+            [img, para],
             { opacity: 0, y: -60, scale: 0.95, duration: 2.5, ease: "power2.in" },
             "+=1.0"
           );
@@ -162,8 +203,12 @@ export default function WhatWeDoSection() {
       ref={sectionRef}
       className="relative w-full h-screen flex flex-col items-center justify-center gap-6 md:gap-15 text-brand-burgundy pt-12 sm:pt-16 pb-[10vh] sm:pb-[12vh] md:pb-[14vh] overflow-hidden pointer-events-auto z-30 bg-brand-cream"
     >
-      {/* 1. Header Sticker Composition */}
-      <div className="relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[220px] md:h-[220px] shrink-0 select-none mb-0">
+      {/* 1. Header Sticker Composition (Shifts a tiny bit on click) */}
+      <div 
+        className={`relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[220px] md:h-[220px] shrink-0 select-none mb-0 transition-transform duration-500 ease-out ${
+          isOpen ? "translate-y-[-2.5vh]" : "translate-y-0"
+        }`}
+      >
         
         {/* Main WHAT WE DO image */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90px] sm:w-[115px] md:w-[150px] z-10">
@@ -242,44 +287,73 @@ export default function WhatWeDoSection() {
         </div>
       </div>
 
-
-
+      {/* Interactive Wrapper that moves ONLY the folder up when clicked */}
       <div 
-        ref={folderWrapperRef}
-        className="relative w-[28vw] sm:w-[20vw] md:w-[15vw] aspect-[1690/1478] origin-center opacity-0 mb-0 shrink-0"
-        style={{ willChange: "transform, opacity" }}
+        className={`transition-transform duration-500 ease-out ${
+          isOpen ? "translate-y-[-8vh]" : "translate-y-0"
+        }`}
       >
-        {/* Folder Background Image */}
-        <div className="w-full h-full relative">
-          <Image
-            src="/images/Whatwedo_Folder_Img.png"
-            alt="What We Do Folder"
-            fill
-            className="object-contain drop-shadow-md select-none pointer-events-none"
-            priority
-          />
-        </div>
+        <div 
+          ref={folderWrapperRef}
+          onClick={() => setIsOpen(!isOpen)}
+          className="relative w-[28vw] sm:w-[20vw] md:w-[15vw] aspect-1690/1478 origin-center opacity-0 mb-0 shrink-0 cursor-pointer"
+          style={{ willChange: "transform, opacity" }}
+        >
+          {/* Folder Background Image */}
+          <div className="w-full h-full relative">
+            <Image
+              src="/images/Whatwedo_Folder_Img.png"
+              alt="What We Do Folder"
+              fill
+              className="object-contain drop-shadow-md select-none pointer-events-none"
+              priority
+            />
+          </div>
 
-        {/* Absolute container for the text images at bottom center of the folder */}
-        <div className="absolute inset-0 select-none pointer-events-none">
+          {/* Absolute container for the text images at bottom center of the folder */}
+          <div className="absolute inset-0 select-none pointer-events-none">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className={`service-text-image absolute left-1/2 ${service.translateXClass || "-translate-x-1/2"} flex items-center justify-center ${service.sizeClass} ${
+                  index === 0 ? "opacity-100" : "opacity-0"
+                }`}
+                style={{ willChange: "transform, opacity" }}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-contain object-bottom"
+                    priority={index === 0}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Description Paragraph Container */}
+      <div 
+        className={`absolute bottom-[3.5vh] sm:bottom-[4.5vh] md:bottom-[5.5vh] left-1/2 -translate-x-1/2 w-full max-w-2xl px-6 text-center transition-all duration-500 ease-out z-40 h-[100px] flex items-center justify-center select-none pointer-events-none ${
+          isOpen 
+            ? "opacity-100 translate-y-0" 
+            : "opacity-0 translate-y-6"
+        }`}
+      >
+        <div className="relative w-full h-full flex items-center justify-center">
           {services.map((service, index) => (
-            <div
+            <p
               key={index}
-              className={`service-text-image absolute left-1/2 ${service.translateXClass || "-translate-x-1/2"} flex items-center justify-center ${service.sizeClass} ${
+              className={`service-desc-paragraph absolute font-recoleta-light font-bold text-[16px] sm:text-[18px] md:text-[22px] lg:text-[24px] leading-relaxed text-brand-burgundy w-full text-center ${
                 index === 0 ? "opacity-100" : "opacity-0"
               }`}
-              style={{ willChange: "transform, opacity" }}
+              style={{ willChange: "transform, opacity", fontVariantLigatures: "none" }}
             >
-              <div className="relative w-full h-full">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  fill
-                  className="object-contain object-bottom"
-                  priority={index === 0}
-                />
-              </div>
-            </div>
+              {service.description}
+            </p>
           ))}
         </div>
       </div>

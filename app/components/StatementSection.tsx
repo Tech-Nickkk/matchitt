@@ -43,7 +43,7 @@ export default function StatementSection() {
       {/* Ripple/Crinkled texture background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
         <div
-          className="w-full h-[42vh] sm:h-[55vh] md:h-[70vh] lg:h-full opacity-60 bg-no-repeat bg-center bg-[length:100%_100%] lg:bg-contain"
+          className="w-full h-[42vh] sm:h-[55vh] md:h-[70vh] lg:h-full opacity-60 bg-no-repeat bg-center bg-size-[100%_100%] lg:bg-contain"
           style={{
             backgroundImage: 'url("/images/New_Bg_Statement_Img.png")',
           }}
@@ -57,11 +57,11 @@ export default function StatementSection() {
           className="font-recoleta-bold text-[17px] sm:text-[22px] md:text-[28px] lg:text-[34px] xl:text-[38px] leading-tight text-brand-burgundy font-bold opacity-0 flex flex-col items-center w-full text-center"
         >
           {/* Desktop/Tablet split */}
-          <span className="hidden sm:block sm:whitespace-nowrap">Most businesses don<span className="font-sans">&apos;</span>t need more content, they need the</span>
+          <span className="hidden sm:block sm:whitespace-nowrap">Most businesses don<span className="font-serif">&rsquo;</span>t need more content, they need the</span>
           <span className="hidden sm:block sm:whitespace-nowrap">right direction</span>
 
           {/* Mobile split */}
-          <span className="block sm:hidden">Most businesses don<span className="font-sans">&apos;</span>t need more content,</span>
+          <span className="block sm:hidden">Most businesses don<span className="font-serif">&rsquo;</span>t need more content,</span>
           <span className="block sm:hidden">they need the right direction</span>
         </h2>
       </div>

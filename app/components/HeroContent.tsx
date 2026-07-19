@@ -8,12 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HERO_BULLETS = [
-  <>You don<span className="font-sans">&apos;</span>t need to dance to be seen</>,
-  "You just need the right people that actually get you",
-  <>And that<span className="font-sans">&apos;</span>s what we do</>
-];
-
 /** Unified Hero & About Section with scroll-pinned storytelling transition */
 export default function HeroContent() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -37,7 +31,7 @@ export default function HeroContent() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: isDesktop ? "+=350%" : "+=220%",
+          end: isDesktop ? "+=250%" : "+=180%",
           pin: true,
           scrub: 0.8,
           invalidateOnRefresh: true,
@@ -47,23 +41,24 @@ export default function HeroContent() {
       // Step 1: Envelope slides up from bottom to absolute center and rotates slightly
       tl.fromTo(
         envelopeRef.current,
-        { opacity: 0, y: "85vh", scale: 0.95, rotate: -6 },
+        { opacity: 0, y: "25vh", scale: 0.95, rotate: -6 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
           rotate: 2,
           ease: "power2.out",
-          duration: 1.0,
-        }
+          duration: 0.4,
+        },
+        0
       );
 
       // Sticker Step 1: Start with opacity 0 and moved down, then slide up with a slight stagger and tilt
       tl.fromTo(
         stickerRef.current,
         { opacity: 0, y: 50, rotate: 0 },
-        { opacity: 1, y: 0, rotate: 8, ease: "power2.out", duration: 1.0 },
-        0.3 // Staggered by 0.3s after the girls image
+        { opacity: 1, y: 0, rotate: 8, ease: "power2.out", duration: 0.4 },
+        0.1
       );
 
       // Step 2: Envelope moves to left (desktop) or stays in place (mobile/tablet)
@@ -76,9 +71,9 @@ export default function HeroContent() {
             scale: 0.75,
             rotate: -3,
             ease: "power2.inOut",
-            duration: 1.0,
+            duration: 0.6,
           },
-          "+=0.2"
+          0.5
         );
       } else {
         tl.to(
@@ -89,17 +84,17 @@ export default function HeroContent() {
             scale: 0.9,
             rotate: -4,
             ease: "power2.inOut",
-            duration: 1.0,
+            duration: 0.6,
           },
-          "+=0.2"
+          0.5
         );
       }
 
       // Sticker Step 2: Tilt back and keep it centered as the image moves
       tl.to(
         stickerRef.current,
-        { x: 0, rotate: -8, ease: "power2.inOut", duration: 1.0 },
-        "<+=0.2" // Slight delay relative to the image movement
+        { x: 0, rotate: -8, ease: "power2.inOut", duration: 0.6 },
+        0.6
       );
 
       // Step 3: Text slides up on the right (desktop) or bottom (mobile) - plays faster
@@ -110,9 +105,9 @@ export default function HeroContent() {
           opacity: 1,
           y: 0,
           ease: "power2.out",
-          duration: 0.5, // Reduced duration to make it animate faster
+          duration: 0.4,
         },
-        "-=0.3" // Starts near the end of the image slide-left
+        0.8
       );
     });
   }, { scope: sectionRef, dependencies: [] });
@@ -120,7 +115,7 @@ export default function HeroContent() {
   return (
     <section
       ref={sectionRef}
-      id="hero-pin-container"
+      id="who-we-are"
       className="relative w-full min-h-screen flex items-center justify-center z-30 pointer-events-auto overflow-hidden"
     >
       <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-y-4 lg:gap-y-0 min-h-screen pt-8 pb-24 lg:py-16">
@@ -164,15 +159,13 @@ export default function HeroContent() {
           ref={textContainerRef} 
           className="w-full lg:w-1/2 opacity-0 flex flex-col justify-center text-left px-4 md:px-8 lg:px-0 z-20"
         >
-          <h2 className="font-recoleta-bold text-xl sm:text-2xl md:text-[28px] lg:text-[32px] leading-snug text-brand-burgundy mb-4 lg:mb-6">
-            Two sisters who<span className="font-sans">&apos;</span>ve been working in digital long enough to know:
-          </h2>
-          <div className="flex justify-start">
-            <ul className="space-y-3 text-brand-burgundy font-recoleta-light font-semibold text-[17px] sm:text-[19px] md:text-[23px] leading-snug list-none inline-block text-left">
-              {HERO_BULLETS.map((bullet, index) => (
-                <li key={index}>• {bullet}</li>
-              ))}
-            </ul>
+          <div className="space-y-4 text-brand-burgundy font-recoleta-light font-semibold text-[17px] sm:text-[19px] md:text-[23px] leading-relaxed text-left">
+            <p>
+              Two sisters who<span className="font-serif">&rsquo;</span>ve been working in digital long enough to know: you don<span className="font-serif">&rsquo;</span>t need to dance to be seen, you just need the right people that actually get you.
+            </p>
+            <p>
+              That<span className="font-serif">&rsquo;</span>s what we do: we match brands with the audience that actually gets them, through social strategy, content, and everything that makes it land.
+            </p>
           </div>
         </div>
 

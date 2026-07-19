@@ -175,21 +175,22 @@ export default function PuzzleScene() {
         const initialConfig = getResponsiveConfig();
         group.scale.set(initialConfig.scale, initialConfig.scale, initialConfig.scale);
 
-        // Position it centered/offset, compensating for the centering shift
-        group.position.set(initialConfig.initialX + center.x, initialConfig.initialY + center.y, 0);
+        // Position it centered/offset (perfectly centered vertically on screen)
+        group.position.set(0, 0, 0);
 
-        // Rotate so it is straight in the plane of the screen, but kept at its initial Z tilt
-        group.rotation.set(0, 0, 0.6);
+        // Rotate straight
+        group.rotation.set(0, 0, 0);
 
         scene.add(group);
 
-        // Ensure pieces are in their correct joined state at the start
-        redPiece.position.set(redOrig.x, redOrig.y, redOrig.z);
-        redPiece.rotation.set(redOrigRot.x, redOrigRot.y, redOrigRot.z);
-        bluePiece.position.set(blueOrig.x, blueOrig.y, blueOrig.z);
-        bluePiece.rotation.set(blueOrigRot.x, blueOrigRot.y, blueOrigRot.z);
+        // Set the pieces to start split off-screen
+        redPiece.position.set(redOrig.x + 4.0, redOrig.y, redOrig.z);
+        redPiece.rotation.set(-Math.PI / 8, Math.PI / 4, Math.PI / 6);
+        bluePiece.position.set(blueOrig.x - 4.0, blueOrig.y, blueOrig.z);
+        bluePiece.rotation.set(-Math.PI / 8, -Math.PI / 4, Math.PI / 6);
 
-        // ── Phase 1 Animation: Clockwise Spin & Fall Down ──
+        // ── Phase 1 Animation: Clockwise Spin & Fall Down (Commented out) ──
+        /*
         const tlStage1 = gsap.timeline({
           scrollTrigger: {
             trigger: "body",
@@ -236,16 +237,114 @@ export default function PuzzleScene() {
           },
           0
         );
+        */
+
+        // ── Phase 3 Animation: How We Match (Scroll Reveal, Split, Join) ──
+        const tlStage3 = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#how-we-match",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.0,
+            invalidateOnRefresh: true,
+          },
+        });
+        timelines.push(tlStage3);
+
+        // Ensure state at start of Phase 3 (pieces split off-screen, group centered)
+        tlStage3.set(redPiece.position, { x: redOrig.x + 4.0, y: redOrig.y, z: redOrig.z }, 0);
+        tlStage3.set(redPiece.rotation, {
+          x: -Math.PI / 8,
+          y: Math.PI / 4,
+          z: Math.PI / 6,
+        }, 0);
+        tlStage3.set(bluePiece.position, { x: blueOrig.x - 4.0, y: blueOrig.y, z: blueOrig.z }, 0);
+        tlStage3.set(bluePiece.rotation, {
+          x: -Math.PI / 8,
+          y: -Math.PI / 4,
+          z: Math.PI / 6,
+        }, 0);
+        tlStage3.set(group.position, { x: 0, y: 0.0, z: 0 }, 0);
+        tlStage3.set(group.rotation, { x: 0, y: 0, z: 0 }, 0);
+
+        // Keep pieces split off-screen until scroll reaches 0.12
+        tlStage3.to(redPiece.position, { x: redOrig.x + 4.0, duration: 0.12 }, 0);
+        tlStage3.to(bluePiece.position, { x: blueOrig.x - 4.0, duration: 0.12 }, 0);
+
+        // Step 4: Pieces match/join again in the center, unspinning to 0 (0.12 to 0.66)
+        tlStage3.to(
+          redPiece.position,
+          {
+            x: () => redOrig.x,
+            duration: 0.54,
+            ease: "power2.inOut"
+          },
+          0.12
+        ).to(
+          redPiece.rotation,
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+            duration: 0.54,
+            ease: "power2.inOut"
+          },
+          0.12
+        );
+
+        tlStage3.to(
+          bluePiece.position,
+          {
+            x: () => blueOrig.x,
+            duration: 0.54,
+            ease: "power2.inOut"
+          },
+          0.12
+        ).to(
+          bluePiece.rotation,
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+            duration: 0.54,
+            ease: "power2.inOut"
+          },
+          0.12
+        );
+
+        // Step 5: Exit bottom offscreen smoothly with a slight rotation/tilt (0.70 to 0.98)
+        tlStage3.to(
+          group.position,
+          {
+            y: -5.5, // Slide down completely off-screen
+            duration: 0.28,
+            ease: "power2.in"
+          },
+          0.70
+        ).to(
+          group.rotation,
+          {
+            z: -0.3, // Slight tilt as it falls down
+            duration: 0.28,
+            ease: "power2.in"
+          },
+          0.70
+        );
+
+        // Anchor the timeline to exactly 1.00
+        tlStage3.to(
+          {},
+          { duration: 0.02 },
+          0.98
+        );
 
         // ── Phase 2 Animation: Enter Dedicated Section (Below Statement Section) ──
         const tlStage2 = gsap.timeline({
           scrollTrigger: {
-            trigger: "#statement-section",
-            endTrigger: "#puzzle-transition-section",
-            start: "center center",
+            trigger: "#puzzle-transition-section",
+            start: "top bottom",
             end: "bottom top",
             scrub: 0.8,
-            // markers: true,
             invalidateOnRefresh: true,
           },
         });
@@ -253,24 +352,21 @@ export default function PuzzleScene() {
 
         // Ensure pieces are in their correct joined state at the start (using native GLTF rotations)
         tlStage2.set(redPiece.position, { x: redOrig.x, y: redOrig.y, z: redOrig.z }, 0);
-        tlStage2.set(redPiece.rotation, { x: redOrigRot.x, y: redOrigRot.y, z: redOrigRot.z }, 0);
+        tlStage2.set(redPiece.rotation, { x: 0, y: 0, z: 0 }, 0);
         tlStage2.set(bluePiece.position, { x: blueOrig.x, y: blueOrig.y, z: blueOrig.z }, 0);
-        tlStage2.set(bluePiece.rotation, { x: blueOrigRot.x, y: blueOrigRot.y, z: blueOrigRot.z }, 0);
-
-        // Set initial Z rotation of the group to the end of Phase 1 rotation (0.6 - Math.PI)
-        tlStage2.set(group.rotation, { x: 0, y: 0, z: 0 }, 0);
+        tlStage2.set(bluePiece.rotation, { x: 0, y: 0, z: 0 }, 0);
 
         // Position: rise from bottom offscreen to top offscreen and shift horizontally to center
         tlStage2.fromTo(
           group.position,
           {
-            x: () => getResponsiveConfig().initialX + center.x,
-            y: () => getResponsiveConfig().initialY + center.y - 6,
+            x: 0,
+            y: -5.5,
             z: 0
           },
           {
             x: 0, // Transition horizontally to center
-            y: 6, // Move offscreen top
+            y: 6.0, // Move offscreen top
             z: 0,
             ease: "power1.inOut",
             duration: 1.0,
@@ -279,228 +375,23 @@ export default function PuzzleScene() {
           0
         );
 
-        // Rotation: animate from end of Phase 1 (0.6 - Math.PI) to start of Phase 3 (1.0)
-        tlStage2.to(
+        // Rotation: animate from end of Phase 3 (-0.3) to 1.3
+        tlStage2.fromTo(
           group.rotation,
           {
+            x: 0,
+            y: 0,
+            z: -0.3
+          },
+          {
+            x: 0,
+            y: 0,
             z: 1.3,
             ease: "power1.inOut",
-            duration: 1.0
-          },
-          0
-        );
-
-        // ── Phase 3 Animation: How We Match (Scroll Reveal, Split, Join) ──
-        const tlStage3 = gsap.timeline({
-          scrollTrigger: {
-            trigger: "#how-we-match",
-            start: "top bottom",
-            end: "bottom+=50% top",
-            scrub: 1.0,
-            invalidateOnRefresh: true,
-          },
-        });
-        timelines.push(tlStage3);
-
-        const getShiftOffset = () => {
-          if (typeof window === "undefined") return 1.0;
-          const width = window.innerWidth;
-          if (width < 640) return 0.5;
-          if (width < 1024) return 0.9;
-          return 1.0;
-        };
-
-        // Ensure state at start of Phase 3
-        tlStage3.set(redPiece.position, { x: redOrig.x, y: redOrig.y, z: redOrig.z }, 0);
-        tlStage3.set(redPiece.rotation, { x: 0, y: 0, z: 0 }, 0);
-        tlStage3.set(bluePiece.position, { x: blueOrig.x, y: blueOrig.y, z: blueOrig.z }, 0);
-        tlStage3.set(bluePiece.rotation, { x: 0, y: 0, z: 0 }, 0);
-
-        // Step 1: Stay offscreen until 0.06, then animate in from top offscreen to center by 0.26 (0.06 to 0.26)
-        tlStage3.fromTo(
-          group.position,
-          {
-            x: 0,
-            y: 5.5,
-            z: 0
-          },
-          {
-            x: 0,
-            y: 5.5,
-            z: 0,
-            duration: 0.06,
+            duration: 1.0,
             immediateRender: false
           },
           0
-        );
-
-        tlStage3.fromTo(
-          group.rotation,
-          {
-            x: 0,
-            y: 0,
-            z: 1.0
-          },
-          {
-            x: 0,
-            y: 0,
-            z: 1.0,
-            duration: 0.06,
-            immediateRender: false
-          },
-          0
-        );
-
-        tlStage3.to(
-          group.position,
-          {
-            x: 0,
-            y: 0.0,
-            z: 0,
-            duration: 0.20,
-            ease: "power2.out"
-          },
-          0.06
-        );
-
-        tlStage3.to(
-          group.rotation,
-          {
-            z: 0.0,
-            duration: 0.20,
-            ease: "power2.out"
-          },
-          0.06
-        );
-
-        // Step 2: Separate pieces left/right off-screen and rotate them (0.26 to 0.57) - Smooth and Slow
-        tlStage3.to(
-          redPiece.position,
-          {
-            x: () => redOrig.x + 4.0,
-            duration: 0.31,
-            ease: "power1.inOut"
-          },
-          0.26
-        ).to(
-          redPiece.rotation,
-          {
-            x: -Math.PI / 8,
-            y: Math.PI / 4,
-            z: Math.PI / 6,
-            duration: 0.31,
-            ease: "power1.inOut"
-          },
-          0.26
-        );
-
-        tlStage3.to(
-          bluePiece.position,
-          {
-            x: () => blueOrig.x - 4.0,
-            duration: 0.31,
-            ease: "power1.inOut"
-          },
-          0.26
-        ).to(
-          bluePiece.rotation,
-          {
-            x: -Math.PI / 8,
-            y: -Math.PI / 4,
-            z: Math.PI / 6,
-            duration: 0.31,
-            ease: "power1.inOut"
-          },
-          0.26
-        );
-
-        // Step 3: Shift group Y down while pieces are off-screen (0.26 to 0.57)
-        tlStage3.to(
-          group.position,
-          {
-            y: () => -getShiftOffset(),
-            duration: 0.31,
-            ease: "power1.inOut"
-          },
-          0.26
-        );
-
-        // Step 4: Pieces match/join again in the center, unspinning to 0 (0.57 to 0.81) - Smooth, Slow, and Controlled
-        tlStage3.to(
-          redPiece.position,
-          {
-            x: () => redOrig.x,
-            duration: 0.24,
-            ease: "power2.inOut"
-          },
-          0.57
-        ).to(
-          redPiece.rotation,
-          {
-            x: 0,
-            y: 0,
-            z: 0,
-            duration: 0.24,
-            ease: "power2.inOut"
-          },
-          0.57
-        );
-
-        tlStage3.to(
-          bluePiece.position,
-          {
-            x: () => blueOrig.x,
-            duration: 0.24,
-            ease: "power2.inOut"
-          },
-          0.57
-        ).to(
-          bluePiece.rotation,
-          {
-            x: 0,
-            y: 0,
-            z: 0,
-            duration: 0.24,
-            ease: "power2.inOut"
-          },
-          0.57
-        );
-
-        // Animate the group position back to perfect vertical center (0.0) during the join phase
-        tlStage3.to(
-          group.position,
-          {
-            y: 0.0,
-            duration: 0.24,
-            ease: "power2.inOut"
-          },
-          0.57
-        );
-
-        // Step 5: Exit bottom offscreen smoothly with a slight rotation/tilt (0.83 to 0.93)
-        tlStage3.to(
-          group.position,
-          {
-            y: -3.5, // Slide down completely off-screen
-            duration: 0.10,
-            ease: "power2.in"
-          },
-          0.83
-        ).to(
-          group.rotation,
-          {
-            z: -0.3, // Slight tilt as it falls down
-            duration: 0.10,
-            ease: "power2.in"
-          },
-          0.83
-        );
-
-        // Anchor the timeline to exactly 1.00 to prevent GSAP auto-scaling relative to the scroll range
-        tlStage3.to(
-          {},
-          { duration: 0.07 },
-          0.93
         );
 
         ScrollTrigger.refresh();

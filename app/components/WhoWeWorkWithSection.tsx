@@ -9,12 +9,28 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 const clientTypes = [
-  "Startups",
-  "Entrepreneurs",
-  "E-commerce",
-  "Talents",
-  "Specialists",
-  "Personal Brand"
+  {
+    isIntro: true,
+    title: <>If you<span className="font-serif">&rsquo;</span>re one of these<span className="font-serif">,</span> you<span className="font-serif">&rsquo;</span>re in the right place</>
+  },
+  {
+    title: <>Founders <span className="font-serif font-bold">&amp;</span> Entrepreneurs</>,
+    liner: <>You<span className="font-serif">&rsquo;</span>re the face of the brand. Let<span className="font-serif">&rsquo;</span>s make that work for you</>,
+    isCompact: true
+  },
+  {
+    title: <>Talents <span className="font-serif font-bold">&amp;</span> Specialists</>,
+    liner: "A presence that books work, not just followers",
+    isCompact: true
+  },
+  {
+    title: "E-commerce",
+    liner: "Turning followers into customers"
+  },
+  {
+    title: "Startups",
+    liner: "Focused strategy for teams building from scratch"
+  }
 ];
 
 export default function WhoWeWorkWithSection() {
@@ -28,8 +44,8 @@ export default function WhoWeWorkWithSection() {
   const visualSectionRef = useRef<HTMLElement>(null);
   const visualImageRef = useRef<HTMLDivElement>(null);
 
-  const personalBrandRef = useRef<HTMLSpanElement>(null);
-  const lRef = useRef<HTMLSpanElement>(null);
+  const startupsTextRef = useRef<HTMLSpanElement>(null);
+  const tRef = useRef<HTMLSpanElement>(null);
   const wipeRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -140,46 +156,74 @@ export default function WhoWeWorkWithSection() {
           end: "+=500%", 
           pin: true, 
           pinSpacing: true,
-          scrub: 0.3,             // Much smoother pinned slide transition weight (increased from 1)
+          scrub: 0.3,             // Much smoother pinned slide transition weight
           invalidateOnRefresh: true,
         }
       });
 
       texts.forEach((text, i) => {
-        // For each text, animate it fading and sliding up into the center
-        tl.fromTo(
-          text,
-          { opacity: 0, y: 100, scale: 0.9 },
-          { opacity: 1, y: 0, scale: 1, duration: 2.5, ease: "power2.out" }
-        );
-        
-        // Then hold it for a moment, and animate it fading and sliding up out of view
-        if (i !== texts.length - 1) {
+        const title = text.querySelector(".client-title");
+        const liner = text.querySelector(".client-liner");
+
+        if (i === 0) {
+          // Intro line (only title, no liner)
+          tl.fromTo(
+            text,
+            { opacity: 0, y: 100, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: 2.5, ease: "power2.out" }
+          );
           tl.to(
             text,
             { opacity: 0, y: -100, scale: 0.9, duration: 2.5, ease: "power2.in" },
-            "+=1.0" // Larger delay to let the user read it
+            "+=1.0"
           );
+        } else {
+          // Client types (title + liner popup)
+          tl.set(text, { opacity: 1 }, "+=0.1"); // Make container visible
+
+          tl.fromTo(
+            title,
+            { opacity: 0, y: 60, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 2.0, ease: "power2.out" }
+          );
+
+          if (liner) {
+            tl.fromTo(
+              liner,
+              { opacity: 0, y: 30, scale: 0.9 },
+              { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "back.out(1.2)" },
+              "-=1.2" // Pop up while title is finishing
+            );
+          }
+
+          if (i !== texts.length - 1) {
+            tl.to(
+              text,
+              { opacity: 0, y: -100, scale: 0.9, duration: 2.5, ease: "power2.in" },
+              "+=1.0"
+            );
+          }
         }
       });
 
       const wipeOffset = isMobile ? "<85%" : "<70%";
+      const zoomStartTime = (clientTypes.length - 1) * 6.0 + 2.5;
 
-      // 1. Zoom in on the text centered on the letter "l"
+      // 1. Zoom in on the text centered on the letter "t" in "Startups"
       tl.to(
-        personalBrandRef.current,
+        startupsTextRef.current,
         {
           scale: 50,
           duration: 18.0, 
           ease: "power2.in",
           transformOrigin: () => {
-            if (personalBrandRef.current && lRef.current) {
-              return getOrigin(personalBrandRef.current, lRef.current);
+            if (startupsTextRef.current && tRef.current) {
+              return getOrigin(startupsTextRef.current, tRef.current);
             }
             return "50% 50%";
           }
         },
-        32.5
+        zoomStartTime
       );
 
       // 2. Expand the burgundy wipe horizontally to 100% width
@@ -187,29 +231,32 @@ export default function WhoWeWorkWithSection() {
         wipeRef.current,
         {
           width: "100%",
-          duration: isMobile ? 3.5 : 5.0, // Scaled up proportionally
+          duration: isMobile ? 3.5 : 5.0,
           ease: "none"
         },
         wipeOffset
       );
 
-      // 3. Fade out the logo and stickers
-      const fadeOutElements = [logo, bestSticker, eyesSticker].filter(Boolean);
+      // 3. Fade out the logo, stickers, and the final description paragraph
+      const lastText = texts[texts.length - 1];
+      const lastLiner = lastText ? lastText.querySelector(".client-liner") : null;
+      const fadeOutElements = [logo, bestSticker, eyesSticker, lastLiner].filter(Boolean);
+
       tl.to(
         fadeOutElements,
         {
           opacity: 0,
           scale: 0.9,
-          duration: 6.0, // Increased to match the slower scale
+          duration: 6.0,
           ease: "power2.out"
         },
-        32.5
+        zoomStartTime
       );
     });
   }, { scope: containerRef, dependencies: [] });
 
   return (
-    <div ref={containerRef} className="relative w-full bg-brand-cream">
+    <div id="who-we-work-with" ref={containerRef} className="relative w-full bg-brand-cream">
       {/* Part 1: Who We Work With Visual Image Section */}
       <section 
         ref={visualSectionRef} 
@@ -314,22 +361,42 @@ export default function WhoWeWorkWithSection() {
         </div>
 
         {/* Animated Text Container */}
-        <div ref={textContainerRef} className="absolute top-[62%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120px] md:h-[180px] lg:h-[220px] flex items-center justify-center z-10">
-          {clientTypes.map((text, index) => (
-            <h2 
+        <div ref={textContainerRef} className="absolute top-[62%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[250px] sm:h-[300px] md:h-[350px] flex items-center justify-center z-10">
+          {clientTypes.map((item, index) => (
+            <div 
               key={index}
-              className="client-text absolute w-full left-0 right-0 text-center text-[9.5vw] sm:text-5xl md:text-6xl lg:text-[6.2rem] xl:text-[7.2rem] font-recoleta-bold tracking-tight text-[#83333E] opacity-0"
+              className="client-text absolute w-full left-0 right-0 text-center flex flex-col items-center justify-center opacity-0"
+              style={{ fontVariantLigatures: "none" }}
             >
-              {text === "E-commerce" ? (
-                <>E<span className="font-sans">-</span>commerce</>
-              ) : text === "Personal Brand" ? (
-                <span ref={personalBrandRef} className="relative inline-block origin-center">
-                  Persona<span ref={lRef} className="relative inline-block">l</span> Brand
-                </span>
+              {item.isIntro ? (
+                <h2 className="client-title text-[5.5vw] sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-recoleta-bold tracking-normal text-[#83333E] max-w-4xl px-6 leading-tight">
+                  {item.title}
+                </h2>
               ) : (
-                text
+                <>
+                  <h2 className={
+                    item.isCompact 
+                      ? "client-title text-[7.5vw] sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.5rem] font-recoleta-bold tracking-normal text-[#83333E] leading-none mb-3 sm:mb-4"
+                      : "client-title text-[8.5vw] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-recoleta-bold tracking-tight text-[#83333E] leading-none mb-3 sm:mb-4"
+                  }>
+                    {item.title === "E-commerce" ? (
+                      <>E<span className="font-sans">-</span>commerce</>
+                    ) : item.title === "Startups" ? (
+                      <span ref={startupsTextRef} className="relative inline-block origin-center">
+                        Star<span ref={tRef} className="relative inline-block">t</span>ups
+                      </span>
+                    ) : (
+                      item.title
+                    )}
+                  </h2>
+                  {item.liner && (
+                    <p className="client-liner text-[4.5vw] sm:text-xl md:text-2xl lg:text-3xl font-recoleta-light font-semibold text-[#83333E] max-w-5xl sm:whitespace-nowrap px-6 leading-relaxed opacity-0">
+                      {item.liner}
+                    </p>
+                  )}
+                </>
               )}
-            </h2>
+            </div>
           ))}
         </div>
       </section>

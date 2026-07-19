@@ -12,8 +12,8 @@ export default function CtaSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const textImageRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
+  const emailRef = useRef<HTMLAnchorElement>(null);
   const centerContentRef = useRef<HTMLDivElement>(null);
-  const socialsRef = useRef<HTMLDivElement>(null);
   
   const girl1Ref = useRef<HTMLDivElement>(null);
   const girl2Ref = useRef<HTMLDivElement>(null);
@@ -29,21 +29,43 @@ export default function CtaSection() {
       !sectionRef.current ||
       !textImageRef.current ||
       !buttonRef.current ||
-      !centerContentRef.current ||
-      !socialsRef.current
+      !emailRef.current ||
+      !centerContentRef.current
     )
       return;
 
-    // Pinned scroll-scrubbed timeline for the footer
+    // Center the absolute email button and initialize default opacity/position
+    gsap.set(emailRef.current, { xPercent: -50, y: 15, opacity: 0 });
     const visualTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top top",      // Pin exactly when footer hits the top of the viewport
-        end: "+=200%",         // Scroll spacing duration (increased to accommodate the dwell time)
+        end: "+=130%",         // Extended pin duration for two-stage storytelling scroll
         pin: true,
         pinSpacing: true,
         scrub: 1.2,
         invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // Trigger smooth, time-based, non-scrubbed fade-in/out of the email button
+          // self.progress runs 0.0 to 1.0. Images fade out at timeline duration 0.9 / 1.3 = 0.69 progress.
+          if (self.progress >= 0.69) {
+            gsap.to(emailRef.current, {
+              opacity: 1,
+              y: 0,
+              duration: 0.45,
+              ease: "power2.out",
+              overwrite: "auto"
+            });
+          } else {
+            gsap.to(emailRef.current, {
+              opacity: 0,
+              y: 15,
+              duration: 0.35,
+              ease: "power2.out",
+              overwrite: "auto"
+            });
+          }
+        }
       }
     });
 
@@ -71,7 +93,7 @@ export default function CtaSection() {
       visualTl.fromTo(
         mainSticker,
         { y: 20, rotation: -4 },
-        { y: -20, rotation: 4, ease: "none", duration: 0.9 },
+        { y: -20, rotation: 4, ease: "none", duration: 1.3 },
         0.0
       );
     }
@@ -79,7 +101,7 @@ export default function CtaSection() {
       visualTl.fromTo(
         cupSticker,
         { y: 35, rotation: -12 },
-        { y: -35, rotation: 10, ease: "none", duration: 0.9 },
+        { y: -35, rotation: 10, ease: "none", duration: 1.3 },
         0.0
       );
     }
@@ -87,7 +109,7 @@ export default function CtaSection() {
       visualTl.fromTo(
         flowerSticker,
         { y: 25, rotation: 15 },
-        { y: -25, rotation: -10, ease: "none", duration: 0.9 },
+        { y: -25, rotation: -10, ease: "none", duration: 1.3 },
         0.0
       );
     }
@@ -95,7 +117,7 @@ export default function CtaSection() {
       visualTl.fromTo(
         starSticker,
         { y: 30, rotation: -8 },
-        { y: -30, rotation: 12, ease: "none", duration: 0.9 },
+        { y: -30, rotation: 12, ease: "none", duration: 1.3 },
         0.0
       );
     }
@@ -139,45 +161,28 @@ export default function CtaSection() {
       0.45
     );
 
-    // 4. Hold/dwell state between 0.7 and 0.9 (no animations here)
-
-    // 5. Exit: Animate out visual elements (girls and desk) - Delayed to hold for a while
+    // 4. Scroll further -> Desk & Girls fade out, and center content shifts up slightly
     visualTl.to(
-      [girl1Ref.current, girl2Ref.current, deskRef.current],
+      [deskRef.current, girl1Ref.current, girl2Ref.current],
       {
         opacity: 0,
-        y: 200,
-        duration: 0.4,
-        stagger: 0.1,
-        ease: "power2.in",
-      },
-      1.8 // Delayed significantly from 0.75
-    );
-
-    // 6. Shift center text wrapper up (runs simultaneously with the social links fade-in)
-    visualTl.to(
-      centerContentRef.current,
-      {
-        y: -90,
+        y: 80,
         duration: 0.4,
         ease: "power2.inOut",
       },
-      2.4 // Shifted accordingly
+      0.9
     );
 
-    // 7. Slide up and fade in social links (starts after girls and desk are fully animated out)
-    visualTl.fromTo(
-      socialsRef.current,
-      { opacity: 0, y: 80, pointerEvents: "none" },
+    visualTl.to(
+      centerContentRef.current,
       {
-        opacity: 1,
-        y: 0,
-        pointerEvents: "auto",
+        y: -30,
         duration: 0.4,
-        ease: "power2.out",
+        ease: "power2.inOut",
       },
-      2.4 // Shifted accordingly
+      0.9
     );
+
   }, { scope: sectionRef, dependencies: [] });
 
   return (
@@ -219,7 +224,7 @@ export default function CtaSection() {
         {/* Desk */}
         <div 
           ref={deskRef} 
-          className="absolute bottom-[3%] sm:-bottom-1/5 left-[0%] sm:left-[-26%] w-[100%] sm:w-[155%] h-[55%] sm:h-full opacity-0 z-20"
+          className="absolute bottom-[3%] sm:-bottom-1/5 left-[0%] sm:left-[-26%] w-full sm:w-[155%] h-[55%] sm:h-full opacity-0 z-20"
         >
           <Image
             src="/images/desk.png"
@@ -325,57 +330,18 @@ export default function CtaSection() {
           href="https://calendly.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-8 px-8 py-3 bg-[#BBD7EC] text-[#83333E] font-recoleta-bold text-lg sm:text-xl font-bold tracking-wide -rotate-2 shadow-sm hover:scale-105 hover:bg-[#a5cce8] transition-all duration-300 select-none opacity-0"
+          className="mt-8 px-8 py-3.5 bg-[#BBD7EC] text-[#83333E] font-recoleta-bold text-lg sm:text-xl font-bold tracking-wide -rotate-1 shadow-sm hover:scale-105 hover:bg-[#a5cce8] transition-all duration-300 select-none opacity-0 rounded-[20px_60px_30px_80px_/_70px_30px_80px_40px]"
         >
           Book a Calendly Meeting
         </a>
-      </div>
 
-      {/* Social Links at the bottom (absolutely positioned, hidden initially) */}
-      <div 
-        ref={socialsRef} 
-        className="absolute bottom-[8%] sm:bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-xl flex flex-col items-center gap-2 z-30 opacity-0 pointer-events-none"
-      >
-        <div className="flex flex-row justify-center items-center gap-2 sm:gap-4">
-          <a 
-            href="mailto:Hala@matchitt.com" 
-            className="relative w-[140px] sm:w-[180px] md:w-[220px] transition-all duration-300 hover:scale-105 pointer-events-auto"
-          >
-            <Image
-              src="/images/Hala_Footer_Img.png"
-              alt="Email Hala"
-              width={300}
-              height={100}
-              className="w-full h-auto object-contain"
-            />
-          </a>
-          <a 
-            href="mailto:Lynn@matchitt.com" 
-            className="relative w-[140px] sm:w-[180px] md:w-[220px] transition-all duration-300 hover:scale-105 pointer-events-auto"
-          >
-            <Image
-              src="/images/Lynn_Footer_Img.png"
-              alt="Email Lynn"
-              width={300}
-              height={100}
-              className="w-full h-auto object-contain"
-            />
-          </a>
-        </div>
-        
-        <a 
-          href="https://instagram.com/matchittcom" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="relative w-[140px] sm:w-[180px] md:w-[220px] transition-all duration-300 hover:scale-105 pointer-events-auto mt-2"
+        {/* Email Address Link (Positioned absolutely so it doesn't push layout content) */}
+        <a
+          ref={emailRef}
+          href="mailto:admin@matchitt.com"
+          className="absolute top-[calc(100%+24px)] left-1/2 whitespace-nowrap bg-[#BBD7EC] text-[#83333E] font-recoleta-bold text-base sm:text-lg tracking-wide px-8 py-3.5 shadow-sm hover:scale-105 hover:bg-[#a5cce8] transition-all duration-300 select-none opacity-0 rotate-1 rounded-[60px_20px_80px_30px_/_30px_70px_40px_80px]"
         >
-          <Image
-            src="/images/Matchitt_Footer_Img.png"
-            alt="Matchitt Instagram"
-            width={400}
-            height={100}
-            className="w-full h-auto object-contain"
-          />
+          admin<span className="font-sans">@</span>matchitt.com
         </a>
       </div>
     </section>

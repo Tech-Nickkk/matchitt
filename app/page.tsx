@@ -12,6 +12,7 @@ import WhoWeWorkWithSection from "@/components/WhoWeWorkWithSection";
 import CtaSection from "@/components/CtaSection";
 import AboutSection from "@/components/AboutSection";
 import FullscreenImageSection from "@/components/FullscreenImageSection";
+import FloatingCtaButton from "@/components/FloatingCtaButton";
 
 export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
@@ -21,17 +22,16 @@ export default function Home() {
       ref={mainRef}
       className="relative w-full h-auto min-h-screen bg-brand-cream overflow-clip"
     >
+      {/* Navbar (Header) */}
+      <Navbar />
+
+      {/* How We Match Section (at the top now!) */}
+      <HowWeMatchSection />
+
       <div id="page-pin-container" className="relative w-full z-20">
-        {/* Navbar (Header) */}
-        <Navbar />
-
-        {/* Spacer for 3D model initial position spacing */}
-        <div id="hero-spacer" className="h-[50vh] sm:h-[70vh]" />
-
         {/* Envelope & About Content (Unified Pinned Transition) */}
         <HeroContent />
       </div>
-
 
       {/* Statement banner section */}
       <StatementSection />
@@ -42,20 +42,11 @@ export default function Home() {
       {/* Fullscreen Image Transition */}
       <FullscreenImageSection />
 
-      {/* About Us Section */}
-      <AboutSection />
-    
       {/* What We Do Section */}
       <WhatWeDoSection />
-      
-      {/* Spacer before How We Match */}
-      <div className="w-full h-[20vh] md:h-[30vh] pointer-events-none" />
 
-      {/* How We Match Section */}
-      <HowWeMatchSection />
-
-      {/* Spacer after How We Match to allow 3D model to fall down off-screen */}
-      <div className="w-full h-[180vh] md:h-[240vh] pointer-events-none" />
+      {/* About Us Section */}
+      <AboutSection />
 
       {/* Process Section (Pinned) */}
       <ProcessSection />
@@ -68,6 +59,9 @@ export default function Home() {
 
       {/* Fixed 3D WebGL Canvas */}
       <PuzzleScene />
+
+      {/* Floating Get in Touch Button (Burgundy Theme, viewport fixed) */}
+      <FloatingCtaButton />
     </main>
   );
 }
