@@ -280,7 +280,7 @@ export default function WhoWeWorkWithSection() {
           {/* Desktop: fill container */}
           <div className="hidden md:block absolute inset-0 w-full h-full">
             <Image
-              src="/images/Two_Girls_Img_2.png"
+              src="/images/Two_Girls_Img.png"
               alt="Who We Work With Visual"
               fill
               className="object-cover object-top"
