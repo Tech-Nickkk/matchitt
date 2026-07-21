@@ -40,7 +40,7 @@ export default function WhoWeWorkWithSection() {
   const logoRef = useRef<HTMLDivElement>(null);
   const bestStickerRef = useRef<HTMLDivElement>(null);
   const eyesStickerRef = useRef<HTMLDivElement>(null);
-  
+
   const visualSectionRef = useRef<HTMLElement>(null);
   const visualImageRef = useRef<HTMLDivElement>(null);
 
@@ -153,8 +153,8 @@ export default function WhoWeWorkWithSection() {
         scrollTrigger: {
           trigger: section,
           start: "top top",       // Pin exactly when section hits the top of the viewport
-          end: "+=500%", 
-          pin: true, 
+          end: "+=500%",
+          pin: true,
           pinSpacing: true,
           scrub: 0.3,             // Much smoother pinned slide transition weight
           invalidateOnRefresh: true,
@@ -206,15 +206,15 @@ export default function WhoWeWorkWithSection() {
         }
       });
 
-      const wipeOffset = isMobile ? "<85%" : "<70%";
+      const wipeOffset = isMobile ? "<85%" : "<75%";
       const zoomStartTime = (clientTypes.length - 1) * 6.0 + 2.5;
 
       // 1. Zoom in on the text centered on the letter "t" in "Startups"
       tl.to(
         startupsTextRef.current,
         {
-          scale: 50,
-          duration: 18.0, 
+          scale: 55,
+          duration: 18.0,
           ease: "power2.in",
           transformOrigin: () => {
             if (startupsTextRef.current && tRef.current) {
@@ -258,19 +258,19 @@ export default function WhoWeWorkWithSection() {
   return (
     <div id="who-we-work-with" ref={containerRef} className="relative w-full bg-brand-cream">
       {/* Part 1: Who We Work With Visual Image Section */}
-      <section 
-        ref={visualSectionRef} 
+      <section
+        ref={visualSectionRef}
         className="relative w-full h-auto md:h-screen flex justify-center bg-brand-cream overflow-hidden pt-8"
       >
-        <div 
-          ref={visualImageRef} 
+        <div
+          ref={visualImageRef}
           className="w-full h-auto md:h-full md:relative max-w-[1600px] origin-center opacity-0"
           style={{ willChange: "transform, opacity" }}
         >
           {/* Mobile & Tablet: auto height */}
           <div className="block md:hidden w-full h-auto">
             <Image
-              src="/images/Two_Girls_Img_2.png"
+              src="/images/Two_Girls_Img.png"
               alt="Who We Work With Visual"
               width={1600}
               height={900}
@@ -293,14 +293,14 @@ export default function WhoWeWorkWithSection() {
       {/* Part 2: Pinned Animating Text Section */}
       <section ref={sectionRef} className="relative w-full h-screen flex flex-col items-center justify-start bg-brand-cream z-20 overflow-hidden">
         {/* Burgundy Wipe overlay */}
-        <div 
-          ref={wipeRef} 
+        <div
+          ref={wipeRef}
           className="absolute left-1/2 -translate-x-1/2 w-0 h-[150vh] bg-[#83333E] z-0 pointer-events-none"
         />
 
         {/* Sticker Composition (Who We Work With) */}
         <div className="relative w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] shrink-0 select-none mt-[14vh] md:mt-[8vh] mb-[2vh] z-10">
-          
+
           {/* Main WHOWEWORKWITH image */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[-70%] w-[190px] sm:w-[250px] md:w-[280px] z-10">
             <div
@@ -363,21 +363,21 @@ export default function WhoWeWorkWithSection() {
         {/* Animated Text Container */}
         <div ref={textContainerRef} className="absolute top-[62%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[250px] sm:h-[300px] md:h-[350px] flex items-center justify-center z-10">
           {clientTypes.map((item, index) => (
-            <div 
+            <div
               key={index}
               className="client-text absolute w-full left-0 right-0 text-center flex flex-col items-center justify-center opacity-0"
               style={{ fontVariantLigatures: "none" }}
             >
               {item.isIntro ? (
-                <h2 className="client-title text-[5.5vw] sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-recoleta-bold tracking-normal text-[#83333E] max-w-4xl px-6 leading-tight">
+                <h2 className="client-title text-[4.5vw] sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-recoleta-bold tracking-normal text-[#83333E] max-w-4xl px-6 leading-tight">
                   {item.title}
                 </h2>
               ) : (
                 <>
                   <h2 className={
-                    item.isCompact 
-                      ? "client-title text-[7.5vw] sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.5rem] font-recoleta-bold tracking-normal text-[#83333E] leading-none mb-3 sm:mb-4"
-                      : "client-title text-[8.5vw] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-recoleta-bold tracking-tight text-[#83333E] leading-none mb-3 sm:mb-4"
+                    item.isCompact
+                      ? "client-title text-[6.5vw] sm:text-3xl md:text-4xl lg:text-[3.5rem] xl:text-[4.2rem] font-recoleta-bold tracking-normal text-[#83333E] leading-none mb-3 sm:mb-4"
+                      : "client-title text-[7.5vw] sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.5rem] font-recoleta-bold tracking-tight text-[#83333E] leading-none mb-3 sm:mb-4"
                   }>
                     {item.title === "E-commerce" ? (
                       <>E<span className="font-sans">-</span>commerce</>
@@ -390,7 +390,7 @@ export default function WhoWeWorkWithSection() {
                     )}
                   </h2>
                   {item.liner && (
-                    <p className="client-liner text-[4.5vw] sm:text-xl md:text-2xl lg:text-3xl font-recoleta-light font-semibold text-[#83333E] max-w-5xl sm:whitespace-nowrap px-6 leading-relaxed opacity-0">
+                    <p className="client-liner text-[3.8vw] sm:text-lg md:text-xl lg:text-2xl font-recoleta-light font-semibold text-[#83333E] max-w-5xl sm:whitespace-nowrap px-6 leading-relaxed opacity-0">
                       {item.liner}
                     </p>
                   )}

@@ -5,35 +5,17 @@ import { useState, useEffect } from "react";
 export default function FloatingCtaButton() {
   const [isBtnVisible, setIsBtnVisible] = useState(false);
 
-  // Synchronize button visibility with Navbar visibility (inverted)
+  // Show button when scrolled past a threshold, regardless of scroll direction
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const diff = currentScrollY - lastScrollY;
 
-      // Ignore small scroll shifts to prevent rapid jittering
-      if (Math.abs(diff) < 15) {
-        return;
-      }
-
-      // If at the very top of the page, navbar is always visible, so button is hidden
-      if (currentScrollY < 80) {
-        setIsBtnVisible(false);
-        lastScrollY = currentScrollY;
-        return;
-      }
-
-      if (currentScrollY > lastScrollY) {
-        // Scrolling down -> Navbar hides -> Show button
+      // Show button after scrolling down 200px, otherwise hide it near the top
+      if (currentScrollY > 200) {
         setIsBtnVisible(true);
       } else {
-        // Scrolling up -> Navbar shows -> Hide button
         setIsBtnVisible(false);
       }
-
-      lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });

@@ -27,14 +27,14 @@ const FlowerSeparator = () => (
     alt=""
     width={40}
     height={40}
-    className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-6 lg:h-6 xl:w-8 xl:h-8 object-contain animate-spin select-none pointer-events-none shrink-0"
+    className="w-3.5 h-3.5 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-6 xl:h-6 2xl:w-8 2xl:h-8 object-contain animate-spin select-none pointer-events-none shrink-0"
     style={{ animationDuration: "20s" }}
   />
 );
 
 const InstagramIcon = () => (
   <a 
-    href="https://instagram.com" 
+    href="https://www.instagram.com/matchittcom/" 
     target="_blank" 
     rel="noopener noreferrer"
     className="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 flex items-center justify-center rounded-lg bg-brand-burgundy text-brand-cream hover:scale-105 hover:opacity-90 transition-all duration-300 shrink-0"
@@ -50,7 +50,7 @@ const InstagramIcon = () => (
 
 const TikTokIcon = () => (
   <a 
-    href="https://tiktok.com" 
+    href="https://www.tiktok.com/@matchittcom?_r=1&_t=ZS-98C5qsMfcyS" 
     target="_blank" 
     rel="noopener noreferrer"
     className="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 flex items-center justify-center rounded-lg bg-brand-burgundy text-brand-cream hover:scale-105 hover:opacity-90 transition-all duration-300 shrink-0"
@@ -191,12 +191,12 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="relative z-10 hidden md:flex items-center justify-center text-brand-burgundy font-recoleta-light font-bold text-[11.5px] lg:text-[14px] xl:text-[16px] tracking-wide select-none w-full max-w-[85%] lg:max-w-[78%] mx-auto">
+      <nav className="relative z-10 hidden md:flex items-center justify-center text-brand-burgundy font-recoleta-light font-bold text-[10px] md:text-[10.5px] lg:text-[12.5px] xl:text-[14.5px] 2xl:text-[16px] tracking-wide select-none w-full px-28 lg:px-32 xl:px-40 2xl:max-w-[78%] 2xl:mx-auto 2xl:px-0">
         {/* Center Side: Links + Logo */}
-        <div className="flex items-center justify-center gap-x-1.5 lg:gap-x-2.5 xl:gap-x-4 flex-grow">
+        <div className="flex items-center justify-center gap-x-1 md:gap-x-1 lg:gap-x-2 xl:gap-x-3 2xl:gap-x-4 flex-grow">
           
           {/* Left links container */}
-          <div className="flex items-center gap-x-1.5 lg:gap-x-2.5 xl:gap-x-4 nav-links-left" style={{ opacity: 0 }}>
+          <div className="flex items-center gap-x-1 md:gap-x-1 lg:gap-x-2 xl:gap-x-3 2xl:gap-x-4 nav-links-left shrink-0" style={{ opacity: 0 }}>
             {navLinksLeft.map(label => (
               <Fragment key={label}>
                 <NavLink label={label} className="shrink-0" />
@@ -212,13 +212,13 @@ export default function Navbar() {
               alt="MATCHITT"
               width={240}
               height={80}
-              className="w-16 sm:w-20 md:w-22 lg:w-28 xl:w-36 object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
+              className="w-16 sm:w-20 md:w-[72px] lg:w-[96px] xl:w-[112px] 2xl:w-[144px] object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             />
           </div>
 
           {/* Right links container */}
-          <div className="flex items-center gap-x-1.5 lg:gap-x-2.5 xl:gap-x-4 nav-links-right" style={{ opacity: 0 }}>
+          <div className="flex items-center gap-x-1 md:gap-x-1 lg:gap-x-2 xl:gap-x-3 2xl:gap-x-4 nav-links-right shrink-0" style={{ opacity: 0 }}>
             <FlowerSeparator />
 
             {navLinksRight.map((label, index) => (

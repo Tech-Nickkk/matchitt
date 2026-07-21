@@ -11,7 +11,6 @@ import ProcessSection from "@/components/ProcessSection";
 import WhoWeWorkWithSection from "@/components/WhoWeWorkWithSection";
 import CtaSection from "@/components/CtaSection";
 import AboutSection from "@/components/AboutSection";
-import FullscreenImageSection from "@/components/FullscreenImageSection";
 import FloatingCtaButton from "@/components/FloatingCtaButton";
 
 export default function Home() {
@@ -39,9 +38,6 @@ export default function Home() {
       {/* Spacer for 3D Model Transition Trigger */}
       <div id="puzzle-transition-section" className="w-full h-[90vh] pointer-events-none" />
   
-      {/* Fullscreen Image Transition */}
-      <FullscreenImageSection />
-
       {/* What We Do Section */}
       <WhatWeDoSection />
 

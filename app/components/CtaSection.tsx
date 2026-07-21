@@ -34,154 +34,142 @@ export default function CtaSection() {
     )
       return;
 
-    // Center the absolute email button and initialize default opacity/position
-    gsap.set(emailRef.current, { xPercent: -50, y: 15, opacity: 0 });
-    const visualTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",      // Pin exactly when footer hits the top of the viewport
-        end: "+=130%",         // Extended pin duration for two-stage storytelling scroll
-        pin: true,
-        pinSpacing: true,
-        scrub: 1.2,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          // Trigger smooth, time-based, non-scrubbed fade-in/out of the email button
-          // self.progress runs 0.0 to 1.0. Images fade out at timeline duration 0.9 / 1.3 = 0.69 progress.
-          if (self.progress >= 0.69) {
-            gsap.to(emailRef.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.45,
-              ease: "power2.out",
-              overwrite: "auto"
-            });
-          } else {
-            gsap.to(emailRef.current, {
-              opacity: 0,
-              y: 15,
-              duration: 0.35,
-              ease: "power2.out",
-              overwrite: "auto"
-            });
-          }
-        }
-      }
-    });
-
     const mainSticker = mainStickerRef.current;
     const cupSticker = cupStickerRef.current;
     const flowerSticker = flowerStickerRef.current;
     const starSticker = starStickerRef.current;
 
+    // Center the absolute email button and initialize default opacity/position
+    gsap.set(emailRef.current, { xPercent: -50, y: 15, opacity: 0 });
+
+    // 1. Entrance animation timeline (triggered when section enters viewport)
+    const entranceTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 75%", // Trigger when the top of the section is 75% down the viewport
+        toggleActions: "play none none reverse", // Play on enter, reverse on leave-back
+        invalidateOnRefresh: true,
+      }
+    });
+
     // Fade in parent wrapper container
-    visualTl.to(textImageRef.current, { opacity: 1, duration: 0.1 }, 0.0);
+    entranceTl.to(textImageRef.current, { opacity: 1, duration: 0.2 }, 0.0);
 
     // Scale and fade up elements dynamically
     const elements = [mainSticker, cupSticker, flowerSticker, starSticker].filter(Boolean) as HTMLElement[];
     if (elements.length > 0) {
-      visualTl.fromTo(
+      entranceTl.fromTo(
         elements,
         { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.05, ease: "back.out(1.5)" },
+        { scale: 1, opacity: 1, duration: 0.4, stagger: 0.05, ease: "back.out(1.5)" },
         0.0
       );
     }
 
-    // Continuous float and rotation animations synced to scroll
-    if (mainSticker) {
-      visualTl.fromTo(
-        mainSticker,
-        { y: 20, rotation: -4 },
-        { y: -20, rotation: 4, ease: "none", duration: 1.3 },
-        0.0
-      );
-    }
-    if (cupSticker) {
-      visualTl.fromTo(
-        cupSticker,
-        { y: 35, rotation: -12 },
-        { y: -35, rotation: 10, ease: "none", duration: 1.3 },
-        0.0
-      );
-    }
-    if (flowerSticker) {
-      visualTl.fromTo(
-        flowerSticker,
-        { y: 25, rotation: 15 },
-        { y: -25, rotation: -10, ease: "none", duration: 1.3 },
-        0.0
-      );
-    }
-    if (starSticker) {
-      visualTl.fromTo(
-        starSticker,
-        { y: 30, rotation: -8 },
-        { y: -30, rotation: 12, ease: "none", duration: 1.3 },
-        0.0
-      );
-    }
-
-    // 2. Scale and fade in the button with overlap
-    visualTl.fromTo(
+    // Scale and fade in the Calendly button
+    entranceTl.fromTo(
       buttonRef.current,
       { scale: 0.9, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.5)" },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.5)" },
+      0.15
+    );
+
+    // Slide-up and fade-in of the email button
+    entranceTl.to(
+      emailRef.current,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        ease: "power2.out",
+      },
+      0.25
+    );
+
+    // Slide-up and fade-in of visual elements (Desk first, then girls staggered)
+    entranceTl.fromTo(
+      deskRef.current,
+      { opacity: 0, y: 100 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
       0.1
     );
 
-    // 3. Slide-up and fade-in of visual elements (Desk first, then girls staggered)
-    visualTl.fromTo(
-      deskRef.current,
-      {
-        opacity: 0,
-        y: 200,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        ease: "power2.out",
-      },
-      0.3
-    );
-
-    visualTl.fromTo(
+    entranceTl.fromTo(
       [girl1Ref.current, girl2Ref.current],
-      {
-        opacity: 0,
-        y: 200,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        ease: "power2.out",
-      },
-      0.45
+      { opacity: 0, y: 100 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+      0.25
     );
 
-    // 4. Scroll further -> Desk & Girls fade out, and center content shifts up slightly
-    visualTl.to(
-      [deskRef.current, girl1Ref.current, girl2Ref.current],
-      {
-        opacity: 0,
-        y: 80,
-        duration: 0.4,
-        ease: "power2.inOut",
-      },
-      0.9
-    );
-
-    visualTl.to(
-      centerContentRef.current,
-      {
-        y: -30,
-        duration: 0.4,
-        ease: "power2.inOut",
-      },
-      0.9
-    );
+    // 2. Subtle scroll-scrubbed parallax for stickers
+    if (mainSticker) {
+      gsap.fromTo(
+        mainSticker,
+        { y: 20, rotation: -4 },
+        {
+          y: -20,
+          rotation: 4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.0,
+          }
+        }
+      );
+    }
+    if (cupSticker) {
+      gsap.fromTo(
+        cupSticker,
+        { y: 35, rotation: -12 },
+        {
+          y: -35,
+          rotation: 10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.0,
+          }
+        }
+      );
+    }
+    if (flowerSticker) {
+      gsap.fromTo(
+        flowerSticker,
+        { y: 25, rotation: 15 },
+        {
+          y: -25,
+          rotation: -10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.0,
+          }
+        }
+      );
+    }
+    if (starSticker) {
+      gsap.fromTo(
+        starSticker,
+        { y: 30, rotation: -8 },
+        {
+          y: -30,
+          rotation: 12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.0,
+          }
+        }
+      );
+    }
 
   }, { scope: sectionRef, dependencies: [] });
 

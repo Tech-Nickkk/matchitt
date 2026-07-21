@@ -161,10 +161,10 @@ export default function HeroContent() {
         >
           <div className="space-y-4 text-brand-burgundy font-recoleta-light font-semibold text-[17px] sm:text-[19px] md:text-[23px] leading-relaxed text-left">
             <p>
-              Two sisters who<span className="font-serif">&rsquo;</span>ve been working in digital long enough to know: you don<span className="font-serif">&rsquo;</span>t need to dance to be seen, you just need the right people that actually get you.
+              Two sisters who<span className="font-serif">&rsquo;</span>ve been working in digital long enough to know, you don<span className="font-serif">&rsquo;</span>t need to dance to be seen, you just need the right people that actually get you.
             </p>
             <p>
-              That<span className="font-serif">&rsquo;</span>s what we do: we match brands with the audience that actually gets them, through social strategy, content, and everything that makes it land.
+              That<span className="font-serif">&rsquo;</span>s what we do, we match brands with the audience that actually gets them, through social strategy, content, and everything that makes it land.
             </p>
           </div>
         </div>
